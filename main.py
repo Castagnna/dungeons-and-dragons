@@ -1,4 +1,4 @@
-from controle.controladorSistema import ControladorSistema
+from controle.controladorPrincipal import ControladorPrincipal
 
 if __name__ == "__main__":
-    ControladorSistema().run()
+    ControladorPrincipal().iniciar()
