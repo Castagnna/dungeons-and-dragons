@@ -28,5 +28,5 @@ class TelaGenerica(ABC):
                     raise ValueError
                 return inteiro
             except ValueError:
-                print("Valor incorreto, por favor digite um inteiro valido.")
+                print("Valor incorreto, por favor digite um inteiro valido!")
                 print("Valores validos: ", self.__id_opcoes)
