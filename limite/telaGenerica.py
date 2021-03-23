@@ -7,8 +7,8 @@ class TelaGenerica(ABC):
                  opcoes: tuple = None):
         self.__controlador = controlador
         self.__titulo_da_tela = titulo_da_tela
-        self.__id_opcoes = [id for (id, _) in opcoes] + [0]
-        self.__opcoes = [opcao for (_, opcao) in opcoes] + ["Encerrar programa"]
+        self.__id_opcoes = [id for id, _ in opcoes] + [0]
+        self.__opcoes = [opcao for _, opcao in opcoes] + ["Encerrar programa"]
 
     def mostra_opcoes(self):
         self.cria_menu_opcoes()
