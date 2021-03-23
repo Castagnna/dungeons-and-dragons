@@ -7,9 +7,13 @@ class ControladorGenerico(ABC):
         pass
 
     @abstractmethod
-    def iniciar(self):
+    def mostra_tela(self):
         pass
 
     def finaliza_programa(self):
-        print("----- Programa finalizado -----")
-        exit(0)
+        confirmacao = input("Tem certeza que quer finalizar o programa? [Y/N]: ")
+        if confirmacao in "Yy":
+            print("\n---- Programa finalizado -----")
+            exit(0)
+        else:
+            return -1

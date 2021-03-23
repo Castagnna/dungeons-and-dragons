@@ -10,16 +10,16 @@ class TelaGenerica(ABC):
         self.__id_opcoes = [id for id, _ in opcoes] + [0]
         self.__opcoes = [opcao for _, opcao in opcoes] + ["Encerrar programa"]
 
-    def mostra_opcoes(self):
+    def mostra_opcoes(self) -> int:
         self.cria_menu_opcoes()
-        return self.le_numero_inteiro(">>> Escolha uma opção: ")
+        return self.le_numero_inteiro("\n>>> Escolha uma opção: ")
 
     def cria_menu_opcoes(self):
         print("------ {} ------".format(self.__titulo_da_tela))
         for id, opcao in zip(self.__id_opcoes, self.__opcoes):
             print("{} - {}".format(id, opcao))
 
-    def le_numero_inteiro(self, mensagem: str):
+    def le_numero_inteiro(self, mensagem: str) -> int:
         while True:
             valor_lido = input(mensagem)
             try:
