@@ -12,3 +12,11 @@ class TelaPersonagem(TelaGenerica):
                 (2, "Novo monstro"),
             )
         )
+
+    def pega_dados_do_jogador(self) -> dict:
+        nome = self.pega_dado("Nome: ", "str")
+        level = self.pega_dado("Idade: ", "int")
+        return {
+            "nome": nome,
+            "level": level,
+        }
