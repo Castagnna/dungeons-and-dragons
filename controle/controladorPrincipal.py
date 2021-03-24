@@ -5,8 +5,7 @@ from limite.telaPrincipal import TelaPrincipal
 
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
-        super(ControladorPrincipal, self).__init__()
-        self.__tela = TelaPrincipal(self)
+        super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
         self.__controlador_personagem = ControladorPersonagem(self)
 
     def iniciar_sistema(self) -> int:
@@ -23,7 +22,4 @@ class ControladorPrincipal(ControladorGenerico):
             1: self.opcoes_personagem,
         }
 
-        while True:
-            opcao_selecionada = self.__tela.mostra_opcoes()
-            funcao_selecionada = funcoes[opcao_selecionada]
-            funcao_selecionada()
+        super(ControladorPrincipal, self).mostra_tela(funcoes)
