@@ -3,17 +3,20 @@ from abc import ABC, abstractmethod
 
 class ControladorGenerico(ABC):
     @abstractmethod
-    def __init__(self):
-        pass
+    def __init__(self, tela):
+        self.__tela = tela
 
     @abstractmethod
-    def mostra_tela(self):
-        pass
+    def mostra_tela(self, funcoes: dict):
+        while True:
+            opcao_selecionada = self.__tela.mostra_opcoes()
+            funcao_selecionada = funcoes[opcao_selecionada]
+            funcao_selecionada()
 
-    def finaliza_programa(self):
-        confirmacao = input("Tem certeza que quer finalizar o programa? [Y/N]: ")
-        if confirmacao in "Yy":
-            print("\n---- Programa finalizado -----")
-            exit(0)
-        else:
-            return -1
+    @staticmethod
+    def finaliza_programa():
+        exit(0)
+
+    @property
+    def tela(self):
+        return self.__tela
