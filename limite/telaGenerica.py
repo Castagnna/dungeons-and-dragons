@@ -12,7 +12,14 @@ class TelaGenerica(ABC):
 
     def mostra_opcoes(self) -> int:
         self.cria_menu_opcoes()
-        return self.le_numero_inteiro("\n>>> Escolha uma opção: ")
+        opcao = self.le_numero_inteiro("\n>>> Escolha uma opção: ")
+        if opcao == 0:
+            confirma = input("Tem certeza que quer finalizar o programa? [Y/N]: ")
+            if confirma in "Yy":
+                print("\n---- Programa finalizado -----")
+            else:
+                return -1
+        return opcao
 
     def cria_menu_opcoes(self):
         print("------ {} ------".format(self.__titulo_da_tela))

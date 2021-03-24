@@ -11,9 +11,4 @@ class ControladorGenerico(ABC):
         pass
 
     def finaliza_programa(self):
-        confirmacao = input("Tem certeza que quer finalizar o programa? [Y/N]: ")
-        if confirmacao in "Yy":
-            print("\n---- Programa finalizado -----")
-            exit(0)
-        else:
-            return -1
+        exit(0)
