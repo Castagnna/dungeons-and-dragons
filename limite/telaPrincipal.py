@@ -8,7 +8,7 @@ class TelaPrincipal(TelaGenerica):
             controlador=controlador,
             titulo_da_tela="MENU PRINCIPAL",
             opcoes=(
-                (1, "Menu Jogador"),
-                (2, "Menu Monstro"),
+                (1, "Menu Personagem"),
+                (2, "Menu Bancground"),
             )
         )
