@@ -1,12 +1,12 @@
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaJogador import TelaJogador
+from limite.telaPersonagem import TelaPersonagem
 
 
-class ControladorJogador(ControladorGenerico):
+class ControladorPersonagem(ControladorGenerico):
     def __init__(self, controlador_principal):
-        super(ControladorJogador, self).__init__()
+        super(ControladorPersonagem, self).__init__()
         self.__controlador_principal = controlador_principal
-        self.__tela = TelaJogador(self)
+        self.__tela = TelaPersonagem(self)
         self.__jogadores = []
 
     def cria_novo_jogador(self):
