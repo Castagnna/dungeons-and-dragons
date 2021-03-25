@@ -11,6 +11,10 @@ class ControladorPersonagem(ControladorGenerico):
         self.__jogadores = []
         self.__monstros = []
 
+    @property
+    def controlador_principal(self):
+        return self.__controlador_principal
+
     def cria_novo_jogador(self):
         dados = self.tela.pega_dados_do_jogador()
         print(dados)
