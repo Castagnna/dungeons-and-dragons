@@ -1,7 +1,7 @@
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaPersonagem import TelaPersonagem
 from entidade.jogador import Jogador
-# from entidade.monstro import Monstro
+from entidade.monstro import Monstro
 
 
 class ControladorPersonagem(ControladorGenerico):
