@@ -7,8 +7,8 @@ class Personagem(ABC):
 
     def __init__(self, codigo: int, nome: str, forca: int, destreza: int, constituicao: int,
                  inteligencia: int, sabedoria: int, carisma: int, imagem: pygame.image.load,
-                 ca: int, vida_maxima: int, tamanho: str, posicao: list,
-                 vida_atual: int):
+                 ca: int, vida_maxima: int, tamanho: str, posicao: list, vida_atual: int):
+
         self.__codigo = codigo
         self.__nome = nome
         self.__forca = forca
@@ -197,4 +197,15 @@ class Personagem(ABC):
 
     def realizar_teste(self, modificador: int):
         if isinstance(modificador, int):
-            return random.randint(1, 20) + modificador
+            return (random.randint(1, 20) + modificador)
+
+    def recebe_ataque(self, dano: int):
+        if isinstance(dano, int):
+            self.__vida_atual -= dano
+            self.__dano_sofrido += dano
+
+    def curar(self, vida: int):
+        if isinstance(vida, int):
+            self.__vida_atual += vida
+            if self.__vida_atual > self.__vida_maxima:
+                self.__vida_atual = self.__vida_maxima

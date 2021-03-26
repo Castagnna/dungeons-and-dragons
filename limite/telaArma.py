@@ -1,4 +1,5 @@
 from limite.telaGenerica import TelaGenerica
+from controle.controladorArma import ControladorArma
 
 
 class TelaArma(TelaGenerica):
