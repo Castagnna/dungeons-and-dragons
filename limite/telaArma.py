@@ -9,6 +9,18 @@ class TelaArma(TelaGenerica):
             titulo_da_tela="MENU Arma",
             opcoes=(
                 (1, "Nova Arma"),
-                (2, "Apaga Arma"),
+                (2, "Armas cadastradas"),
             )
         )
+
+    def pega_dados_da_arma(self) -> dict:
+        nome = self.pega_dado("Nome: ", "str")
+        dano = self.pega_dado("Dano: ", "str")
+        return {
+            "nome": nome,
+            "dano": dano,
+        }
+
+    @staticmethod
+    def mostra_armas(armas: list):
+        print("Armas cadastradas: {}".format(armas))

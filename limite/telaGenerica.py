@@ -10,6 +10,10 @@ class TelaGenerica(ABC):
         self.__id_opcoes = [id for id, _ in opcoes] + [0]
         self.__opcoes = [opcao for _, opcao in opcoes] + ["Encerrar programa"]
 
+    @property
+    def controlador(self):
+        return self.__controlador
+
     def mostra_opcoes(self) -> int:
         self.cria_menu_opcoes()
         opcao = self.le_numero_inteiro("\n>>> Escolha uma opção: ")
@@ -46,16 +50,16 @@ class TelaGenerica(ABC):
             "float": float,
             "bool": bool,
         }
-        continua = True
+        # continua = True
 
-        while continua:
+        while True:
             dado = input(mensagem)
             try:
                 dado = tipos[tipo](dado)
             except ValueError:
-                print("O dado e o seu tipo não conferem, tente novamente.")
+                print("O dado deve ser do tipo {}, tente novamente.".format(tipo))
                 pass
             else:
                 confirma = input("Confirma o valor >> {} << ? [Y/N] ".format(dado))
                 if confirma in "Yy":
-                    continua = False
+                    return dado
