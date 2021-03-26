@@ -1,4 +1,4 @@
 from controladorgenerico import ControladorGenerico
 
-class ControladorPersonagem(ControladorGenerico):
+class ControladorAtaqueMonstro(ControladorGenerico):
     pass
