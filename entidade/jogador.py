@@ -1,6 +1,6 @@
-from personagem import Personagem
-from arma import Arma
-from magia import Magia
+from entidade.personagem import Personagem
+from entidade.arma import Arma
+from entidade.magia import Magia
 import pygame
 
 class Jogador(Personagem):

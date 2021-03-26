@@ -1,4 +1,5 @@
 from limite.telaGenerica import TelaGenerica
+from controle.controladorataquemonstro import ControladorAtaqueMonstro
 
 
 class TelaAtaqueMonstro(TelaGenerica):

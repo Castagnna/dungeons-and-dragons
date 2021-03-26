@@ -1,4 +1,4 @@
-from personagem import Personagem
+from entidade.personagem import Personagem
 import pygame
 
 class Monstro(Personagem):
