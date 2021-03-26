@@ -1,6 +1,6 @@
 
 
-class AtaqueMonstro():
+class AtaqueMonstro:
     def __init__(self, nome: str, quantidade_dado: int, numero_faces: int,dano_bonus: int, acerto: int, cd: int, teste: str):
         self.__nome = nome
         self.__quantidade_dado = quantidade_dado

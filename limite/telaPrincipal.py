@@ -1,5 +1,5 @@
 from limite.telaGenerica import TelaGenerica
-from controle.controladorPrincipal import ControladorPrincipal
+
 
 class TelaPrincipal(TelaGenerica):
 
