@@ -1,5 +1,5 @@
 from entidade.personagem import Personagem
-from entidade.ataquemonstro import AtaqueMonstro
+from entidade.ataqueMonstro import AtaqueMonstro
 import random
 import pygame
 
