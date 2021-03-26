@@ -15,12 +15,16 @@ class TelaArma(TelaGenerica):
 
     def pega_dados_da_arma(self) -> dict:
         nome = self.pega_dado("Nome: ", "str")
-        dano = self.pega_dado("Dano: ", "str")
+        quantidade_dado = self.pega_dado("Quantidade de dados: ", "int")
+        numero_faces = self.pega_dado("Numero de faces do dado: ", "int")
         return {
             "nome": nome,
-            "dano": dano,
+            "quantidade_dado": quantidade_dado,
+            "numero_faces": numero_faces,
         }
 
     @staticmethod
     def mostra_armas(armas: list):
-        print("Armas cadastradas: {}".format(armas))
+        print("\n------ Lista de armas cadastradas ------")
+        for arma in armas:
+            print("{} | {}".format(arma.id, arma.nome))
