@@ -15,7 +15,6 @@ class Jogador(Personagem):
         self.__nome_jogador = nome_jogador
         self.__level = level
         self.__experiencia = experiencia
-        self.__raca = raca
         self.__espaco_magia = dict()
         self.__proficiencia = 0
         self.__cd = 0
