@@ -1,5 +1,4 @@
 from limite.telaGenerica import TelaGenerica
-from controle.controladorArma import ControladorArma
 
 
 class TelaArma(TelaGenerica):
@@ -7,7 +6,7 @@ class TelaArma(TelaGenerica):
     def __init__(self, controlador):
         super(TelaArma, self).__init__(
             controlador=controlador,
-            titulo_da_tela="MENU Arma",
+            titulo_da_tela="\nMENU ARMA",
             opcoes=(
                 (1, "Nova Arma"),
                 (2, "Armas cadastradas"),

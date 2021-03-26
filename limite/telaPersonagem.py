@@ -1,5 +1,5 @@
 from limite.telaGenerica import TelaGenerica
-from controle.controladorPersonagem import ControladorPersonagem
+
 
 class TelaPersonagem(TelaGenerica):
 
