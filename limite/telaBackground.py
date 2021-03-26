@@ -1,5 +1,5 @@
 from limite.telaGenerica import TelaGenerica
-
+from controle.controladorbackground import ControladorBackground
 
 class TelaBackground(TelaGenerica):
 
