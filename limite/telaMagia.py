@@ -1,5 +1,5 @@
 from limite.telaGenerica import TelaGenerica
-
+from controle.controladormagia import ControladorMagia
 
 class TelaMagia(TelaGenerica):
 
