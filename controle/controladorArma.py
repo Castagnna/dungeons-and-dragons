@@ -20,21 +20,17 @@ class ControladorArma(ControladorGenerico):
         return self.__armas
 
     def mostra_armas(self):
-        nomes = [arma.nome for arma in self.__armas]
-        self.tela.mostra_armas(nomes)
+        # lista_de_armas = [(arma.id, arma.nome) for arma in self.__armas]
+        self.tela.mostra_armas(self.__armas)
 
     def cria_nova_arma(self):
         dados = self.tela.pega_dados_da_arma()
-        # atributos = self.calcula_atributos(**dados)
         novo_arma = Arma(
             id=self.__counta_armas,
             **dados
         )
         self.__armas.append(novo_arma)
         self.__counta_armas += 1
-
-    def calcula_atributos(self):
-        return 10
 
     def mostra_tela(self):
 

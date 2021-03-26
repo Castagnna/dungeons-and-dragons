@@ -1,11 +1,16 @@
-# import pygame
 import random
 
+
 class Arma:
-    def __init__(self, nome: str, quantidade_dado: int, numero_faces: int):
+    def __init__(self, id: int, nome: str, quantidade_dado: int, numero_faces: int):
+        self.__id = id
         self.__nome = nome
         self.__quantidade_dado = quantidade_dado
         self.__numero_faces = numero_faces
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def nome(self):

@@ -5,10 +5,10 @@ import random
 
 class Personagem(ABC):
 
-
     def __init__(self, codigo: int, nome: str, forca: int, destreza: int, constituicao: int,
                  inteligencia: int, sabedoria: int, carisma: int, imagem: pygame.image.load,
-                 ca: int, vida_maxima: int, tamanho: str, posicao: list):
+                 ca: int, vida_maxima: int, tamanho: str, posicao: list, vida_atual: int):
+
         self.__codigo = codigo
         self.__nome = nome
         self.__forca = forca
@@ -36,7 +36,7 @@ class Personagem(ABC):
         self.__ataque_desvantagem = False
         self.__sofre_ataque_vantagem = False
         self.__sofre_ataque_desvantagem = False
-        self.__vida_atual = vida_maxima
+        self.__vida_atual = vida_atual
 
     def calcula_modificador(self, atributo):
         return (atributo - 10) // 2
@@ -139,7 +139,7 @@ class Personagem(ABC):
         self.__movimentacao_acumulado += ((posicao[0]**2 + posicao[1]**2)**(1/2))
 
     @abstractmethod
-    def atacar(self, personagem: Personagem):
+    def atacar(self, personagem):
         pass
 
     @property
