@@ -1,13 +1,15 @@
 from entidade.personagem import Personagem
 from entidade.arma import Arma
 from entidade.magia import Magia
+from entidade.monstro import Monstro
 import pygame
+
 
 class Jogador(Personagem):
     def __init__(self, codigo: int, nome: str, forca: int, destreza: int, constituicao: int, inteligencia: int,
                  sabedoria: int, carisma: int, imagem: pygame.image.load, ca: int, vida_maxima: int,
                  tamanho: str,posicao: list,nome_jogador: str, level: int, experiencia: int,
-                 raca: str,  vida_atual = vida_maxima):
+                 raca: str,  vida_atual: int):
         super().__init__(codigo, nome, forca, destreza, constituicao, inteligencia, sabedoria,
                          carisma, imagem, ca, vida_maxima, tamanho, posicao, vida_atual)
         self.__nome_jogador = nome_jogador
@@ -38,7 +40,8 @@ class Jogador(Personagem):
         if isinstance(raca, str):
             self.__raca = raca
 
-    def trocar_arma(self, arma: Arma): # implementar
+    def trocar_arma(self, arma: Arma):
+        # TODO: implementar
         pass
 
     def get_espaco_magia(self, circulo: int):
@@ -49,7 +52,8 @@ class Jogador(Personagem):
         if isinstance(circulo, int) and isinstance(quantidade, int):
             self.__espaco_magia[circulo] = quantidade
 
-    def lancar_magia(self, magia: Magia): # implementar
+    def lancar_magia(self, magia: Magia):
+        # TODO: implementar
         pass
 
     @property
@@ -61,10 +65,12 @@ class Jogador(Personagem):
         if isinstance(proficiencia, int):
             self.__proficiencia = proficiencia
 
-    def atacar(self, personagem: Monstro): # implementar
+    def atacar(self, personagem: Monstro):
+        # TODO: implementar
         pass
 
-    def calcula_cd(self): # implementar
+    def calcula_cd(self):
+        # TODO: implementar
         pass
 
     def recebe_experiencia(self, experiencia: int):
