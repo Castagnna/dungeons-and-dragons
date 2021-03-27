@@ -16,10 +16,15 @@ class TelaGenerica(ABC):
 
     def mostra_opcoes(self) -> int:
         self.cria_menu_opcoes()
-        opcao = self.le_numero_inteiro("\n>>> Escolha uma opção: ")
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=self.__id_opcoes,
+            confirma=True
+        )
         if opcao == 0:
-            confirma = input("Tem certeza que quer finalizar o programa? [Y/N]: ")
-            if confirma in "Yy":
+            mensagem = "Tem certeza que quer finalizar o programa?"
+            if self.tela_confirma(mensagem):
                 print("\n---- Programa finalizado -----")
             else:
                 return -1
@@ -30,36 +35,37 @@ class TelaGenerica(ABC):
         for id, opcao in zip(self.__id_opcoes, self.__opcoes):
             print("{} - {}".format(id, opcao))
 
-    def le_numero_inteiro(self, mensagem: str) -> int:
-        while True:
-            valor_lido = input(mensagem)
-            try:
-                inteiro = int(valor_lido)
-                if inteiro not in self.__id_opcoes:
-                    raise ValueError
-                return inteiro
-            except ValueError:
-                print("Valor incorreto, por favor digite um inteiro valido!")
-                print("Valores validos: ", self.__id_opcoes)
-
     @staticmethod
-    def pega_dado(mensagem: str, tipo: str):
+    def tela_confirma(mensagem: str) -> bool:
+        confirma = input(mensagem + " [Y/N]: ")
+        return confirma in "Yy"
+
+    def pega_dado(self,
+                  mensagem: str,
+                  tipo: str,
+                  valores_validos: list = None,
+                  confirmar: bool = True):
+
         tipos = {
             "str": str,
             "int": int,
             "float": float,
             "bool": bool,
         }
-        # continua = True
 
         while True:
             dado = input(mensagem)
             try:
                 dado = tipos[tipo](dado)
+                if valores_validos and dado not in valores_validos:
+                    raise ValueError
             except ValueError:
-                print("O dado deve ser do tipo {}, tente novamente.".format(tipo))
+                print("O dado deve ser do tipo {}".format(tipo), end="")
+                if valores_validos:
+                    print(" e deve ser estar entre {}".format(valores_validos), end="")
+                print(", tente novamente.")
                 pass
             else:
-                confirma = input("Confirma o valor >> {} << ? [Y/N] ".format(dado))
-                if confirma in "Yy":
+                if confirmar and self.tela_confirma("Confirma o valor >> {} << ?".format(dado)):
                     return dado
+        return dado

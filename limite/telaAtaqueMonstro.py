@@ -1,5 +1,4 @@
 from limite.telaGenerica import TelaGenerica
-from controle.controladorAtaqueMonstro import ControladorAtaqueMonstro
 
 
 class TelaAtaqueMonstro(TelaGenerica):
@@ -9,7 +8,7 @@ class TelaAtaqueMonstro(TelaGenerica):
             controlador=controlador,
             titulo_da_tela="MENU ATAQUE MONSTRO",
             opcoes=(
-                (1, "Nova ataque"),
+                (1, "Novo ataque"),
                 (2, "Apaga ataque"),
             )
         )

@@ -10,6 +10,7 @@ class TelaArma(TelaGenerica):
             opcoes=(
                 (1, "Nova Arma"),
                 (2, "Armas cadastradas"),
+                (3, "Remove arma")
             )
         )
 
@@ -22,6 +23,12 @@ class TelaArma(TelaGenerica):
             "quantidade_dado": quantidade_dado,
             "numero_faces": numero_faces,
         }
+
+    def pega_id_arma(self) -> int:
+        return self.pega_dado("Id da arma pare remover: ", "int")
+        # arma = self.controlador.pega_arma_por_id(id)
+        # print("id {} da arma {}".format(id, arma.nome))
+        # return id
 
     @staticmethod
     def mostra_armas(armas: list):
