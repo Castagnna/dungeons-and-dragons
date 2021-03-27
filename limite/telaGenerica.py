@@ -43,14 +43,17 @@ class TelaGenerica(ABC):
                 print("Valores validos: ", self.__id_opcoes)
 
     @staticmethod
-    def pega_dado(mensagem: str, tipo: str):
+    def tela_confirma(mensagem: str) -> bool:
+        confirma = input(mensagem + " [Y/N] ")
+        return confirma in "Yy"
+
+    def pega_dado(self, mensagem: str, tipo: str):
         tipos = {
             "str": str,
             "int": int,
             "float": float,
             "bool": bool,
         }
-        # continua = True
 
         while True:
             dado = input(mensagem)
@@ -60,6 +63,6 @@ class TelaGenerica(ABC):
                 print("O dado deve ser do tipo {}, tente novamente.".format(tipo))
                 pass
             else:
-                confirma = input("Confirma o valor >> {} << ? [Y/N] ".format(dado))
-                if confirma in "Yy":
+                mensagem = "Confirma o valor >> {} << ?".format(dado)
+                if self.tela_confirma(mensagem):
                     return dado

@@ -20,7 +20,6 @@ class ControladorArma(ControladorGenerico):
         return self.__armas
 
     def mostra_armas(self):
-        # lista_de_armas = [(arma.id, arma.nome) for arma in self.__armas]
         self.tela.mostra_armas(self.__armas)
 
     def cria_nova_arma(self):
@@ -31,6 +30,17 @@ class ControladorArma(ControladorGenerico):
         )
         self.__armas.append(novo_arma)
         self.__counta_armas += 1
+
+    def pega_arma_por_id(self, id: int):
+        for arma in self.armas:
+            if arma.id == id:
+                return arma
+
+    def remove_arma(self):
+        id = self.tela.pega_id_arma()
+        arma = self.pega_arma_por_id(id)
+
+        return
 
     def mostra_tela(self):
 
