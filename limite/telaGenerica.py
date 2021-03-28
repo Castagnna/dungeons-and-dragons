@@ -20,7 +20,7 @@ class TelaGenerica(ABC):
             mensagem="\n>>> Escolha uma opção: ",
             tipo="int",
             valores_validos=self.__id_opcoes,
-            confirma=True
+            confirmar=False
         )
         if opcao == 0:
             mensagem = "Tem certeza que quer finalizar o programa?"
