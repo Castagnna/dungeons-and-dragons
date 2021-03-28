@@ -13,7 +13,7 @@ class Arma:
         return self.__id
 
     @property
-    def nome(self):
+    def nome(self) -> str:
         return self.__nome
 
     @nome.setter
@@ -22,7 +22,7 @@ class Arma:
             self.__nome = nome
 
     @property
-    def quantidade_dado(self):
+    def quantidade_dado(self) -> int:
         return self.__quantidade_dado
 
     @quantidade_dado.setter
@@ -44,3 +44,8 @@ class Arma:
         for i in range(self.__quantidade_dado):
             contador += random.randint(1, self.__numero_faces)
         return contador
+
+uma_arma = Arma(1, "espada", 3, 4)
+print(uma_arma.nome)
+uma_arma.nome = "martelo"
+print(uma_arma.nome)

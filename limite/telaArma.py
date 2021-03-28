@@ -12,6 +12,7 @@ class TelaArma(TelaGenerica):
                 (2, "Armas cadastradas"),
                 (3, "Remove arma"),
                 (4, "Mostra atributos da arma"),
+                (5, "Alterar arma"),
                 (88, "Voltar")
             )
         )
