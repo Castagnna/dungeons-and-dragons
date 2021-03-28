@@ -7,7 +7,7 @@ class TelaGenerica(ABC):
                  opcoes: tuple = None):
         self.__controlador = controlador
         self.__titulo_da_tela = titulo_da_tela
-        self.__id_opcoes = [id for id, _ in opcoes] + [0]
+        self.__id_opcoes = [id for id, _ in opcoes] + [99]
         self.__opcoes = [opcao for _, opcao in opcoes] + ["Encerrar programa"]
 
     @property
@@ -22,7 +22,7 @@ class TelaGenerica(ABC):
             valores_validos=self.__id_opcoes,
             confirmar=False
         )
-        if opcao == 0:
+        if opcao == 99:
             mensagem = "Tem certeza que quer finalizar o programa?"
             if self.tela_confirma(mensagem):
                 print("\n---- Programa finalizado -----")
@@ -62,10 +62,13 @@ class TelaGenerica(ABC):
             except ValueError:
                 print("O dado deve ser do tipo {}".format(tipo), end="")
                 if valores_validos:
-                    print(" e deve ser estar entre {}".format(valores_validos), end="")
+                    print(" e deve ser {}".format(valores_validos), end="")
                 print(", tente novamente.")
                 pass
             else:
-                if confirmar and self.tela_confirma("Confirma o valor >> {} << ?".format(dado)):
+                if not confirmar:
                     return dado
-        return dado
+                else:
+                    mensagem = "Confirma o valor >> {} << ?".format(dado)
+                    if self.tela_confirma(mensagem):
+                        return dado

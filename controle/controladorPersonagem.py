@@ -33,10 +33,9 @@ class ControladorPersonagem(ControladorGenerico):
     def mostra_tela(self):
 
         funcoes = {
-            -1: self.mostra_tela,
-            0: self.finaliza_programa,
             1: self.cria_novo_jogador,
             2: self.iniciar_combate,
+            88: self.controlador_principal.mostra_tela,
         }
 
         super(ControladorPersonagem, self).mostra_tela(funcoes)

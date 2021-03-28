@@ -37,18 +37,19 @@ class ControladorArma(ControladorGenerico):
                 return arma
 
     def remove_arma(self):
-        id = self.tela.pega_id_arma()
+        id = self.tela.pega_dado("Id da arma: ", "int", confirmar=False)
         arma = self.pega_arma_por_id(id)
-
-        return
+        if self.tela.tela_confirma("Remover >> {} << ?".format(arma.nome)):
+            self.__armas.remove(arma)
+        return -1
 
     def mostra_tela(self):
 
         funcoes = {
-            -1: self.mostra_tela,
-            0: self.finaliza_programa,
             1: self.cria_nova_arma,
             2: self.mostra_armas,
+            3: self.remove_arma,
+            88: self.controlador_principal.mostra_tela,
         }
 
         super(ControladorArma, self).mostra_tela(funcoes)
