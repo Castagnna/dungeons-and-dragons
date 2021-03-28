@@ -41,6 +41,10 @@ class Personagem(ABC):
     @staticmethod
     def calcula_modificador(atributo):
         return (atributo - 10) // 2
+  
+    @property
+    def nome(self):
+        return self.__nome
 
     @property
     def forca(self):

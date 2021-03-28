@@ -6,9 +6,12 @@ import pygame
 
 
 class Jogador(Personagem):
-    def __init__(self, codigo: int, nome: str, forca: int, destreza: int, constituicao: int, inteligencia: int,
-                 sabedoria: int, carisma: int, imagem: pygame.image.load, ca: int, vida_maxima: int,
-                 tamanho: str, posicao: list, vida_atual: int, nome_jogador: str, level: int, experiencia: int):
+    def __init__(self, codigo: int, nome: str, forca: int,
+                 destreza: int, constituicao: int, inteligencia: int,
+                 sabedoria: int, carisma: int, imagem: pygame.image.load,
+                 ca: int, vida_maxima: int,
+                 tamanho: str, posicao: list, vida_atual: int,
+                 nome_jogador: str, level: int, experiencia: int):
     
         super().__init__(codigo, nome, forca, destreza, constituicao, inteligencia, sabedoria,
                          carisma, imagem, ca, vida_maxima, tamanho, posicao, vida_atual)
