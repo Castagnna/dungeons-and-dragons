@@ -33,7 +33,7 @@ class TelaGenerica(ABC):
     def cria_menu_opcoes(self):
         print("------ {} ------".format(self.__titulo_da_tela))
         for id, opcao in zip(self.__id_opcoes, self.__opcoes):
-            print("{} - {}".format(id, opcao))
+            print("{:02d} - {}".format(id, opcao))
 
     @staticmethod
     def tela_confirma(mensagem: str) -> bool:
@@ -72,3 +72,7 @@ class TelaGenerica(ABC):
                     msg_confirmacao = "Confirma o valor >> {} << ?".format(dado)
                     if self.tela_confirma(msg_confirmacao):
                         return dado
+    
+    @staticmethod
+    def monstra_mensagem(mensagem: str):
+        print("\n" + mensagem + "\n")

@@ -26,17 +26,42 @@ class ControladorPersonagem(ControladorGenerico):
         )
         self.__counta_personagens += 1
         self.__jogadores.append(novo_jogador)
-        return -1
+        self.tela.monstra_mensagem("Jogador {} criado com sucesso".format(novo_jogador.nome))
 
-    def iniciar_combate(self):
-        print("Batalha")
-        return -1
+    def mostra_jogadores(self):
+        self.tela.mostra_jogadores(self.__jogadores)
+
+    def excluir_jogador(self):
+        pass
+
+    def cria_novo_monstro(self):
+        pass
+
+    def mostra_monstros(self):
+        self.tela.mostra_monstros(self.__monstros)
+
+    def excluir_monstro(self):
+        pass
+
+    def atacar(self):
+        print("Jogador A ataca B")
+        pass
+
+    def lancar_magia(self):
+        print("A Lanca Magia em B")
+        pass
 
     def mostra_tela(self):
 
         funcoes = {
             1: self.cria_novo_jogador,
-            2: self.iniciar_combate,
+            2: self.mostra_jogadores,
+            3: self.excluir_jogador,
+            4: self.cria_novo_monstro,
+            5: self.mostra_monstros,
+            6: self.excluir_monstro,
+            7: self.atacar,
+            8: self.lancar_magia,
             88: self.controlador_principal.mostra_tela,
         }
 
