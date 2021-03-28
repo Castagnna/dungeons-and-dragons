@@ -38,7 +38,8 @@ class Personagem(ABC):
         self.__sofre_ataque_desvantagem = False
         self.__vida_atual = vida_atual
 
-    def calcula_modificador(self, atributo):
+    @staticmethod
+    def calcula_modificador(atributo):
         return (atributo - 10) // 2
 
     @property
@@ -195,7 +196,8 @@ class Personagem(ABC):
         if isinstance(codigo, int):
             self.__codigo = codigo
 
-    def realizar_teste(self, modificador: int):
+    @staticmethod
+    def realizar_teste(modificador: int):
         if isinstance(modificador, int):
             return (random.randint(1, 20) + modificador)
 

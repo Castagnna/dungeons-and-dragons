@@ -9,6 +9,7 @@ class ControladorPersonagem(ControladorGenerico):
         super(ControladorPersonagem, self).__init__(TelaPersonagem(self))
         self.__controlador_principal = controlador_principal
         self.__jogadores = []
+        self.__counta_personagens = 0
         self.__monstros = []
 
     @property
@@ -17,8 +18,13 @@ class ControladorPersonagem(ControladorGenerico):
 
     def cria_novo_jogador(self):
         dados = self.tela.pega_dados_do_jogador()
-        print(dados)
-        novo_jogador = Jogador(**dados)
+        novo_jogador = Jogador(
+            codigo=self.__counta_personagens,
+            imagem=None,
+            posicao=[0,0],
+            **dados
+        )
+        self.__counta_personagens += 1
         self.__jogadores.append(novo_jogador)
         return -1
 
