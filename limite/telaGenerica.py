@@ -69,6 +69,6 @@ class TelaGenerica(ABC):
                 if not confirmar:
                     return dado
                 else:
-                    mensagem = "Confirma o valor >> {} << ?".format(dado)
-                    if self.tela_confirma(mensagem):
+                    msg_confirmacao = "Confirma o valor >> {} << ?".format(dado)
+                    if self.tela_confirma(msg_confirmacao):
                         return dado
