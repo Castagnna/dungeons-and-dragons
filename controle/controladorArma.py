@@ -24,26 +24,31 @@ class ControladorArma(ControladorGenerico):
 
     def cria_nova_arma(self):
         dados = self.tela.pega_dados_da_arma()
-        novo_arma = Arma(
+        arma = Arma(
             id=self.__counta_armas,
             **dados
         )
-        self.__armas.append(novo_arma)
+        self.__armas.append(arma)
         self.__counta_armas += 1
+        self.tela.monstra_mensagem("Arma {} criado com sucesso".format(arma.nome))
 
     def pega_arma_por_id(self, id: int):
-        for arma in self.armas:
-            if arma.id == id:
-                return arma
-
-    def remove_arma(self):
         if self.__armas:
             valores_validos = [arma.id for arma in self.__armas]
             id = self.tela.pega_dado("Id da arma: ", "int", valores_validos, False)
-            arma = self.pega_arma_por_id(id)
-            if self.tela.tela_confirma("Remover >> {} << ?".format(arma.nome)):
-                self.__armas.remove(arma)
-        return -1
+            for arma in self.__armas:
+                if arma.id == id:
+                    return arma
+
+    def remove_arma(self):
+        arma = self.pega_arma_por_id(id)
+        if self.tela.tela_confirma("Remover >> {} << ?".format(arma.nome)):
+            self.__armas.remove(arma)
+        self.tela.monstra_mensagem("Arma {} excluida com sucesso".format(arma.nome))
+
+    def mostra_atributos_da_arma(self):
+        arma = self.pega_arma_por_id(id)
+        self.tela.mostra_atributos_da_arma(arma)
 
     def mostra_tela(self):
 
@@ -51,6 +56,7 @@ class ControladorArma(ControladorGenerico):
             1: self.cria_nova_arma,
             2: self.mostra_armas,
             3: self.remove_arma,
+            4: self.mostra_atributos_da_arma,
             88: self.controlador_principal.mostra_tela,
         }
 

@@ -60,9 +60,9 @@ class TelaGenerica(ABC):
                 if valores_validos and dado not in valores_validos:
                     raise ValueError
             except ValueError:
-                print("O dado deve ser do tipo {}".format(tipo), end="")
+                print("O valor deve ser tipo {}".format(tipo), end="")
                 if valores_validos:
-                    print(" e deve ser {}".format(valores_validos), end="")
+                    print(" dentre os valores {}".format(valores_validos), end="")
                 print(", tente novamente.")
                 pass
             else:
