@@ -22,8 +22,6 @@ class ControladorPrincipal(ControladorGenerico):
     def mostra_tela(self):
 
         funcoes = {
-            -1: self.mostra_tela,
-            0: self.finaliza_programa,
             1: self.opcoes_personagem,
             2: self.opcoes_arma,
         }

@@ -18,13 +18,9 @@ class ControladorPersonagem(ControladorGenerico):
     def cria_novo_jogador(self):
         dados = self.tela.pega_dados_do_jogador()
         print(dados)
-        # atributos = self.calcula_atributos(**dados)
-        # novo_jogador = Jogador(**atributos)
-        # self.__jogadores.append(novo_jogador)
-        return None
-
-    def calcula_atributos(self):
-        return 10
+        novo_jogador = Jogador(**dados)
+        self.__jogadores.append(novo_jogador)
+        return -1
 
     def iniciar_combate(self):
         print("Batalha")
@@ -33,10 +29,9 @@ class ControladorPersonagem(ControladorGenerico):
     def mostra_tela(self):
 
         funcoes = {
-            -1: self.mostra_tela,
-            0: self.finaliza_programa,
             1: self.cria_novo_jogador,
             2: self.iniciar_combate,
+            88: self.controlador_principal.mostra_tela,
         }
 
         super(ControladorPersonagem, self).mostra_tela(funcoes)
