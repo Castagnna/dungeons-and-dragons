@@ -79,6 +79,7 @@ class ControladorArma(ControladorGenerico):
         )
 
         tipo = atributos[opcao][1]
+
         novo_valor = self.tela.pega_dado(
             mensagem="Entre novo valor para {}: ".format(opcao),
             tipo=tipo
