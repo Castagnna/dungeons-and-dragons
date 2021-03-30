@@ -44,8 +44,3 @@ class Arma:
         for i in range(self.__quantidade_dado):
             contador += random.randint(1, self.__numero_faces)
         return contador
-
-uma_arma = Arma(1, "espada", 3, 4)
-print(uma_arma.nome)
-uma_arma.nome = "martelo"
-print(uma_arma.nome)
