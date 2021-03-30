@@ -1,7 +1,6 @@
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaArma import TelaArma
 from entidade.arma import Arma
-# from entidade.monstro import Monstro
 
 
 class ControladorArma(ControladorGenerico):
@@ -66,30 +65,33 @@ class ControladorArma(ControladorGenerico):
         self.mostra_atributos_da_arma(arma)
 
         atributos = {
-            "nome": ("nome", "str"),
-            "dados": ("quantidade_dado", "int"),
-            "faces": ("numero_faces", "int"),
+            "nome": "str",
+            "dados": "int",
+            "faces": "int",
         }
 
+        valores_validos = list(atributos.keys())
+
         opcao = self.tela.pega_dado(
-            mensagem="Entre o nome do atributo para alterar: ",
+            mensagem="Nome do atributo para alterar {} :".format(valores_validos),
             tipo="str",
-            valores_validos=list(atributos.keys()),
+            valores_validos=valores_validos,
             confirmar=False
         )
 
-        tipo = atributos[opcao][1]
+        tipo = atributos[opcao]
 
         novo_valor = self.tela.pega_dado(
             mensagem="Entre novo valor para {}: ".format(opcao),
             tipo=tipo
         )
 
-        atributo = atributos[opcao][0]
-        atributo = Arma.__dict__[atributo]
-        atributo.__set__(arma, novo_valor)
-
-        self.mostra_atributos_da_arma(arma)
+        if opcao == "nome":
+            arma.nome = novo_valor
+        elif opcao == "dados":
+            arma.quantidade_dado = novo_valor
+        elif opcao == "faces":
+            arma.numero_faces = novo_valor
 
     def mostra_tela(self):
 
