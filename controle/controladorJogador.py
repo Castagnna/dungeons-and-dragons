@@ -1,16 +1,14 @@
-from controle.controladorGenerico import ControladorGenerico
+from controle.controladorPersonagem import ControladorPersonagem
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
-from entidade.monstro import Monstro
 
 
-class ControladorPersonagem(ControladorGenerico):
+class ControladorJogador(ControladorPersonagem):
     def __init__(self, controlador_principal):
         super(ControladorPersonagem, self).__init__(TelaJogador(self))
         self.__controlador_principal = controlador_principal
         self.__jogadores = []
         self.__counta_personagens = 0
-        self.__monstros = []
 
     @property
     def controlador_principal(self):
@@ -34,15 +32,6 @@ class ControladorPersonagem(ControladorGenerico):
     def excluir_jogador(self):
         pass
 
-    def cria_novo_monstro(self):
-        pass
-
-    def mostra_monstros(self):
-        self.tela.mostra_monstros(self.__monstros)
-
-    def excluir_monstro(self):
-        pass
-
     def atacar(self):
         print("Jogador A ataca B")
         pass
@@ -57,9 +46,6 @@ class ControladorPersonagem(ControladorGenerico):
             1: self.cria_novo_jogador,
             2: self.mostra_jogadores,
             3: self.excluir_jogador,
-            4: self.cria_novo_monstro,
-            5: self.mostra_monstros,
-            6: self.excluir_monstro,
             7: self.atacar,
             8: self.lancar_magia,
             88: self.controlador_principal.mostra_tela,

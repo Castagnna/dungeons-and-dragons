@@ -3,42 +3,33 @@ from abc import ABC, abstractmethod
 
 class TelaGenerica(ABC):
     @abstractmethod
-    def __init__(self, controlador, titulo_da_tela: str,
-                 opcoes: tuple = None):
+    def __init__(self, controlador):
         self.__controlador = controlador
-        self.__titulo_da_tela = titulo_da_tela
-        self.__id_opcoes = [id for id, _ in opcoes] + [99]
-        self.__opcoes = [opcao for _, opcao in opcoes] + ["Encerrar programa"]
 
     @property
     def controlador(self):
         return self.__controlador
 
-    def mostra_opcoes(self) -> int:
-        self.cria_menu_opcoes()
-        opcao = self.pega_dado(
-            mensagem="\n>>> Escolha uma opção: ",
-            tipo="int",
-            valores_validos=self.__id_opcoes,
-            confirmar=False
-        )
-        if opcao == 99:
-            mensagem = "Tem certeza que quer finalizar o programa?"
-            if self.tela_confirma(mensagem):
-                print("\n---- Programa finalizado -----")
-            else:
-                return -1
-        return opcao
-
-    def cria_menu_opcoes(self):
-        print("------ {} ------".format(self.__titulo_da_tela))
-        for id, opcao in zip(self.__id_opcoes, self.__opcoes):
-            print("{:02d} - {}".format(id, opcao))
+    @staticmethod
+    def cria_menu_opcoes(titulo_da_tela: str, opcoes: tuple = None):
+        print("------ {} ------".format(titulo_da_tela.upper()))
+        for codigo, opcao in opcoes:
+            print("{:02d} - {}".format(codigo, opcao))
 
     @staticmethod
     def tela_confirma(mensagem: str) -> bool:
         confirma = input(mensagem + " [Y/N]: ")
         return confirma in "Yy"
+
+    def protege_finalizar(self, opcao: int) -> bool:
+        if opcao == 99:
+            mensagem = "Tem certeza que quer finalizar o programa?"
+            if self.tela_confirma(mensagem):
+                print("\n---- Programa finalizado -----")
+                return opcao
+            else:
+                return -1
+        return opcao
 
     def pega_dado(self,
                   mensagem: str,

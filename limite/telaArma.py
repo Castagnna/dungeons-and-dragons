@@ -4,18 +4,31 @@ from limite.telaGenerica import TelaGenerica
 class TelaArma(TelaGenerica):
 
     def __init__(self, controlador):
-        super(TelaArma, self).__init__(
-            controlador=controlador,
-            titulo_da_tela="\nMENU ARMA",
-            opcoes=(
-                (1, "Nova Arma"),
-                (2, "Armas cadastradas"),
-                (3, "Remove arma"),
-                (4, "Mostra atributos da arma"),
-                (5, "Alterar arma"),
-                (88, "Voltar")
-            )
+        super(TelaArma, self).__init__(controlador)
+
+    def mostra_opcoes(self) -> int:
+        titulo_da_tela = "MENU ARMA"
+
+        opcoes = (
+            (1, "Nova arma"),
+            (2, "Armas cadastradas"),
+            (3, "Remove arma"),
+            (4, "Mostra atributos da arma"),
+            (5, "Alterar arma"),
+            (88, "Voltar"),
+            (99, "Finaliza programa")
         )
+
+        self.cria_menu_opcoes(titulo_da_tela, opcoes)
+
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=[codigo for codigo, _ in opcoes],
+            confirmar=False
+        )
+
+        return self.protege_finalizar(opcao)
 
     def pega_dados_da_arma(self) -> dict:
         return {
@@ -37,3 +50,23 @@ class TelaArma(TelaGenerica):
         print("Nome: {}".format(arma.nome))
         print("Quantidade dado: {}".format(arma.quantidade_dado))
         print("Numero de faces: {}".format(arma.numero_faces))
+
+    def mostra_alterar_arma(self) -> int:
+        titulo_da_tela = "ALTERAR ARMA"
+
+        opcoes = (
+            (1, "Novo nome"),
+            (2, "Alterar quantidade de dados"),
+            (3, "Alterar faces"),
+        )
+
+        self.cria_menu_opcoes(titulo_da_tela, opcoes)
+
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=[codigo for codigo, _ in opcoes],
+            confirmar=False
+        )
+
+        return opcao

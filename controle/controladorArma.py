@@ -62,35 +62,25 @@ class ControladorArma(ControladorGenerico):
 
     def alterar_arma(self):
         arma = self.pega_arma_por_id()
-        self.mostra_atributos_da_arma(arma)
+        opcao = self.tela.mostra_alterar_arma()
 
-        atributos = {
-            "nome": "str",
-            "dados": "int",
-            "faces": "int",
+        funcoes = {
+            1: ("nome", "str"),
+            2: ("dados", "int"),
+            3: ("faces", "int"),
         }
 
-        valores_validos = list(atributos.keys())
-
-        opcao = self.tela.pega_dado(
-            mensagem="Nome do atributo para alterar {} :".format(valores_validos),
-            tipo="str",
-            valores_validos=valores_validos,
-            confirmar=False
-        )
-
-        tipo = atributos[opcao]
+        tipo = funcoes[opcao][1]
 
         novo_valor = self.tela.pega_dado(
-            mensagem="Entre novo valor para {}: ".format(opcao),
+            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
             tipo=tipo
         )
-
-        if opcao == "nome":
+        if opcao == 1:
             arma.nome = novo_valor
-        elif opcao == "dados":
+        elif opcao == 2:
             arma.quantidade_dado = novo_valor
-        elif opcao == "faces":
+        else:
             arma.numero_faces = novo_valor
 
     def mostra_tela(self):

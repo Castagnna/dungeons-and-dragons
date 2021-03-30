@@ -13,7 +13,10 @@ class ControladorPrincipal(ControladorGenerico):
     def iniciar_sistema(self) -> int:
         return self.mostra_tela()
 
-    def opcoes_personagem(self):
+    def opcoes_jogador(self):
+        return self.__controlador_personagem.mostra_tela()
+
+    def opcoes_monstro(self):
         return self.__controlador_personagem.mostra_tela()
 
     def opcoes_arma(self):
@@ -22,8 +25,9 @@ class ControladorPrincipal(ControladorGenerico):
     def mostra_tela(self):
 
         funcoes = {
-            1: self.opcoes_personagem,
-            2: self.opcoes_arma,
+            1: self.opcoes_jogador,
+            2: self.opcoes_monstro,
+            3: self.opcoes_arma,
         }
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
