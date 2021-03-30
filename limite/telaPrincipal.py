@@ -13,7 +13,9 @@ class TelaPrincipal(TelaGenerica):
             (1, "Menu Jogador"),
             (2, "Menu Monstro"),
             (3, "Menu Arma"),
-            (99, "Finaliza programa")
+            (4, "Menu Ataque Monstro"),
+            (5, "Menu Background"),
+            (99, "Finaliza Programa")
         )
 
         self.cria_menu_opcoes(titulo_da_tela, opcoes)
