@@ -1,7 +1,8 @@
 import pygame
 
 class Magia:
-    def __init__(self, nome: str, quantidade_dado: int, numero_faces: int, circulo: int, teste: list):
+    def __init__(self, id: int, nome: str, quantidade_dado: int, numero_faces: int, circulo: int, teste: list):
+        self.__id = id
         self.__nome = nome
         self.__quantidade_dado = quantidade_dado
         self.__numero_faces = numero_faces
