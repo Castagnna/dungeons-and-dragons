@@ -10,6 +10,10 @@ class Magia:
         self.__teste = teste
 
     @property
+    def id(self) -> int:
+        return self.__id
+
+    @property
     def nome(self):
         return self.__nome
 
