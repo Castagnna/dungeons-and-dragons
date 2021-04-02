@@ -11,10 +11,22 @@ class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
         self.__controlador_jogador = ControladorJogador(self)
-        # self.__controlador_monstro = ControladorMonstro(self)
+        self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_arma = ControladorArma(self)
         # self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
         # self.__controlador_background = ControladorBackground(self)
+
+    @property
+    def controlador_jogador(self):
+        return self.__controlador_jogador
+
+    @property
+    def controlador_arma(self):
+        return self.__controlador_arma
+
+    @property
+    def controlador_monstro(self):
+        return self.__controlador_monstro
 
     def iniciar_sistema(self) -> int:
         return self.mostra_tela()
@@ -28,11 +40,11 @@ class ControladorPrincipal(ControladorGenerico):
     def opcoes_arma(self):
         return self.__controlador_arma.mostra_tela()
 
-    def opcoes_ataque_monstro(self):
-        return self.__controlador_ataque_monstro.mostra_tela()
+    #def opcoes_ataque_monstro(self):
+        #return self.__controlador_ataque_monstro.mostra_tela()
 
-    def opcoes_background(self):
-        return self.__controlador_background.mostra_tela()
+    #def opcoes_background(self):
+        #return self.__controlador_background.mostra_tela()
 
     def mostra_tela(self):
 
@@ -40,8 +52,8 @@ class ControladorPrincipal(ControladorGenerico):
             1: self.opcoes_jogador,
             2: self.opcoes_monstro,
             3: self.opcoes_arma,
-            4: self.opcoes_ataque_monstro,
-            5: self.opcoes_background,
+            #4: self.opcoes_ataque_monstro,
+            #5: self.opcoes_background,
         }
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
