@@ -26,8 +26,8 @@ class TelaGenerica(ABC):
 
     @staticmethod
     def tela_confirma(mensagem: str) -> bool:
-        confirma = input(mensagem + " [Y/N]: ")
-        return confirma in "Yy"
+        confirma = input(mensagem + " [Y/N]: ").strip()
+        return len(confirma) == 1 and confirma in "Yy"
 
     def protege_finalizar(self, opcao: int) -> int:
         if opcao == 99:

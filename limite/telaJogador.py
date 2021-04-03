@@ -63,6 +63,14 @@ class TelaJogador(TelaGenerica):
     def jogador_removido_com_sucesso(self, nome: str):
         self.monstra_mensagem("Jogador {} excluido com sucesso".format(nome))
 
-    def mostra_armas_do_jogador(self, atributos_armas: list):
-        for atributos_arma in atributos_armas:
-            print("id {}, nome {}, dados {}, faces {}".format(*atributos_arma))
+    @staticmethod
+    def mostra_arma_do_jogador(
+        id: int,
+        nome: str,
+        quantidade_dado: int,
+        numero_faces: int,
+        mostra_titulo: bool = True,
+    ):
+        if mostra_titulo:
+            print("----- Armas do Jogador -----")
+        print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")

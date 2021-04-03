@@ -82,19 +82,25 @@ class ControladorJogador(ControladorGenerico):
         arma = self.__controlador_arma.pega_arma_por_id()
         if not arma:
             return
-        jogador.adiciona_arma(arma)
+        if not (arma in jogador.armas):
+            jogador.adiciona_arma(arma)
 
     def mostrar_armas_do_jogador(self):
         jogador = self.pega_jogador_por_id()
-        if not jogador:
+
+        if not jogador or not jogador.armas:
             return
-        atributos_armas = [
-            (
-                arma.id, arma.nome, arma.quantidade_dado, arma.numero_faces
-            )
-            for arma in jogador.armas if jogador.armas
-        ]
-        self.tela.mostra_armas_do_jogador(atributos_armas)
+
+        mostra_titulo = True
+        for arma in jogador.armas:
+            atributos_arma = {
+                "id": arma.id,
+                "nome": arma.nome,
+                "quantidade_dado": arma.quantidade_dado,
+                "numero_faces": arma.numero_faces
+            }
+            self.tela.mostra_arma_do_jogador(**atributos_arma, mostra_titulo=mostra_titulo)
+            mostra_titulo = False
 
     def lancar_magia(self):
         print("A Lanca Magia em B")
