@@ -13,8 +13,12 @@ class TelaJogador(TelaGenerica):
             (1, "Novo jogador"),
             (2, "Listar jogadores"),
             (3, "Excluir jogador"),
-            (4, "Equipar arma no jogador"),
-            (5, "Mostrar armas do jogador"),
+            (4, "Mostrar atributos do jogador"),
+            (5, "Alterar atributos do jogador"),
+            (6, "Equipar arma no jogador"),
+            (7, "Mostrar armas do jogador"),
+            (8, "Atacar"),
+            (9, "Lancar magia"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
