@@ -29,12 +29,12 @@ class ControladorArma(ControladorGenerico):
         )
         self.__armas.append(arma)
         self.__counta_armas += 1
-        self.tela.monstra_mensagem("Arma {} criado com sucesso".format(arma.nome))
+        self.tela.executado_com_sucesso()
 
     def pega_arma_por_id(self):
         if self.__armas:
             valores_validos = [arma.id for arma in self.__armas]
-            id = self.tela.pega_dado("Id da arma: ", "int", valores_validos, False)
+            id = self.tela.pega_id(valores_validos)
             for arma in self.__armas:
                 if arma.id == id:
                     return arma

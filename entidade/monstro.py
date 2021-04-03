@@ -5,12 +5,30 @@ import pygame
 
 
 class Monstro(Personagem):
-    def __init__(self, id: int, nome: str, forca: int, destreza: int, constituicao: int,
-                 inteligencia: int, sabedoria: int, carisma: int, imagem: pygame.image.load,
-                 ca: int, vida_maxima: int, tamanho: str, posicao: list, tipo: str, experiencia: int, vida_atual: int):
-
-        super().__init__(id, nome, forca, destreza, constituicao, inteligencia, sabedoria,
-                         carisma, imagem, ca, vida_maxima, tamanho, posicao, vida_atual)
+    def __init__(
+        self,
+        id: int,
+        nome: str,
+        forca: int,
+        destreza: int,
+        constituicao: int,
+        inteligencia: int,
+        sabedoria: int,
+        carisma: int,
+        imagem: pygame.image.load,
+        ca: int,
+        vida_maxima: int,
+        tamanho: str,
+        posicao: list,
+        tipo: str,
+        experiencia: int,
+        vida_atual: int
+    ):
+        super().__init__(
+            id, nome, forca, destreza, constituicao, inteligencia,
+            sabedoria, carisma, imagem, ca, vida_maxima, tamanho,
+            posicao, vida_atual
+        )
         self.__tipo = tipo
         self.__ataques = []
         self.__experiencia = experiencia

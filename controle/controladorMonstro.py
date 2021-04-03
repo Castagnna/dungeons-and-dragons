@@ -1,12 +1,11 @@
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaJogador import TelaJogador
+from limite.telaMonstro import TelaMonstro
 from entidade.monstro import Monstro
 
 
-# TODO: ajustar para monstro
 class ControladorMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
-        super(ControladorMonstro, self).__init__(TelaJogador(self))
+        super(ControladorMonstro, self).__init__(TelaMonstro(self))
         self.__controlador_principal = controlador_principal
         self.__controlador_ataque_monstro = controlador_principal.controlador_ataque_monstro
         self.__controlador_jogador = controlador_principal.controlador_jogador
@@ -37,25 +36,45 @@ class ControladorMonstro(ControladorGenerico):
     methods
     """
 
-    def cria_novo_jogador(self):
-        dados = self.tela.pega_dados_do_jogador()
+    def cria_novo_monstro(self):
+        dados = self.tela.pega_dados_do_monstro()
         novo_monstro = Monstro(
             id=self.__counta_monstros,
             posicao=[0, 0],
+            imagem=None,
             **dados
         )
         self.__monstros.append(novo_monstro)
         self.__counta_monstros += 1
-        self.tela.monstra_mensagem("Monstro {} criado com sucesso".format(novo_monstro.nome))
+        self.tela.executado_com_sucesso()
+
+    def pega_monstro_por_id(self):
+        if self.__monstros:
+            valores_validos = [monstro.id for monstro in self.__monstros]
+            id = self.tela.pega_id(valores_validos)
+            for monstro in self.__monstros:
+                if monstro.id == id:
+                    return monstro
+        else:
+            self.tela.lista_monstros_vazia()
+            return None
 
     def mostra_monstros(self):
         self.tela.mostra_monstros(self.__monstros)
 
     def excluir_monstro(self):
-        pass
+        monstro = self.pega_monstro_por_id()
+        try:
+            remover = self.tela.confirma_remocao(monstro.nome)
+        except AttributeError:
+            pass
+        else:
+            if remover:
+                self.__monstros.remove(monstro)
+                self.tela.executado_com_sucesso()
 
     def atacar(self):
-        print("Jogador A ataca B")
+        print("monstro A ataca B")
         pass
 
     def lancar_magia(self):
@@ -65,7 +84,7 @@ class ControladorMonstro(ControladorGenerico):
     def mostra_tela(self):
 
         funcoes = {
-            1: self.cria_novo_jogador,
+            1: self.cria_novo_monstro,
             2: self.mostra_monstros,
             3: self.excluir_monstro,
             7: self.atacar,

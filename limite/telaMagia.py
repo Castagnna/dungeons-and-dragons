@@ -1,5 +1,5 @@
 from limite.telaGenerica import TelaGenerica
-from controle.controladorMagia import ControladorMagia
+
 
 class TelaMagia(TelaGenerica):
 
@@ -11,8 +11,8 @@ class TelaMagia(TelaGenerica):
 
         opcoes = (
             (1, "Nova magia"),
-            (2, "Magias cadastradas"),
-            (3, "Remove magia"),
+            # (2, "Magias cadastradas"),
+            # (3, "Remove magia"),
             (4, "Mostra atributos da magia"),
             (5, "Alterar magia"),
             (88, "Voltar"),
