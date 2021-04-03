@@ -42,8 +42,8 @@ class Personagem(ABC):
         self.__vida_maxima = vida_maxima
         self.__tamanho = tamanho
         self.__posicao = posicao
-        self.__dano_causado = 0
-        self.__dano_sofrido = 0
+        self.__dano_causado = []
+        self.__dano_sofrido = []
         self.__movimentacao_acumulado = 0
         self.__sorte = []
         self.__ataque_vantagem = False

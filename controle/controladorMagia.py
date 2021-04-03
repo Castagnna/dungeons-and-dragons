@@ -7,7 +7,7 @@ class ControladorMagia(ControladorGenerico):
     def __init__(self, controlador_jogador):
         super(ControladorMagia, self).__init__(TelaMagia(self))
         self.__controlador_jogador = controlador_jogador
-        self.__counta_magias,
+        self.__counta_magias = 0,
 
     def cria_magia(self, jogador):
         dados = self.tela.pega_dados_da_magia()

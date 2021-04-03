@@ -65,7 +65,7 @@ class ControladorJogador(ControladorGenerico):
         )
         self.__jogadores.append(novo_jogador)
         self.__counta_jogadores += 1
-        self.tela.monstra_mensagem("Jogador {} criado com sucesso".format(novo_jogador.nome))
+        self.tela.executado_com_sucesso()
 
     def mostra_jogadores(self):
         self.tela.mostra_jogadores(self.__jogadores)
@@ -73,7 +73,7 @@ class ControladorJogador(ControladorGenerico):
     def pega_jogador_por_id(self):
         if self.__jogadores:
             valores_validos = [jogador.id for jogador in self.__jogadores]
-            id = self.tela.pega_dado("Id do jogador: ", "int", valores_validos, False)
+            id = self.tela.pega_id(valores_validos)
             for jogador in self.__jogadores:
                 if jogador.id == id:
                     return jogador
@@ -90,7 +90,7 @@ class ControladorJogador(ControladorGenerico):
         else:
             if remover:
                 self.__jogadores.remove(jogador)
-                self.tela.jogador_removido_com_sucesso(jogador.nome)
+                self.tela.executado_com_sucesso()
 
     def mostra_atributos_do_jogador(self):
         pass
@@ -109,27 +109,53 @@ class ControladorJogador(ControladorGenerico):
             return
         if not (arma in jogador.armas):
             jogador.adiciona_arma(arma)
+            self.tela.executado_com_sucesso()
 
-    def mostrar_armas_do_jogador(self):
+    def mostrar_armas_do_jogador(self, jogador: Jogador = None):
+
+        if not jogador:
+            jogador = self.pega_jogador_por_id()
+
+        if jogador and jogador.armas:
+            mostra_titulo = True
+            for arma in jogador.armas:
+                atributos_arma = {
+                    "id": arma.id,
+                    "nome": arma.nome,
+                    "quantidade_dado": arma.quantidade_dado,
+                    "numero_faces": arma.numero_faces
+                }
+                self.tela.mostra_arma_do_jogador(**atributos_arma, mostra_titulo=mostra_titulo)
+                mostra_titulo = False
+
+    def pega_arma_do_jogador_por_id(self, jogador: Jogador):
+        self.mostrar_armas_do_jogador(jogador)
+        if jogador.armas:
+            id_para_arma = {arma.id: arma for arma in jogador.armas}
+            id = self.tela.pega_id(id_para_arma.keys())
+            return id_para_arma[id]
+        else:
+            return None
+
+    def desequipar_arma(self):
+        self.mostra_jogadores()
         jogador = self.pega_jogador_por_id()
-
-        if not jogador or not jogador.armas:
+        if not jogador:
             return
-
-        mostra_titulo = True
-        for arma in jogador.armas:
-            atributos_arma = {
-                "id": arma.id,
-                "nome": arma.nome,
-                "quantidade_dado": arma.quantidade_dado,
-                "numero_faces": arma.numero_faces
-            }
-            self.tela.mostra_arma_do_jogador(**atributos_arma, mostra_titulo=mostra_titulo)
-            mostra_titulo = False
+        arma = self.pega_arma_do_jogador_por_id(jogador)
+        if arma:
+            jogador.armas.remove(arma)
+            self.tela.executado_com_sucesso()
 
     def atacar(self):
-        print("Jogador A ataca B")
-        pass
+        atacante = self.pega_jogador_por_id()
+        if not atacante:
+            return
+        defensor = self.controlador_monstro.pega_monstro_por_id()
+        if not defensor:
+            return
+
+        print(f"Atacante {atacante}, defensor {defensor}")
 
     def lancar_magia(self):
         print("Jogador A Lanca Magia em B")
@@ -144,9 +170,10 @@ class ControladorJogador(ControladorGenerico):
             4: self.mostra_atributos_do_jogador,
             5: self.altera_atributos_do_jogador,
             6: self.equipar_arma,
-            7: self.mostrar_armas_do_jogador,
-            8: self.atacar,
-            9: self.lancar_magia,
+            7: self.desequipar_arma,
+            8: self.mostrar_armas_do_jogador,
+            9: self.atacar,
+            10: self.lancar_magia,
         }
 
         super(ControladorJogador, self).mostra_tela(funcoes)

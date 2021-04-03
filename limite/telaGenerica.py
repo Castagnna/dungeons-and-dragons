@@ -75,3 +75,9 @@ class TelaGenerica(ABC):
     @staticmethod
     def monstra_mensagem(mensagem: str):
         print("\n" + mensagem + "\n")
+
+    def executado_com_sucesso(self):
+        self.monstra_mensagem("Operacao executada com sucesso")
+
+    def pega_id(self, valores_validos: list) -> int:
+        return self.pega_dado("Escolha por Id: ", "int", valores_validos, False)

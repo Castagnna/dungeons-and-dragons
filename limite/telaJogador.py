@@ -16,9 +16,10 @@ class TelaJogador(TelaGenerica):
             (4, "Mostrar atributos do jogador"),
             (5, "Alterar atributos do jogador"),
             (6, "Equipar arma no jogador"),
-            (7, "Mostrar armas do jogador"),
-            (8, "Atacar"),
-            (9, "Lancar magia"),
+            (7, "Desequipar arma do jogador"),
+            (8, "Mostrar armas do jogador"),
+            (9, "Atacar"),
+            (10, "Lancar magia"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -54,7 +55,7 @@ class TelaJogador(TelaGenerica):
 
     @staticmethod
     def mostra_jogadores(jogadores: list):
-        print("\n------ Lista de jogadores cadastrados ------\n")
+        print("\n------ Lista de jogadores cadastrados ------")
         for jogador in jogadores:
             print("{} | {}".format(jogador.id, jogador.nome))
 
@@ -76,5 +77,5 @@ class TelaJogador(TelaGenerica):
         mostra_titulo: bool = True,
     ):
         if mostra_titulo:
-            print("----- Armas do Jogador -----")
+            print("\n----- Armas do Jogador -----")
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")

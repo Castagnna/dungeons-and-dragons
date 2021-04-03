@@ -15,6 +15,7 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
         self.__controlador_monstro = ControladorMonstro(self)
         # self.__controlador_background = ControladorBackground(self)
+        self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
 
     """
     getters
@@ -56,23 +57,23 @@ class ControladorPrincipal(ControladorGenerico):
     methods
     """
 
-    def iniciar_sistema(self) -> int:
-        return self.mostra_tela()
+    def iniciar_sistema(self):
+        self.mostra_tela()
 
     def opcoes_jogador(self):
-        return self.__controlador_jogador.mostra_tela()
+        self.__controlador_jogador.mostra_tela()
 
     def opcoes_monstro(self):
-        return self.__controlador_monstro.mostra_tela()
+        self.__controlador_monstro.mostra_tela()
 
     def opcoes_arma(self):
-        return self.__controlador_arma.mostra_tela()
+        self.__controlador_arma.mostra_tela()
 
     def opcoes_ataque_monstro(self):
-        return self.__controlador_ataque_monstro.mostra_tela()
+        self.__controlador_ataque_monstro.mostra_tela()
 
     def opcoes_background(self):
-        return self.__controlador_background.mostra_tela()
+        self.__controlador_background.mostra_tela()
 
     def mostra_tela(self):
 
