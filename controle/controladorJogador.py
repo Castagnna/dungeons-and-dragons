@@ -1,5 +1,6 @@
 from controle.controladorGenerico import ControladorGenerico
 from controle.controladorMonstro import ControladorMonstro
+from controle.controladorMagia import ControladorMagia
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
 
@@ -10,6 +11,7 @@ class ControladorJogador(ControladorGenerico):
         self.__controlador_principal = controlador_principal
         self.__controlador_arma = controlador_principal.controlador_arma
         self.__controlador_monstro = None
+        self.__controlador_magia = ControladorMagia(self)
         self.__jogadores = []
         self.__counta_jogadores = 0
 
