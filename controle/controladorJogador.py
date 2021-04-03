@@ -147,15 +147,25 @@ class ControladorJogador(ControladorGenerico):
             jogador.armas.remove(arma)
             self.tela.executado_com_sucesso()
 
-    def atacar(self):
+    def atacar_monstro(self):
         atacante = self.pega_jogador_por_id()
         if not atacante:
             return
         defensor = self.controlador_monstro.pega_monstro_por_id()
         if not defensor:
             return
+        dano = self.tela.pega_dano()
+        atacante.dano_causado.append(dano)
+        defensor.dano_sofrido.append(dano)
+        defensor.vida_atual -= dano
 
-        print(f"Atacante {atacante}, defensor {defensor}")
+        dados = {
+            "atacante": atacante.nome,
+            "defensor": defensor.nome,
+            "dano": dano
+        }
+
+        self.tela.resumo_combate(**dados)
 
     def lancar_magia(self):
         print("Jogador A Lanca Magia em B")
@@ -172,7 +182,7 @@ class ControladorJogador(ControladorGenerico):
             6: self.equipar_arma,
             7: self.desequipar_arma,
             8: self.mostrar_armas_do_jogador,
-            9: self.atacar,
+            9: self.atacar_monstro,
             10: self.lancar_magia,
         }
 

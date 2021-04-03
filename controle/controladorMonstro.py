@@ -41,6 +41,7 @@ class ControladorMonstro(ControladorGenerico):
         novo_monstro = Monstro(
             id=self.__counta_monstros,
             posicao=[0, 0],
+            imagem=None,
             **dados
         )
         self.__monstros.append(novo_monstro)

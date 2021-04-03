@@ -18,7 +18,7 @@ class TelaJogador(TelaGenerica):
             (6, "Equipar arma no jogador"),
             (7, "Desequipar arma do jogador"),
             (8, "Mostrar armas do jogador"),
-            (9, "Atacar"),
+            (9, "Atacar Monstro"),
             (10, "Lancar magia"),
             (88, "Voltar"),
             (99, "Finaliza programa")
@@ -79,3 +79,10 @@ class TelaJogador(TelaGenerica):
         if mostra_titulo:
             print("\n----- Armas do Jogador -----")
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
+
+    def pega_dano(self):
+        return self.pega_dado("Insira o valor de dano: ", "int", None, True)
+
+    def resumo_combate(self, atacante: str, defensor: str, dano: int):
+        mensagem = f"{atacante} causou {dano} ao {defensor}"
+        self.monstra_mensagem(mensagem)

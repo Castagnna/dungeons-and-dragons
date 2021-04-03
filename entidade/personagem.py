@@ -133,12 +133,24 @@ class Personagem(ABC):
         return self.__sofre_ataque_desvantagem
 
     @property
+    def dano_causado(self):
+        return self.__dano_causado
+
+    @property
+    def dano_sofrido(self):
+        return self.__dano_sofrido
+
+    @property
     def dano_acumulado_inflingido(self):
         return self.__dano_causado
 
     @property
     def dano_acumulado_recebido(self):
         return self.__dano_sofrido
+
+    @property
+    def vida_atual(self):
+        return self.__vida_atual
 
     """
     setters
@@ -209,6 +221,11 @@ class Personagem(ABC):
     def sofre_ataque_desvantagem(self, valor: bool):
         if isinstance(valor, bool):
             self.__sofre_ataque_desvantagem = valor
+
+    @vida_atual.setter
+    def vida_atual(self, vida: int):
+        if isinstance(vida, int):
+            self.__vida_atual = vida
 
     """
     methods

@@ -30,7 +30,19 @@ class TelaMonstro(TelaGenerica):
 
     def pega_dados_do_monstro(self) -> dict:
         return {
-            # TODO: implementar
+            "nome": self.pega_dado("Nome: ", "str"),
+            "forca": self.pega_dado("Forca: ", "int"),
+            "destreza": self.pega_dado("Destreza: ", "int"),
+            "constituicao": self.pega_dado("Constituicao: ", "int"),
+            "inteligencia": self.pega_dado("Inteligencia: ", "int"),
+            "sabedoria": self.pega_dado("Sabedoria: ", "int"),
+            "carisma": self.pega_dado("Carisma: ", "int"),
+            "ca": self.pega_dado("Ca: ", "int"),
+            "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
+            "vida_atual": self.pega_dado("Vida atual: ", "int"),
+            "tamanho": self.pega_dado("Tamanho: ", "str"),
+            "tipo": self.pega_dado("Tipo: ", "str"),
+            "experiencia": self.pega_dado("Experiencia: ", "int"),
         }
     
     @staticmethod
@@ -47,3 +59,10 @@ class TelaMonstro(TelaGenerica):
 
     def monstro_removido_com_sucesso(self, nome: str):
         self.monstra_mensagem("Monstro {} excluido com sucesso".format(nome))
+
+    def pega_dano(self):
+        return self.pega_dado("Insira o valor de dano: ", "str", None, True)
+
+    @staticmethod
+    def resumo_combate(atacante: str, defensor: str, dano: int):
+        print(f"{atacante} causou {dano} ao {defensor}")
