@@ -10,9 +10,9 @@ from limite.telaPrincipal import TelaPrincipal
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
-        self.__controlador_jogador = ControladorJogador(self)
         self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_arma = ControladorArma(self)
+        self.__controlador_jogador = ControladorJogador(self)
         # self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
         # self.__controlador_background = ControladorBackground(self)
 
