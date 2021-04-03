@@ -10,11 +10,47 @@ from limite.telaPrincipal import TelaPrincipal
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
-        self.__controlador_jogador = ControladorJogador(self)
-        # self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_arma = ControladorArma(self)
-        # self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
+        self.__controlador_jogador = ControladorJogador(self)
+        self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
+        self.__controlador_monstro = ControladorMonstro(self)
         # self.__controlador_background = ControladorBackground(self)
+
+    """
+    getters
+    """
+
+    @property
+    def controlador_jogador(self):
+        return self.__controlador_jogador
+
+    @property
+    def controlador_arma(self):
+        return self.__controlador_arma
+
+    @property
+    def controlador_monstro(self):
+        return self.__controlador_monstro
+
+    """
+    setters
+    """
+
+    @controlador_jogador.setter
+    def controlador_jogador(self, controlador):
+        self.__controlador_jogador = controlador
+
+    @controlador_arma.setter
+    def controlador_arma(self, controlador):
+        self.__controlador_arma = controlador
+
+    @controlador_monstro.setter
+    def controlador_monstro(self, controlador):
+        self.__controlador_monstro = controlador
+
+    """
+    methods
+    """
 
     def iniciar_sistema(self) -> int:
         return self.mostra_tela()

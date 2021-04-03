@@ -1,12 +1,12 @@
-from controle.controladorPersonagem import ControladorPersonagem
+from controle.controladorGenerico import ControladorGenerico
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
 
 
 # TODO: ajustar para monstro
-class ControladorMonstro(ControladorPersonagem):
+class ControladorMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
-        super(ControladorPersonagem, self).__init__(TelaJogador(self))
+        super(ControladorMonstro, self).__init__(TelaJogador(self))
         self.__controlador_principal = controlador_principal
         self.__jogadores = []
         self.__counta_personagens = 0

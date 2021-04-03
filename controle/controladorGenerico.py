@@ -5,22 +5,35 @@ class ControladorGenerico(ABC):
     @abstractmethod
     def __init__(self, tela):
         self.__tela = tela
-
-    @abstractmethod
-    def mostra_tela(self, funcoes: dict):
-        
-        funcoes[-1] = self.mostra_tela
-        funcoes[99] = self.finaliza_programa
-
-        while True:
-            opcao_selecionada = self.__tela.mostra_opcoes()
-            funcao_selecionada = funcoes[opcao_selecionada]
-            funcao_selecionada()
-
-    @staticmethod
-    def finaliza_programa():
-        exit(0)
+        self.__mostra_tela = True
 
     @property
     def tela(self):
         return self.__tela
+
+    @tela.setter
+    def tela(self, tela):
+        self.__tela = tela
+
+    @abstractmethod
+    def mostra_tela(self, funcoes: dict):
+        self.__mostra_tela = True
+
+        funcoes[-1] = self.mesma_tela
+        funcoes[88] = self.fecha_tela
+        funcoes[99] = self.finaliza_programa
+
+        while self.__mostra_tela:
+            opcao_selecionada = self.__tela.mostra_opcoes()
+            funcao_selecionada = funcoes[opcao_selecionada]
+            funcao_selecionada()
+
+    def fecha_tela(self):
+        self.__mostra_tela = False
+
+    def mesma_tela(self):
+        pass
+
+    @staticmethod
+    def finaliza_programa():
+        exit(0)

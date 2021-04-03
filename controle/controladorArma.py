@@ -39,18 +39,19 @@ class ControladorArma(ControladorGenerico):
                 if arma.id == id:
                     return arma
         else:
-            self.tela.monstra_mensagem("A lista de arma esta vazia")
+            self.tela.lista_armas_vazia()
             return None
 
     def remove_arma(self):
         arma = self.pega_arma_por_id()
         try:
-            self.tela.tela_confirma("Remover >> {} << ?".format(arma.nome))
+            remover = self.tela.confirma_remocao(arma.nome)
         except AttributeError:
             pass
         else:
-            self.__armas.remove(arma)
-            self.tela.monstra_mensagem("Arma {} excluida com sucesso".format(arma.nome))
+            if remover:
+                self.__armas.remove(arma)
+                self.tela.arma_removida_com_sucesso(arma.nome)
 
     def mostra_atributos_da_arma(self, arma=None):
         if not arma:

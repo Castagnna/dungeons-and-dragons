@@ -13,6 +13,8 @@ class TelaJogador(TelaGenerica):
             (1, "Novo jogador"),
             (2, "Listar jogadores"),
             (3, "Excluir jogador"),
+            (4, "Equipar arma no jogador"),
+            (5, "Mostrar armas do jogador"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -51,3 +53,16 @@ class TelaJogador(TelaGenerica):
         print("\n------ Lista de jogadores cadastrados ------\n")
         for jogador in jogadores:
             print("{} | {}".format(jogador.codigo, jogador.nome))
+
+    def lista_jogadores_vazia(self):
+        self.monstra_mensagem("A lista de jogadores esta vazia")
+
+    def confirma_remocao(self, nome: str):
+        return self.tela_confirma("Remover >> {} << ?".format(nome))
+
+    def jogador_removido_com_sucesso(self, nome: str):
+        self.monstra_mensagem("Jogador {} excluido com sucesso".format(nome))
+
+    def mostra_armas_do_jogador(self, atributos_armas: list):
+        for atributos_arma in atributos_armas:
+            print("id {}, nome {}, dados {}, faces {}".format(*atributos_arma))

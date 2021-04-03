@@ -1,7 +1,18 @@
 
 
 class AtaqueMonstro:
-    def __init__(self, nome: str, quantidade_dado: int, numero_faces: int,dano_bonus: int, acerto: int, cd: int, teste: str):
+    def __init__(
+        self,
+        id: int,
+        nome: str,
+        quantidade_dado: int,
+        numero_faces: int,
+        dano_bonus: int,
+        acerto: int,
+        cd: int,
+        teste: str
+        ):
+        self.__id = id
         self.__nome = nome
         self.__quantidade_dado = quantidade_dado
         self.__numero_faces = numero_faces
@@ -10,6 +21,10 @@ class AtaqueMonstro:
         self.__cd = cd
         self.__teste = teste
 
+    @property
+    def id(self) -> int:
+        return self.__id
+    
     @property
     def nome(self):
         return self.__nome

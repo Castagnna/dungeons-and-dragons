@@ -3,12 +3,20 @@ from abc import ABC, abstractmethod
 
 class TelaGenerica(ABC):
     @abstractmethod
-    def __init__(self, controlador):
+    def __init__(self, controlador) -> object:
         self.__controlador = controlador
 
     @property
     def controlador(self):
         return self.__controlador
+
+    @controlador.setter
+    def controlador(self, controlador):
+        self.__controlador = controlador
+
+    @abstractmethod
+    def mostra_opcoes(self) -> int:
+        pass
 
     @staticmethod
     def cria_menu_opcoes(titulo_da_tela: str, opcoes: tuple = None):
@@ -21,7 +29,7 @@ class TelaGenerica(ABC):
         confirma = input(mensagem + " [Y/N]: ")
         return confirma in "Yy"
 
-    def protege_finalizar(self, opcao: int) -> bool:
+    def protege_finalizar(self, opcao: int) -> int:
         if opcao == 99:
             mensagem = "Tem certeza que quer finalizar o programa?"
             if self.tela_confirma(mensagem):

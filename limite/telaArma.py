@@ -70,3 +70,12 @@ class TelaArma(TelaGenerica):
         )
 
         return opcao
+
+    def lista_armas_vazia(self):
+        self.monstra_mensagem("A lista de armas esta vazia")
+
+    def confirma_remocao(self, nome: str):
+        return self.tela_confirma("Remover >> {} << ?".format(nome))
+
+    def arma_removida_com_sucesso(self, nome: str):
+        self.monstra_mensagem("Arma {} excluida com sucesso".format(nome))
