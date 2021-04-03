@@ -39,7 +39,7 @@ class ControladorJogador(ControladorGenerico):
     def cria_novo_jogador(self):
         dados = self.tela.pega_dados_do_jogador()
         novo_jogador = Jogador(
-            codigo=self.__counta_jogadores,
+            id=self.__counta_jogadores,
             imagem=None,
             posicao=[0, 0],
             **dados
@@ -53,10 +53,10 @@ class ControladorJogador(ControladorGenerico):
 
     def pega_jogador_por_id(self):
         if self.__jogadores:
-            valores_validos = [jogador.codigo for jogador in self.__jogadores]
-            codigo = self.tela.pega_dado("Id do jogador: ", "int", valores_validos, False)
+            valores_validos = [jogador.id for jogador in self.__jogadores]
+            id = self.tela.pega_dado("Id do jogador: ", "int", valores_validos, False)
             for jogador in self.__jogadores:
-                if jogador.codigo == codigo:
+                if jogador.id == id:
                     return jogador
         else:
             self.tela.lista_jogadores_vazia()

@@ -52,7 +52,7 @@ class TelaJogador(TelaGenerica):
     def mostra_jogadores(jogadores: list):
         print("\n------ Lista de jogadores cadastrados ------\n")
         for jogador in jogadores:
-            print("{} | {}".format(jogador.codigo, jogador.nome))
+            print("{} | {}".format(jogador.id, jogador.nome))
 
     def lista_jogadores_vazia(self):
         self.monstra_mensagem("A lista de jogadores esta vazia")
