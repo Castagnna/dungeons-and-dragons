@@ -21,12 +21,16 @@ class ControladorPrincipal(ControladorGenerico):
     """
 
     @property
+    def controlador_arma(self):
+        return self.__controlador_arma
+
+    @property
     def controlador_jogador(self):
         return self.__controlador_jogador
 
     @property
-    def controlador_arma(self):
-        return self.__controlador_arma
+    def controlador_ataque_monstro(self):
+        return self.__controlador_ataque_monstro
 
     @property
     def controlador_monstro(self):

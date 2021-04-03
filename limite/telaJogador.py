@@ -13,8 +13,12 @@ class TelaJogador(TelaGenerica):
             (1, "Novo jogador"),
             (2, "Listar jogadores"),
             (3, "Excluir jogador"),
-            (4, "Equipar arma no jogador"),
-            (5, "Mostrar armas do jogador"),
+            (4, "Mostrar atributos do jogador"),
+            (5, "Alterar atributos do jogador"),
+            (6, "Equipar arma no jogador"),
+            (7, "Mostrar armas do jogador"),
+            (8, "Atacar"),
+            (9, "Lancar magia"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -52,7 +56,7 @@ class TelaJogador(TelaGenerica):
     def mostra_jogadores(jogadores: list):
         print("\n------ Lista de jogadores cadastrados ------\n")
         for jogador in jogadores:
-            print("{} | {}".format(jogador.codigo, jogador.nome))
+            print("{} | {}".format(jogador.id, jogador.nome))
 
     def lista_jogadores_vazia(self):
         self.monstra_mensagem("A lista de jogadores esta vazia")
@@ -63,6 +67,14 @@ class TelaJogador(TelaGenerica):
     def jogador_removido_com_sucesso(self, nome: str):
         self.monstra_mensagem("Jogador {} excluido com sucesso".format(nome))
 
-    def mostra_armas_do_jogador(self, atributos_armas: list):
-        for atributos_arma in atributos_armas:
-            print("id {}, nome {}, dados {}, faces {}".format(*atributos_arma))
+    @staticmethod
+    def mostra_arma_do_jogador(
+        id: int,
+        nome: str,
+        quantidade_dado: int,
+        numero_faces: int,
+        mostra_titulo: bool = True,
+    ):
+        if mostra_titulo:
+            print("----- Armas do Jogador -----")
+        print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")

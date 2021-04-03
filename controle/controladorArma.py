@@ -92,7 +92,6 @@ class ControladorArma(ControladorGenerico):
             3: self.remove_arma,
             4: self.mostra_atributos_da_arma,
             5: self.alterar_arma,
-            88: self.controlador_principal.mostra_tela,
         }
 
         super(ControladorArma, self).mostra_tela(funcoes)
