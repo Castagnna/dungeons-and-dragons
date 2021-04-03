@@ -25,27 +25,55 @@ class Jogador(Personagem):
         self.__magias = []
         self.__raca = None
 
+    """
+    getters
+    """
+
+    @property
+    def codigo(self):
+        return self.__nome_jogador
+
     @property
     def nome_jogador(self):
         return self.__nome_jogador
+
+    @property
+    def raca(self):
+        return self.__raca
+
+    @property
+    def proficiencia(self):
+        return self.__proficiencia
+
+    @property
+    def armas(self):
+        return self.__armas
+
+    """
+    setters
+    """
 
     @nome_jogador.setter
     def nome_jogador(self, nome_jogador: str):
         if isinstance(nome_jogador, str):
             self.__nome_jogador: nome_jogador
 
-    @property
-    def raca(self):
-        return self.__raca
-
     @raca.setter
     def raca(self, raca: str):
         if isinstance(raca, str):
             self.__raca = raca
 
-    def trocar_arma(self, arma: Arma):
-        # TODO: implementar
-        pass
+    @proficiencia.setter
+    def proficiencia(self, proficiencia: int):
+        if isinstance(proficiencia, int):
+            self.__proficiencia = proficiencia
+
+    """
+    methods
+    """
+
+    def adiciona_arma(self, arma):
+        self.__armas.append(arma)
 
     def get_espaco_magia(self, circulo: int):
         if isinstance(circulo, int):
@@ -58,15 +86,6 @@ class Jogador(Personagem):
     def lancar_magia(self, magia: Magia):
         # TODO: implementar
         pass
-
-    @property
-    def proficiencia(self):
-        return self.__proficiencia
-
-    @proficiencia.setter
-    def proficiencia(self, proficiencia: int):
-        if isinstance(proficiencia, int):
-            self.__proficiencia = proficiencia
 
     def atacar(self, personagem: Personagem):
         # TODO: implementar

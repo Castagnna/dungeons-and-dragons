@@ -4,15 +4,15 @@ from abc import ABC, abstractmethod
 class TelaGenerica(ABC):
     @abstractmethod
     def __init__(self, controlador) -> object:
-        """
-        Retorna uma tela generica
-        :rtype: TelaGenerica
-        """
         self.__controlador = controlador
 
     @property
     def controlador(self):
         return self.__controlador
+
+    @controlador.setter
+    def controlador(self, controlador):
+        self.__controlador = controlador
 
     @abstractmethod
     def mostra_opcoes(self) -> int:

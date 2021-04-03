@@ -7,6 +7,14 @@ class ControladorGenerico(ABC):
         self.__tela = tela
         self.__mostra_tela = True
 
+    @property
+    def tela(self):
+        return self.__tela
+
+    @tela.setter
+    def tela(self, tela):
+        self.__tela = tela
+
     @abstractmethod
     def mostra_tela(self, funcoes: dict):
         self.__mostra_tela = True
@@ -29,7 +37,3 @@ class ControladorGenerico(ABC):
     @staticmethod
     def finaliza_programa():
         exit(0)
-
-    @property
-    def tela(self):
-        return self.__tela
