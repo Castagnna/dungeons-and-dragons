@@ -60,8 +60,8 @@ class Monstro(Personagem):
                 break
             except:
                 print('Valor inválido, favor digitar o número referente ao ataque')
-        if (random.randint(1,20) + ataque.acerto) > personagem.ca:
+        if (random.randint(1, 20) + ataque.acerto) > personagem.ca:
             contador = 0
             for i in range(ataque.quantidade_dado):
-                contador += random.randint(1,ataque.numero_faces)
+                contador += random.randint(1, ataque.numero_faces)
             personagem.recebe_ataque(contador + ataque.dano_bonus)
