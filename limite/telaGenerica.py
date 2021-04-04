@@ -1,19 +1,18 @@
 from abc import ABC, abstractmethod
-import pygame
 
 
 class TelaGenerica(ABC):
     @abstractmethod
     def __init__(self, controlador) -> object:
         self.__controlador = controlador
-        self.__dicio_letras = {'A': 100, 'B': 200, 'C': 300, 'D': 400, 'E': 500,
-                               'F': 600, 'G': 700, 'H': 800, 'I': 900, 'J': 1000,
-                               'K': 1100, 'L': 1200, 'M': 1300, 'N': 1400, 'O': 1500,
-                               'P': 1600, 'Q': 1700, 'R': 1800, 'S': 1900,
-                               'T': 2000, 'U': 2100, 'V': 2200, 'W': 2300,
-                               'X': 2400, 'Y': 2500, 'Z': 2500}
-        self.__dicio_numeros = {'1': 100, '2': 200, '3': 300, '4': 400, '5': 500, '6': 600, '7': 700, '8': 800,
-                                '9': 900}
+        self.__dicio_letras = {"A": 100, "B": 200, "C": 300, "D": 400, "E": 500,
+                               "F": 600, "G": 700, "H": 800, "I": 900, "J": 1000,
+                               "K": 1100, "L": 1200, "M": 1300, "N": 1400, "O": 1500,
+                               "P": 1600, "Q": 1700, "R": 1800, "S": 1900,
+                               "T": 2000, "U": 2100, "V": 2200, "W": 2300,
+                               "X": 2400, "Y": 2500, "Z": 2500}
+        self.__dicio_numeros = {"1": 100, "2": 200, "3": 300, "4": 400, "5": 500, "6": 600, "7": 700, "8": 800,
+                                "9": 900}
 
     @property
     def controlador(self):
@@ -80,17 +79,6 @@ class TelaGenerica(ABC):
                     msg_confirmacao = "Confirma o valor >> {} << ?".format(dado)
                     if self.tela_confirma(msg_confirmacao):
                         return dado
-
-    def pega_imagem(self, caminho):
-        while True:
-            try:
-                entrada = input('Digite o nome do cenário: ')
-                imagem = pygame.image.load(caminho + entrada + '.png')
-                return imagem
-            except AttributeError:
-                print('Imagem não encontrada, favor digitar novamente')
-            except:
-                print('Erro inesperado, favor entrar em contato com o suporte')
 
     @staticmethod
     def monstra_mensagem(mensagem: str):

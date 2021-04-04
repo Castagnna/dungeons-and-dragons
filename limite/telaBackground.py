@@ -6,7 +6,7 @@ class TelaBackground(TelaGenerica):
     def __init__(self, controlador):
         super(TelaBackground, self).__init__(controlador)
 
-    def mostrar_opcoes(self):
+    def mostra_opcoes(self):
         print('Escolha uma opção')
         print('1 - Criar/Alterar Background')
         print('2 - Movimentar Mapa')

@@ -17,8 +17,8 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_background = ControladorBackground(self)
         self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
-        self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
-        self.__visualizacao = pygame.display.set_mode((1800, 1000))
+        # self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
+        # self.__visualizacao = pygame.display.set_mode((1800, 1000))
 
     """
     getters

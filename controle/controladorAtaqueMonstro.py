@@ -1,5 +1,4 @@
 from controle.controladorGenerico import ControladorGenerico
-from controle.controladorPrincipal import ControladorPrincipal
 from limite.telaAtaqueMonstro import TelaAtaqueMonstro
 from entidade.ataqueMonstro import AtaqueMonstro
 
@@ -7,7 +6,7 @@ from entidade.ataqueMonstro import AtaqueMonstro
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
-        self.__tela = TelaAtaqueMonstro(self)
+        self.__controlador_principal = controlador_principal
         self.__ataques_monstro = []
 
     def mostra_tela(self, funcoes: dict):

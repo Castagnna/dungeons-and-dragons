@@ -1,4 +1,5 @@
 from limite.telaGenerica import TelaGenerica
+from pygame.image import load
 
 
 class TelaJogador(TelaGenerica):
@@ -44,6 +45,14 @@ class TelaJogador(TelaGenerica):
         return self.protege_finalizar(opcao)
 
     def pega_dados_do_jogador(self) -> dict:
+        valores_validos = [
+            "Minusculo", 
+            "Pequeno",
+            "Medio",
+            "Grande",
+            "Enorme",
+            "Colossal"
+        ]
         return {
             "nome": self.pega_dado("Nome: ", "str"),
             "forca": self.pega_dado("Forca: ", "int"),
@@ -52,11 +61,11 @@ class TelaJogador(TelaGenerica):
             "inteligencia": self.pega_dado("Inteligencia: ", "int"),
             "sabedoria": self.pega_dado("Sabedoria: ", "int"),
             "carisma": self.pega_dado("Carisma: ", "int"),
-            "imagem": self.pega_imagem('personagens/'),
+            "imagem": self.pega_imagem(),
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
-            "tamanho": self.pega_dado("Tamanho: ", "str",['Minusculo', 'Pequeno', 'Medio', 'Grande', 'Enorme', 'Colossal']),
+            "tamanho": self.pega_dado("Tamanho: ", "str", valores_validos),
             "nome_jogador": self.pega_dado("Nome do jogador: ", "str"),
             "level": self.pega_dado("Level: ", "int"),
             "experiencia": self.pega_dado("Experiencia: ", "int"),
@@ -133,3 +142,18 @@ class TelaJogador(TelaGenerica):
 
     def cria_magia(self):
         self.monstra_mensagem("Crie uma magia para vincular")
+
+    @staticmethod
+    def pega_imagem():
+        tentativas = 0
+        while tentativas < 2:
+            try:
+                nome = input("Nome do arquivo de imagem: ")
+                imagem = load("imagens/" + nome + ".png")
+                return imagem
+            except FileNotFoundError:
+                print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
+                tentativas += 1
+        print("Numero de tantativa esgotado, iniciado com imagem padrao")
+        return load("imagens/jogador.png")
+

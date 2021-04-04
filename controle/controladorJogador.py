@@ -7,7 +7,6 @@ from entidade.magia import Magia
 import pygame
 
 
-
 class ControladorJogador(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorJogador, self).__init__(TelaJogador(self))
@@ -62,9 +61,10 @@ class ControladorJogador(ControladorGenerico):
             if self != controlador_monstro.controlador_jogador:
                 controlador_monstro.controlador_jogador = self
 
+    def cria_novo_jogador(self, dados: dict = None):
+        if not dados:
+            dados = self.tela.pega_dados_do_jogador()
 
-    def cria_novo_jogador(self):
-        dados = self.__tela.pega_dados_do_jogador()
         if dados['tamanho'] == 'Grande':
             dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
         elif dados['tamanho'] == 'Enorme':
@@ -94,6 +94,7 @@ class ControladorJogador(ControladorGenerico):
             "inteligencia": 10,
             "sabedoria": 10,
             "carisma": 10,
+            "imagem": pygame.image.load("imagens/jogador.png"),
             "ca": 10,
             "vida_maxima": 10,
             "vida_atual": 10,
