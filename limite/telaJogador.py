@@ -7,7 +7,7 @@ class TelaJogador(TelaGenerica):
         super(TelaJogador, self).__init__(controlador)
 
     """
-    entradas
+    inputs
     """
 
     def mostra_opcoes(self) -> int:
@@ -27,6 +27,7 @@ class TelaJogador(TelaGenerica):
             (11, "Desincular magia"),
             (12, "Mostrar magias do jogador"),
             (13, "Lancar magia no monstro"),
+            (77, "Cria jogador teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -67,8 +68,18 @@ class TelaJogador(TelaGenerica):
         print("Jogador, ", end="")
         return self.pega_id(valores_validos)
 
+    def confirma_remocao(self, nome: str):
+        return self.tela_confirma("Remover >> {} << ?".format(nome))
+
+    def confirma_desvincular(self):
+        return self.tela_confirma("ao remover magia ela é perdida, confima ação?")
+
+    def confirma_vincular(self, nome_magia, nome_jogador):
+        mensagem = f"Vincular {nome_magia} ao jogador {nome_jogador}"
+        return self.tela_confirma(mensagem)
+
     """
-    saidas
+    outputs
     """
 
     @staticmethod
@@ -79,12 +90,6 @@ class TelaJogador(TelaGenerica):
 
     def lista_jogadores_vazia(self):
         self.monstra_mensagem("A lista de jogadores esta vazia")
-
-    def confirma_remocao(self, nome: str):
-        return self.tela_confirma("Remover >> {} << ?".format(nome))
-
-    def confirma_desvincular(self):
-        return self.tela_confirma("ao remover magia ela é perdida, confima ação?")
 
     def jogador_removido_com_sucesso(self, nome: str):
         self.monstra_mensagem("Jogador {} excluido com sucesso".format(nome))
@@ -101,6 +106,18 @@ class TelaJogador(TelaGenerica):
             print("\n----- Armas do Jogador -----")
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
 
+    @staticmethod
+    def mostra_magia_do_jogador(
+            id: int,
+            nome: str,
+            quantidade_dado: int,
+            numero_faces: int,
+            mostra_titulo: bool = True,
+    ):
+        if mostra_titulo:
+            print("\n----- Magias do Jogador -----")
+        print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
+
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
         mensagem = f"{atacante} causou {dano} ao {defensor}"
         self.monstra_mensagem(mensagem)
@@ -109,3 +126,9 @@ class TelaJogador(TelaGenerica):
     def mostra_atributos(atributos: dict):
         for atributo, valor in atributos.items():
             print(f"{atributo}: {valor}")
+
+    def jogador_da_magia(self):
+        self.monstra_mensagem("Escolha o jogador para vincular/desvincular a magia")
+
+    def cria_magia(self):
+        self.monstra_mensagem("Crie uma magia para vincular")

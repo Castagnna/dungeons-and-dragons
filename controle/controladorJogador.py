@@ -3,6 +3,7 @@ from controle.controladorMonstro import ControladorMonstro
 from controle.controladorMagia import ControladorMagia
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
+from entidade.magia import Magia
 
 
 class ControladorJogador(ControladorGenerico):
@@ -53,14 +54,15 @@ class ControladorJogador(ControladorGenerico):
     """
 
     def add_controlador_monstro(self, controlador_monstro: ControladorMonstro):
-        if controlador_monstro and isinstance(controlador_monstro, ControladorMonstro):
+        if isinstance(controlador_monstro, ControladorMonstro):
             if controlador_monstro != self.__controlador_monstro:
                 self.__controlador_monstro = controlador_monstro
             if self != controlador_monstro.controlador_jogador:
                 controlador_monstro.controlador_jogador = self
 
-    def cria_novo_jogador(self):
-        dados = self.tela.pega_dados_do_jogador()
+    def cria_novo_jogador(self, dados: dict = None):
+        if not dados:
+            dados = self.tela.pega_dados_do_jogador()
         novo_jogador = Jogador(
             id=self.__counta_jogadores,
             imagem=None,
@@ -70,6 +72,25 @@ class ControladorJogador(ControladorGenerico):
         self.__jogadores.append(novo_jogador)
         self.__counta_jogadores += 1
         self.tela.executado_com_sucesso()
+
+    def cria_jogador_teste(self):
+        dados = {
+            "nome": f"Fulano {self.__counta_jogadores}",
+            "forca": 10,
+            "destreza": 10,
+            "constituicao": 10,
+            "inteligencia": 10,
+            "sabedoria": 10,
+            "carisma": 10,
+            "ca": 10,
+            "vida_maxima": 10,
+            "vida_atual": 10,
+            "tamanho": "Pequeno",
+            "nome_jogador": "daniel",
+            "level": 1,
+            "experiencia": 1,
+        }
+        self.cria_novo_jogador(dados)
 
     def mostra_jogadores(self):
         self.tela.mostra_jogadores(self.__jogadores)
@@ -109,6 +130,8 @@ class ControladorJogador(ControladorGenerico):
                 "sabedoria": jogador.sabedoria,
                 "carisma": jogador.carisma,
                 "ca": jogador.ca,
+                "armas": [arma.nome for arma in jogador.armas if jogador.armas],
+                "magias": [magia.nome for magia in jogador.magias if jogador.magias],
                 "vida_maxima": jogador.vida_maxima,
                 "vida_atual": jogador.vida_atual,
                 "tamanho": jogador.tamanho,
@@ -121,7 +144,7 @@ class ControladorJogador(ControladorGenerico):
     def altera_atributo_do_jogador(self):
         pass
 
-    def equipar_arma(self):
+    def equipa_arma(self):
         self.mostra_jogadores()
         jogador = self.pega_jogador_por_id()
         if not jogador:
@@ -134,7 +157,7 @@ class ControladorJogador(ControladorGenerico):
             jogador.adiciona_arma(arma)
             self.tela.executado_com_sucesso()
 
-    def mostrar_armas_do_jogador(self, jogador: Jogador = None):
+    def mostra_armas_do_jogador(self, jogador: Jogador = None):
 
         if not jogador:
             jogador = self.pega_jogador_por_id()
@@ -155,15 +178,13 @@ class ControladorJogador(ControladorGenerico):
                 mostra_titulo = False
 
     def pega_arma_do_jogador_por_id(self, jogador: Jogador):
-        self.mostrar_armas_do_jogador(jogador)
+        self.mostra_armas_do_jogador(jogador)
         if jogador.armas:
             id_para_arma = {arma.id: arma for arma in jogador.armas}
             id = self.tela.pega_id(id_para_arma.keys())
             return id_para_arma[id]
-        else:
-            return None
 
-    def desequipar_arma(self):
+    def desequipa_arma(self):
         self.mostra_jogadores()
         jogador = self.pega_jogador_por_id()
         if not jogador:
@@ -173,7 +194,7 @@ class ControladorJogador(ControladorGenerico):
             jogador.remove_arma(arma)
             self.tela.executado_com_sucesso()
 
-    def atacar_monstro(self):
+    def ataca_monstro(self):
         atacante = self.pega_jogador_por_id()
         if not atacante:
             return
@@ -193,29 +214,56 @@ class ControladorJogador(ControladorGenerico):
 
         self.tela.resumo_combate(**dados)
 
-    def vincular_magia(self):
+    def vincula_magia(self):
+        self.tela.cria_magia()
         magia = self.__controlador_magia.cria_magia()
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
 
-        jogador.adiciona_magia(magia)
-        self.tela.executado_com_sucesso()
+        if self.tela.confirma_vincular(magia.nome, jogador.nome):
+            jogador.vincula_magia(magia)
+            self.tela.executado_com_sucesso()
 
-    def desvincular_magia(self):
-        magia = self.__controlador_magia.pega_magia_por_id()
+    def pega_magia_por_id(self, jogador: Jogador) -> Magia:
+        self.mostra_magias_do_jogador(jogador)
+        if jogador.magias:
+            id_para_magia = {magia.id: magia for magia in jogador.magias}
+            id = self.tela.pega_id(id_para_magia.keys())
+            return id_para_magia[id]
+
+    def desvincula_magia(self):
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
 
+        magia = self.pega_magia_por_id(jogador)
+
         if self.tela.confirma_desvincular():
-            jogador.desvincular_magia(magia)
+            jogador.desvincula_magia(magia)
         self.tela.executado_com_sucesso()
 
-    def mostrar_magias_do_jogador(self):
-        pass
+    def mostra_magias_do_jogador(self, jogador: Jogador = None):
 
-    def lancar_magia_no_monstro(self):
+        if not jogador:
+            jogador = self.pega_jogador_por_id()
+
+        if jogador and jogador.magias:
+            mostra_titulo = True
+            for magia in jogador.magias:
+                atributos_magia = {
+                    "id": magia.id,
+                    "nome": magia.nome,
+                    "quantidade_dado": magia.quantidade_dado,
+                    "numero_faces": magia.numero_faces
+                }
+                self.tela.mostra_magia_do_jogador(
+                    **atributos_magia,
+                    mostra_titulo=mostra_titulo
+                )
+                mostra_titulo = False
+
+    def lanca_magia_no_monstro(self):
         pass
 
     def mostra_tela(self):
@@ -226,14 +274,15 @@ class ControladorJogador(ControladorGenerico):
             3: self.remove_jogador,
             4: self.mostra_atributos_do_jogador,
             5: self.altera_atributo_do_jogador,
-            6: self.equipar_arma,
-            7: self.desequipar_arma,
-            8: self.mostrar_armas_do_jogador,
-            9: self.atacar_monstro,
-            10: self.vincular_magia,
-            11: self.desvincular_magia,
-            12: self.mostrar_magias_do_jogador,
-            13: self.lancar_magia_no_monstro,
+            6: self.equipa_arma,
+            7: self.desequipa_arma,
+            8: self.mostra_armas_do_jogador,
+            9: self.ataca_monstro,
+            10: self.vincula_magia,
+            11: self.desvincula_magia,
+            12: self.mostra_magias_do_jogador,
+            13: self.lanca_magia_no_monstro,
+            77: self.cria_jogador_teste,
         }
 
         super(ControladorJogador, self).mostra_tela(funcoes)

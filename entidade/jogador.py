@@ -45,6 +45,10 @@ class Jogador(Personagem):
         return self.__armas
 
     @property
+    def magias(self):
+        return self.__magias
+
+    @property
     def level(self):
         return self.__level
 
@@ -83,11 +87,11 @@ class Jogador(Personagem):
         if arma in self.__armas:
             self.__armas.remove(arma)
 
-    def vincular_magia(self, magia: Magia):
+    def vincula_magia(self, magia: Magia):
         if isinstance(magia, Magia):
             self.__magias.append(magia)
 
-    def desvincular_magia(self, magia: Magia):
+    def desvincula_magia(self, magia: Magia):
         if magia in self.__magias:
             self.__magias.remove(magia)
 
