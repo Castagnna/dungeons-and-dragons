@@ -6,6 +6,10 @@ class TelaJogador(TelaGenerica):
     def __init__(self, controlador):
         super(TelaJogador, self).__init__(controlador)
 
+    """
+    entradas
+    """
+
     def mostra_opcoes(self) -> int:
         titulo_da_tela = "MENU JOGADOR"
 
@@ -56,6 +60,17 @@ class TelaJogador(TelaGenerica):
             "experiencia": self.pega_dado("Experiencia: ", "int"),
         }
 
+    def pega_dano(self):
+        return self.pega_dado("Insira o valor de dano: ", "int", None, True)
+
+    def pega_id_jogador(self, valores_validos) -> int:
+        print("Jogador, ", end="")
+        return self.pega_id(valores_validos)
+
+    """
+    saidas
+    """
+
     @staticmethod
     def mostra_jogadores(jogadores: list):
         print("\n------ Lista de jogadores cadastrados ------")
@@ -76,26 +91,19 @@ class TelaJogador(TelaGenerica):
 
     @staticmethod
     def mostra_arma_do_jogador(
-        id: int,
-        nome: str,
-        quantidade_dado: int,
-        numero_faces: int,
-        mostra_titulo: bool = True,
+            id: int,
+            nome: str,
+            quantidade_dado: int,
+            numero_faces: int,
+            mostra_titulo: bool = True,
     ):
         if mostra_titulo:
             print("\n----- Armas do Jogador -----")
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
 
-    def pega_dano(self):
-        return self.pega_dado("Insira o valor de dano: ", "int", None, True)
-
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
         mensagem = f"{atacante} causou {dano} ao {defensor}"
         self.monstra_mensagem(mensagem)
-
-    def pega_id_jogador(self, valores_validos) -> int:
-        print("Jogador, ", end="")
-        return self.pega_id(valores_validos)
 
     @staticmethod
     def mostra_atributos(atributos: dict):
