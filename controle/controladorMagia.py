@@ -9,15 +9,14 @@ class ControladorMagia(ControladorGenerico):
         self.__controlador_jogador = controlador_jogador
         self.__counta_magias = 0,
 
-    def cria_magia(self, jogador):
+    def cria_magia(self) -> Magia:
         dados = self.tela.pega_dados_da_magia()
         magia = Magia(
             id=self.__counta_magias,
             **dados
         )
-        jogador.append(magia)
         self.__counta_magias += 1
-        self.tela.monstra_mensagem("Magia {} criada com sucesso".format(magia.nome))
+        return magia
 
     def mostra_tela(self):
 

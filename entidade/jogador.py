@@ -1,7 +1,6 @@
 from entidade.personagem import Personagem
 from entidade.arma import Arma
 from entidade.magia import Magia
-from entidade.monstro import Monstro
 import pygame
 
 
@@ -76,8 +75,21 @@ class Jogador(Personagem):
     methods
     """
 
-    def adiciona_arma(self, arma):
-        self.__armas.append(arma)
+    def adiciona_arma(self, arma: Arma):
+        if isinstance(arma, Arma):
+            self.__armas.append(arma)
+
+    def remove_arma(self, arma: Arma):
+        if arma in self.__armas:
+            self.__armas.remove(arma)
+
+    def vincular_magia(self, magia: Magia):
+        if isinstance(magia, Magia):
+            self.__magias.append(magia)
+
+    def desvincular_magia(self, magia: Magia):
+        if magia in self.__magias:
+            self.__magias.remove(magia)
 
     def get_espaco_magia(self, circulo: int):
         if isinstance(circulo, int):

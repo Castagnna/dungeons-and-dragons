@@ -19,7 +19,10 @@ class TelaJogador(TelaGenerica):
             (7, "Desequipar arma do jogador"),
             (8, "Mostrar armas do jogador"),
             (9, "Atacar Monstro"),
-            (10, "Lancar magia"),
+            (10, "Vincular magia"),
+            (11, "Desincular magia"),
+            (12, "Mostrar magias do jogador"),
+            (13, "Lancar magia no monstro"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -64,6 +67,9 @@ class TelaJogador(TelaGenerica):
 
     def confirma_remocao(self, nome: str):
         return self.tela_confirma("Remover >> {} << ?".format(nome))
+
+    def confirma_desvincular(self):
+        return self.tela_confirma("ao remover magia ela é perdida, confima ação?")
 
     def jogador_removido_com_sucesso(self, nome: str):
         self.monstra_mensagem("Jogador {} excluido com sucesso".format(nome))

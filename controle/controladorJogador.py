@@ -148,7 +148,10 @@ class ControladorJogador(ControladorGenerico):
                     "quantidade_dado": arma.quantidade_dado,
                     "numero_faces": arma.numero_faces
                 }
-                self.tela.mostra_arma_do_jogador(**atributos_arma, mostra_titulo=mostra_titulo)
+                self.tela.mostra_arma_do_jogador(
+                    **atributos_arma,
+                    mostra_titulo=mostra_titulo
+                )
                 mostra_titulo = False
 
     def pega_arma_do_jogador_por_id(self, jogador: Jogador):
@@ -167,7 +170,7 @@ class ControladorJogador(ControladorGenerico):
             return
         arma = self.pega_arma_do_jogador_por_id(jogador)
         if arma:
-            jogador.armas.remove(arma)
+            jogador.remove_arma(arma)
             self.tela.executado_com_sucesso()
 
     def atacar_monstro(self):
@@ -190,8 +193,29 @@ class ControladorJogador(ControladorGenerico):
 
         self.tela.resumo_combate(**dados)
 
-    def lancar_magia(self):
-        print("Jogador A Lanca Magia em B")
+    def vincular_magia(self):
+        magia = self.__controlador_magia.cria_magia()
+
+        self.tela.jogador_da_magia()
+        jogador = self.pega_jogador_por_id()
+
+        jogador.adiciona_magia(magia)
+        self.tela.executado_com_sucesso()
+
+    def desvincular_magia(self):
+        magia = self.__controlador_magia.pega_magia_por_id()
+
+        self.tela.jogador_da_magia()
+        jogador = self.pega_jogador_por_id()
+
+        if self.tela.confirma_desvincular():
+            jogador.desvincular_magia(magia)
+        self.tela.executado_com_sucesso()
+
+    def mostrar_magias_do_jogador(self):
+        pass
+
+    def lancar_magia_no_monstro(self):
         pass
 
     def mostra_tela(self):
@@ -206,7 +230,10 @@ class ControladorJogador(ControladorGenerico):
             7: self.desequipar_arma,
             8: self.mostrar_armas_do_jogador,
             9: self.atacar_monstro,
-            10: self.lancar_magia,
+            10: self.vincular_magia,
+            11: self.desvincular_magia,
+            12: self.mostrar_magias_do_jogador,
+            13: self.lancar_magia_no_monstro,
         }
 
         super(ControladorJogador, self).mostra_tela(funcoes)
