@@ -66,3 +66,7 @@ class TelaMonstro(TelaGenerica):
     @staticmethod
     def resumo_combate(atacante: str, defensor: str, dano: int):
         print(f"{atacante} causou {dano} ao {defensor}")
+
+    def pega_id_monstro(self, valores_validos) -> int:
+        print("Monstro, ", end="")
+        return self.pega_id(valores_validos)

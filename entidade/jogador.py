@@ -29,10 +29,6 @@ class Jogador(Personagem):
     getters
     """
 
-    # @property
-    # def id(self):
-    #     return self.__id
-
     @property
     def nome_jogador(self):
         return self.__nome_jogador
@@ -48,6 +44,14 @@ class Jogador(Personagem):
     @property
     def armas(self):
         return self.__armas
+
+    @property
+    def level(self):
+        return self.__level
+
+    @property
+    def experiencia(self):
+        return self.__experiencia
 
     """
     setters

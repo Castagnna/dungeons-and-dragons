@@ -35,6 +35,10 @@ class ControladorJogador(ControladorGenerico):
     def controlador_monstro(self):
         return self.__controlador_monstro
 
+    @property
+    def controlador_magia(self):
+        return self.__controlador_magia
+
     """
     setters
     """
@@ -70,10 +74,10 @@ class ControladorJogador(ControladorGenerico):
     def mostra_jogadores(self):
         self.tela.mostra_jogadores(self.__jogadores)
 
-    def pega_jogador_por_id(self):
+    def pega_jogador_por_id(self) -> Jogador:
         if self.__jogadores:
             valores_validos = [jogador.id for jogador in self.__jogadores]
-            id = self.tela.pega_id(valores_validos)
+            id = self.tela.pega_id_jogador(valores_validos)
             for jogador in self.__jogadores:
                 if jogador.id == id:
                     return jogador
@@ -93,9 +97,28 @@ class ControladorJogador(ControladorGenerico):
                 self.tela.executado_com_sucesso()
 
     def mostra_atributos_do_jogador(self):
-        pass
+        jogador = self.pega_jogador_por_id()
+        if jogador:
+            atributos = {
+                "id": jogador.id,
+                "nome": jogador.nome,
+                "forca": jogador.forca,
+                "destreza": jogador.destreza,
+                "constituicao": jogador.constituicao,
+                "inteligencia": jogador.inteligencia,
+                "sabedoria": jogador.sabedoria,
+                "carisma": jogador.carisma,
+                "ca": jogador.ca,
+                "vida_maxima": jogador.vida_maxima,
+                "vida_atual": jogador.vida_atual,
+                "tamanho": jogador.tamanho,
+                "nome_jogador": jogador.nome_jogador,
+                "level": jogador.level,
+                "experiencia": jogador.experiencia,
+            }
+            self.tela.mostra_atributos(atributos)
 
-    def altera_atributos_do_jogador(self):
+    def altera_atributo_do_jogador(self):
         pass
 
     def equipar_arma(self):
@@ -178,7 +201,7 @@ class ControladorJogador(ControladorGenerico):
             2: self.mostra_jogadores,
             3: self.remove_jogador,
             4: self.mostra_atributos_do_jogador,
-            5: self.altera_atributos_do_jogador,
+            5: self.altera_atributo_do_jogador,
             6: self.equipar_arma,
             7: self.desequipar_arma,
             8: self.mostrar_armas_do_jogador,

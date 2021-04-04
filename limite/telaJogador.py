@@ -86,3 +86,12 @@ class TelaJogador(TelaGenerica):
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
         mensagem = f"{atacante} causou {dano} ao {defensor}"
         self.monstra_mensagem(mensagem)
+
+    def pega_id_jogador(self, valores_validos) -> int:
+        print("Jogador, ", end="")
+        return self.pega_id(valores_validos)
+
+    @staticmethod
+    def mostra_atributos(atributos: dict):
+        for atributo, valor in atributos.items():
+            print(f"{atributo}: {valor}")
