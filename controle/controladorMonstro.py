@@ -1,6 +1,7 @@
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaMonstro import TelaMonstro
 from entidade.monstro import Monstro
+import pygame
 
 
 class ControladorMonstro(ControladorGenerico):
@@ -28,6 +29,10 @@ class ControladorMonstro(ControladorGenerico):
     def controlador_jogador(self):
         return self.__controlador_jogador
 
+    @property
+    def monstros(self):
+        return self.__monstros
+
     """
     setters
     """
@@ -37,15 +42,24 @@ class ControladorMonstro(ControladorGenerico):
     """
 
     def cria_novo_monstro(self):
-        dados = self.tela.pega_dados_do_monstro()
+        dados = self.__tela.pega_dados_do_jogador()
+        if dados['tamanho'] == 'Grande':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
+        elif dados['tamanho'] == 'Enorme':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (300, 300))
+        elif dados['tamanho'] == 'Colossal':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (400, 400))
+        else:
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (100, 100))
+        dados['posicao'] = dados['imagem'].get_rect()
+        dados['posicao'][0] = 100 * (self.__counta_monstros % 10)
+        dados['posicao'][1] = 100 * (self.__counta_monstros // 10)
         novo_monstro = Monstro(
             id=self.__counta_monstros,
-            posicao=[0, 0],
-            imagem=None,
             **dados
         )
-        self.__monstros.append(novo_monstro)
         self.__counta_monstros += 1
+        self.__monstros.append(novo_monstro)
         self.tela.executado_com_sucesso()
 
     def pega_monstro_por_id(self):
@@ -92,3 +106,8 @@ class ControladorMonstro(ControladorGenerico):
         }
 
         super(ControladorMonstro, self).mostra_tela(funcoes)
+
+    def mapa_moveu(self, x: int, y: int):
+        for i in range(len(self.__monstros)):
+            posicao = self.__monstros[i].posicao
+            self.__monstros[i].posicao(posicao[0] - x, posicao[1] - y)

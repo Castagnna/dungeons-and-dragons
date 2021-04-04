@@ -3,6 +3,7 @@ from controle.controladorMonstro import ControladorMonstro
 from controle.controladorMagia import ControladorMagia
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
+import pygame
 
 
 class ControladorJogador(ControladorGenerico):
@@ -13,7 +14,7 @@ class ControladorJogador(ControladorGenerico):
         self.__controlador_monstro = None
         self.__controlador_magia = ControladorMagia(self)
         self.__jogadores = []
-        self.__counta_jogadores = 0
+        self.__counta_jogadores = 1
 
     """
     getters
@@ -56,15 +57,24 @@ class ControladorJogador(ControladorGenerico):
                 controlador_monstro.controlador_jogador = self
 
     def cria_novo_jogador(self):
-        dados = self.tela.pega_dados_do_jogador()
+        dados = self.__tela.pega_dados_do_jogador()
+        if dados['tamanho'] == 'Grande':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
+        elif dados['tamanho'] == 'Enorme':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (300, 300))
+        elif dados['tamanho'] == 'Colossal':
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (400, 400))
+        else:
+            dados['imagem'] = pygame.transform.scale(dados['imagem'], (100, 100))
+        dados['posicao'] = dados['imagem'].get_rect()
+        dados['posicao'][0] = 100 * (self.__counta_jogadores % 10)
+        dados['posicao'][1] = 100 * (self.__counta_jogadores // 10)
         novo_jogador = Jogador(
             id=self.__counta_jogadores,
-            imagem=None,
-            posicao=[0, 0],
             **dados
         )
-        self.__jogadores.append(novo_jogador)
         self.__counta_jogadores += 1
+        self.__jogadores.append(novo_jogador)
         self.tela.executado_com_sucesso()
 
     def mostra_jogadores(self):
@@ -187,3 +197,8 @@ class ControladorJogador(ControladorGenerico):
         }
 
         super(ControladorJogador, self).mostra_tela(funcoes)
+
+    def mapa_moveu(self, x: int, y: int):
+        for i in range(len(self.__jogadores)):
+            posicao = self.__jogadores[i].posicao
+            self.__jogadores[i].posicao(posicao[0] - x, posicao[1] - y)
