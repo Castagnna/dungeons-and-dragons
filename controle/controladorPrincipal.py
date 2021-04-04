@@ -5,6 +5,7 @@ from controle.controladorArma import ControladorArma
 from controle.controladorAtaqueMonstro import ControladorAtaqueMonstro
 from controle.controladorBackground import ControladorBackground
 from limite.telaPrincipal import TelaPrincipal
+import pygame
 
 
 class ControladorPrincipal(ControladorGenerico):
@@ -14,8 +15,10 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_jogador = ControladorJogador(self)
         self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
         self.__controlador_monstro = ControladorMonstro(self)
-        # self.__controlador_background = ControladorBackground(self)
+        self.__controlador_background = ControladorBackground(self)
         self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
+        self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
+        self.__visualizacao = pygame.display.set_mode((1800, 1000))
 
     """
     getters
@@ -86,3 +89,20 @@ class ControladorPrincipal(ControladorGenerico):
         }
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
+
+    def atualizar_visualizacao(self):
+        self.__visualizacao.fill((0, 0, 0))
+        self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
+                                 self.__controlador_background.mostra_posicao_mapa())
+        for monstro in range(len(self.__controlador_monstro.monstros)):
+            self.__visualizacao.blit(self.__controlador_monstro.mostra_imagem(monstro),
+                                     self.__controlador_monstro.mostrar_posicao(monstro))
+        for jogador in range(len(self.__controlador_jogador.jogadores)):
+            self.__visualizacao.blit(self.__controlador_jogador.mostra_imagem(jogador),
+                                     self.__controlador_jogador.mostrar_posicao(jogador))
+        pygame.display.flip()
+
+    def movimentar_mapa(self, x: int, y: int):
+        self.__controlador_jogador.mapa_moveu(x, y)
+        self.__controlador_monstro.mapa_moveu(x, y)
+        self.atualizar_visualizacao()

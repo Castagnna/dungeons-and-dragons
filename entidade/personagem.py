@@ -117,6 +117,15 @@ class Personagem(ABC):
         return self.__carisma
 
     @property
+    def posicao(self):
+        return self.__posicao
+
+    @posicao.setter
+    def posicao(self, x: int, y: int):
+        self.__posicao[0] = x
+        self.__posicao[1] = y
+
+    @property
     def atacar_vantagem(self):
         return self.__ataque_vantagem
 
