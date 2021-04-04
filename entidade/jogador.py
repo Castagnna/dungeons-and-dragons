@@ -1,7 +1,6 @@
 from entidade.personagem import Personagem
 from entidade.arma import Arma
 from entidade.magia import Magia
-from entidade.monstro import Monstro
 import pygame
 
 
@@ -29,10 +28,6 @@ class Jogador(Personagem):
     getters
     """
 
-    # @property
-    # def id(self):
-    #     return self.__id
-
     @property
     def nome_jogador(self):
         return self.__nome_jogador
@@ -48,6 +43,18 @@ class Jogador(Personagem):
     @property
     def armas(self):
         return self.__armas
+
+    @property
+    def magias(self):
+        return self.__magias
+
+    @property
+    def level(self):
+        return self.__level
+
+    @property
+    def experiencia(self):
+        return self.__experiencia
 
     """
     setters
@@ -72,8 +79,21 @@ class Jogador(Personagem):
     methods
     """
 
-    def adiciona_arma(self, arma):
-        self.__armas.append(arma)
+    def adiciona_arma(self, arma: Arma):
+        if isinstance(arma, Arma):
+            self.__armas.append(arma)
+
+    def remove_arma(self, arma: Arma):
+        if arma in self.__armas:
+            self.__armas.remove(arma)
+
+    def vincula_magia(self, magia: Magia):
+        if isinstance(magia, Magia):
+            self.__magias.append(magia)
+
+    def desvincula_magia(self, magia: Magia):
+        if magia in self.__magias:
+            self.__magias.remove(magia)
 
     def get_espaco_magia(self, circulo: int):
         if isinstance(circulo, int):

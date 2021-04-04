@@ -65,7 +65,7 @@ class ControladorMonstro(ControladorGenerico):
     def pega_monstro_por_id(self):
         if self.__monstros:
             valores_validos = [monstro.id for monstro in self.__monstros]
-            id = self.tela.pega_id(valores_validos)
+            id = self.tela.pega_id_monstro(valores_validos)
             for monstro in self.__monstros:
                 if monstro.id == id:
                     return monstro
@@ -107,7 +107,13 @@ class ControladorMonstro(ControladorGenerico):
 
         super(ControladorMonstro, self).mostra_tela(funcoes)
 
+
     def mapa_moveu(self, x: int, y: int):
         for i in range(len(self.__monstros)):
             posicao = self.__monstros[i].posicao
             self.__monstros[i].posicao(posicao[0] - x, posicao[1] - y)
+
+    @controlador_jogador.setter
+    def controlador_jogador(self, value):
+        self._controlador_jogador = value
+
