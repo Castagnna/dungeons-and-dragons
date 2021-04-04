@@ -152,6 +152,14 @@ class Personagem(ABC):
     def vida_atual(self):
         return self.__vida_atual
 
+    @property
+    def vida_maxima(self):
+        return self.__vida_maxima
+
+    @property
+    def tamanho(self):
+        return self.__tamanho
+
     """
     setters
     """

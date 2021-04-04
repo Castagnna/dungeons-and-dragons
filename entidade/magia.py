@@ -1,4 +1,4 @@
-import pygame
+
 
 class Magia:
     def __init__(self, id: int, nome: str, quantidade_dado: int, numero_faces: int, circulo: int, teste: list):
@@ -9,6 +9,10 @@ class Magia:
         self.__circulo = circulo
         self.__teste = teste
 
+    """
+    getters
+    """
+
     @property
     def id(self) -> int:
         return self.__id
@@ -17,41 +21,45 @@ class Magia:
     def nome(self):
         return self.__nome
 
+    @property
+    def quantidade_dado(self):
+        return self.__quantidade_dado
+
+    @property
+    def numero_faces(self):
+        return self.__numero_faces
+
+    @property
+    def circulo(self):
+        return self.__circulo
+
+    @property
+    def teste(self):
+        return self.__teste
+
+    """
+    getters
+    """
+
     @nome.setter
     def nome(self, nome: str):
         if isinstance(nome, str):
             self.__nome = nome
-
-    @property
-    def quantidade_dado(self):
-        return self.__quantidade_dado
 
     @quantidade_dado.setter
     def quantidade_dado(self, quantidade: int):
         if isinstance(quantidade, int):
             self.__quantidade_dado = quantidade
 
-    @property
-    def numero_faces(self):
-        return self.__numero_faces
-
     @numero_faces.setter
     def numero_faces(self, dado: int):
         if isinstance(dado, int):
             self.__numero_faces = dado
 
-    @property
-    def circulo(self):
-        return self.__circulo
-
     @circulo.setter
     def circulo(self, circulo: int):
         if isinstance(circulo, int):
             self.__circulo = circulo
-
-    @property
-    def teste(self):
-        return self.__teste
 
     @teste.setter
     def teste(self, teste):
