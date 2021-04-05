@@ -100,7 +100,6 @@ class ControladorJogador(ControladorGenerico):
             "inteligencia": 10,
             "sabedoria": 10,
             "carisma": 10,
-            "imagem": pygame.image.load("imagens/jogador.png"),
             "ca": 10,
             "imagem": pygame.image.load('tokens/Anao_Barbaro.png'),
             "vida_maxima": 10,

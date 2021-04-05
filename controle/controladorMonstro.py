@@ -122,7 +122,7 @@ class ControladorMonstro(ControladorGenerico):
         if not defensor:
             return
         dano = 10
-        if ataque.teste != "Nenhum":
+        if ataque.teste == "Nenhum":
             if (random.randint(1, 20) + ataque.acerto) > defensor.ca:
                 for i in range(ataque.quantidade_dado):
                     dano += random.randint(1, ataque.numero_faces)
