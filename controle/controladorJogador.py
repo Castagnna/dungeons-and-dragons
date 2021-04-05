@@ -300,13 +300,14 @@ class ControladorJogador(ControladorGenerico):
         if not defensor:
             return
         dano = 0
+        defensor.adiciona_atacante(atacante)
         if (random.randint(1,20) + atacante.proficiencia + atacante.mod_forca) > defensor.ca:
             dano += arma.dano() + atacante.mod_forca
             atacante.dano_causado.append(dano)
             defensor.dano_sofrido.append(dano)
             defensor.vida_atual -= dano
             if defensor.vida_atual <= 0:
-                experiencia = (defensor.experiencia // defensor.atacado_por)
+                experiencia = (defensor.experiencia // len(defensor.atacado_por))
                 for jogador in defensor.atacado_por:
                     jogador.recebe_experiencia(experiencia)
                 self.controlador_monstro.remover_monstro(defensor)
@@ -390,6 +391,7 @@ class ControladorJogador(ControladorGenerico):
             return
         atacante.set_espaco_magia(magia.circulo, atacante.get_espaco_magia(magia.circulo) - 1)
         dano = 0
+        defensor.adiciona_atacante(atacante)
         modificador_magia = self.tela.pede_modificador_magia()
         if modificador_magia == 'Inteligencia':
             modificador_ataque = atacante.mod_inteligencia
@@ -427,7 +429,7 @@ class ControladorJogador(ControladorGenerico):
         defensor.dano_sofrido.append(dano)
         defensor.vida_atual -= dano
         if defensor.vida_atual <= 0:
-            experiencia = (defensor.experiencia // defensor.atacado_por)
+            experiencia = (defensor.experiencia // len(defensor.atacado_por))
             for jogador in defensor.atacado_por:
                 jogador.recebe_experiencia(experiencia)
             self.controlador_monstro.remover_monstro(defensor)
@@ -438,11 +440,10 @@ class ControladorJogador(ControladorGenerico):
             "dano": dano
         }
 
+        self.__controlador_relatorio.registra_combate(**dados)
         self.tela.resumo_combate(**dados)
 
-
     def mostra_tela(self):
-
         funcoes = {
             1: self.cria_novo_jogador,
             2: self.mostra_jogadores,
@@ -485,6 +486,8 @@ class ControladorJogador(ControladorGenerico):
 
     def movimentar_jogador(self):
         jogador = self.pega_jogador_por_id()
+        if not jogador:
+            return
         posicao = self.tela.movimenta_jogador()
         jogador.movimentar(posicao)
         self.controlador_principal.atualizar_visualizacao()

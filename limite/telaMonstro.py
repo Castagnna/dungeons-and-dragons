@@ -159,3 +159,18 @@ class TelaMonstro(TelaGenerica):
         for atributo, valor in atributos.items():
             print(f"{atributo}: {valor}")
 
+    @staticmethod
+    def mostra_ataque_do_monstro(
+            id: int,
+            nome: str,
+            quantidade_dado: int,
+            numero_faces: int,
+            dano_bonus: int,
+            acerto: int,
+            cd: int,
+            teste: str,
+            mostra_titulo: bool = True,
+    ):
+        if mostra_titulo:
+            print("\n----- Ataque do Monstro -----")
+        print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}, dano bonus: {dano_bonus}, bonus de acerto: {acerto}, cd: {cd}, teste: {teste}")

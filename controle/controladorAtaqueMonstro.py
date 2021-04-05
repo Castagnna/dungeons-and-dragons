@@ -11,7 +11,7 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         self.__controlador_principal = controlador_principal
         self.__counta_ataque_monstro = 0
 
-    def mostra_tela(self, funcoes: dict):
+    def mostra_tela(self):
         funcoes = {
             1: self.cria_novo_ataque_monstro,
             2: self.mostra_ataques_monstro,
@@ -23,7 +23,7 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
 
     def cria_novo_ataque_monstro(self):
-        dados = self.__tela.pega_dados_de_ataque()
+        dados = self.tela.pega_dados_de_ataque()
         novo_ataque = AtaqueMonstro(
             id=self.__counta_ataque_monstro,
             **dados

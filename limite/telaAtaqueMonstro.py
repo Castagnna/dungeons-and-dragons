@@ -54,7 +54,7 @@ class TelaAtaqueMonstro(TelaGenerica):
         print("Nome: {}".format(ataque.nome))
         print("Quantidade dado: {}".format(ataque.quantidade_dado))
         print("Numero de faces: {}".format(ataque.numero_faces))
-        print("Dados bonus: {}".format(ataque.dados_bonus))
+        print("Dados bonus: {}".format(ataque.dano_bonus))
         print("Acerto: {}".format(ataque.acerto))
         print("Cd: {}".format(ataque.cd))
         print("Teste: {}".format(ataque.teste))

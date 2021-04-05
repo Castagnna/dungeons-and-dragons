@@ -45,7 +45,7 @@ class ControladorMonstro(ControladorGenerico):
 
     def cria_novo_monstro(self, dados: dict = None):
         if not dados:
-            dados = self.__tela.pega_dados_do_jogador()
+            dados = self.tela.pega_dados_do_monstro()
         if dados['tamanho'] == 'Grande':
             dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
         elif dados['tamanho'] == 'Enorme':
@@ -76,7 +76,7 @@ class ControladorMonstro(ControladorGenerico):
             "inteligencia": 1,
             "sabedoria": 1,
             "carisma": 1,
-            "imagem": pygame.image.load("imagens/monstro.png"),
+            "imagem": pygame.image.load("tokens/Ankheg.png"),
             "ca": 1,
             "vida_maxima": 1,
             "vida_atual": 1,
@@ -121,12 +121,12 @@ class ControladorMonstro(ControladorGenerico):
         defensor = self.controlador_jogador.pega_jogador_por_id()
         if not defensor:
             return
-        dano = 0
+        dano = 10
         if ataque.teste != "Nenhum":
             if (random.randint(1, 20) + ataque.acerto) > defensor.ca:
                 for i in range(ataque.quantidade_dado):
                     dano += random.randint(1, ataque.numero_faces)
-                dano += atacante.mod_forca
+                dano += ataque.dano_bonus
                 atacante.dano_causado.append(dano)
                 defensor.dano_sofrido.append(dano)
                 defensor.vida_atual -= dano
@@ -143,7 +143,7 @@ class ControladorMonstro(ControladorGenerico):
                 modificador = defensor.mod_sabedoria
             elif ataque.teste == 'Inteligencia':
                 modificador = defensor.mod_inteligencia
-            elif ataque.teste == 'Carisma':
+            else:
                 modificador = defensor.mod_carisma
             if (random.randint(1,20) + modificador) < ataque.cd:
                 for i in range(ataque.quantidade_dado):
@@ -194,11 +194,11 @@ class ControladorMonstro(ControladorGenerico):
         funcoes = {
             1: self.cria_novo_monstro,
             2: self.mostra_monstros,
-            3: self.excluir_monstro,
+            3: self.exclui_monstro,
             4: self.cadastra_ataque_monstro,
             5: self.exclui_ataque_monstro,
             6: self.ataca_jogador,
-            7: self.movimentar_monstro
+            7: self.movimentar_monstro,
             8: self.mostra_atributos_do_monstro,
             9: self.ataca_jogador,
             13: self.lanca_magia,
@@ -290,6 +290,8 @@ class ControladorMonstro(ControladorGenerico):
 
     def movimentar_monstro(self):
         monstro = self.pega_monstro_por_id()
+        if not monstro:
+            return
         posicao = self.tela.movimenta_monstro()
         monstro.movimentar(posicao)
         self.controlador_principal.atualizar_visualizacao()
@@ -303,8 +305,8 @@ class ControladorMonstro(ControladorGenerico):
         ataque = self.__controlador_ataque_monstro.pega_ataque_por_id()
         if not ataque:
             return
-        if not (ataque in monstro.armas):
-            monstro.adiciona_arma(ataque)
+        if not (ataque in monstro.ataques):
+            monstro.inserir_ataque(ataque)
             self.tela.executado_com_sucesso()
 
     def pega_ataque_do_monstro_por_id(self, monstro: Monstro):
@@ -326,9 +328,13 @@ class ControladorMonstro(ControladorGenerico):
                     "id": ataque.id,
                     "nome": ataque.nome,
                     "quantidade_dado": ataque.quantidade_dado,
-                    "numero_faces": ataque.numero_faces
+                    "numero_faces": ataque.numero_faces,
+                    "dano_bonus": ataque.dano_bonus,
+                    "acerto": ataque.acerto,
+                    "cd": ataque.cd,
+                    "teste": ataque.teste
                 }
-                self.tela.mostra_arma_do_jogador(
+                self.tela.mostra_ataque_do_monstro(
                     **atributos_ataque,
                     mostra_titulo=mostra_titulo
                 )
@@ -343,3 +349,4 @@ class ControladorMonstro(ControladorGenerico):
         if ataque:
             monstro.remove_arma(ataque)
             self.tela.executado_com_sucesso()
+
