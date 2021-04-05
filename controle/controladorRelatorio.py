@@ -34,12 +34,12 @@ class ControladorRelatorio(ControladorGenerico):
     """
 
     def registra_combate(self, atacante, defensor, dano: int):
-        combate = (
-            self.__counta_eventos,
-            atacante,
-            defensor,
-            dano,
-        )
+        combate = {
+            "evento": self.__counta_eventos,
+            "atacante": atacante,
+            "defensor": defensor,
+            "dano": dano,
+        }
         self.__eventos_combate.append(combate)
         self.__counta_eventos += 1
         self.tela.executado_com_sucesso()

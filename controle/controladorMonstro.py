@@ -8,6 +8,7 @@ class ControladorMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorMonstro, self).__init__(TelaMonstro(self))
         self.__controlador_principal = controlador_principal
+        self.__controlador_relatorio = controlador_principal.controlador_relatorio
         self.__controlador_ataque_monstro = controlador_principal.controlador_ataque_monstro
         self.__controlador_jogador = controlador_principal.controlador_jogador
         self.__monstros = []
@@ -127,7 +128,7 @@ class ControladorMonstro(ControladorGenerico):
             "defensor": defensor.nome,
             "dano": dano
         }
-
+        self.__controlador_relatorio.registra_combate(**dados)
         self.tela.resumo_combate(**dados)
 
     def mostra_atributos_do_monstro(self):
