@@ -1,22 +1,18 @@
 from limite.telaGenerica import TelaGenerica
 
 
-class TelaPrincipal(TelaGenerica):
+class TelaRelatorio(TelaGenerica):
 
     def __init__(self, controlador):
-        super(TelaPrincipal, self).__init__(controlador)
+        super(TelaRelatorio, self).__init__(controlador)
 
     def mostra_opcoes(self) -> int:
-        titulo_da_tela = "MENU PRINCIPAL"
+        titulo_da_tela = "MENU RELATORIOS"
 
         opcoes = (
-            (1, "Menu Jogador"),
-            (2, "Menu Monstro"),
-            (3, "Menu Arma"),
-            (4, "Menu Ataque Monstro"),
-            (5, "Menu Background"),
-            (6, "Menu Relatorio"),
-            (99, "Finaliza Programa")
+            (1, "Relatorio combate"),
+            (88, "Voltar"),
+            (99, "Finaliza programa")
         )
 
         self.cria_menu_opcoes(titulo_da_tela, opcoes)
@@ -29,3 +25,9 @@ class TelaPrincipal(TelaGenerica):
         )
 
         return self.protege_finalizar(opcao)
+
+    @staticmethod
+    def cria_relatorio(eventos_combate: list):
+        print("evento | atacate | defensor | dano")
+        for combate in eventos_combate:
+            print(f"{combate}")
