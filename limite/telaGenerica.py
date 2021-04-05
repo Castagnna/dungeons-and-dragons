@@ -80,6 +80,17 @@ class TelaGenerica(ABC):
                     if self.tela_confirma(msg_confirmacao):
                         return dado
 
+    def pega_imagem(self, caminho):
+        while True:
+            try:
+                entrada = input('Digite o nome do cenário: ')
+                imagem = pygame.image.load(caminho + entrada + '.png')
+                return imagem
+            except FileNotFoundError:
+                print('Imagem não encontrada, favor digitar novamente')
+            except:
+                print('Erro inesperado, favor entrar em contato com o suporte')
+
     @staticmethod
     def monstra_mensagem(mensagem: str):
         print("\n" + mensagem + "\n")

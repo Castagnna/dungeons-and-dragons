@@ -38,7 +38,7 @@ class TelaAtaqueMonstro(TelaGenerica):
             "dano_bonus": self.pega_dado("Dano bonus: ", "int"),
             "acerto": self.pega_dado("Acerto: ", "int"),
             "cd": self.pega_dado("Cd: ", "int"),
-            "teste": self.pega_dado("Teste: ", "str"),
+            "teste": self.pega_dado("Teste: ", "str", ["Forca", "Destreza", "Constituicao", "Sabedoria", "Inteligencia", "Carisma", "Nenhum"]),
         }
 
     @staticmethod
@@ -54,7 +54,7 @@ class TelaAtaqueMonstro(TelaGenerica):
         print("Nome: {}".format(ataque.nome))
         print("Quantidade dado: {}".format(ataque.quantidade_dado))
         print("Numero de faces: {}".format(ataque.numero_faces))
-        print("Dados bonus: {}".format(ataque.dados_bonus))
+        print("Dados bonus: {}".format(ataque.dano_bonus))
         print("Acerto: {}".format(ataque.acerto))
         print("Cd: {}".format(ataque.cd))
         print("Teste: {}".format(ataque.teste))
@@ -82,3 +82,10 @@ class TelaAtaqueMonstro(TelaGenerica):
         )
 
         return opcao
+
+    def pega_id_ataque(self, valores_validos) -> int:
+        print("Ataque Monstro, ", end="")
+        return self.pega_id(valores_validos)
+
+    def lista_ataques_monstro_vazia(self):
+        self.monstra_mensagem("A lista de ataques de monstros esta vazia")

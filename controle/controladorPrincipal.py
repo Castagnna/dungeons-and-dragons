@@ -11,6 +11,7 @@ import pygame
 
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
+        pygame.init()
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
         self.__controlador_relatorio = ControladorRelatorio(self)
         self.__controlador_arma = ControladorArma(self)
@@ -19,8 +20,13 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_background = ControladorBackground(self)
         self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
-        # self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
-        # self.__visualizacao = pygame.display.set_mode((1800, 1000))
+        self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
+        self.__fonte = pygame.font.SysFont(None, 55)
+        self.__letras = ('A','B','C','D','E','F','G','H','I','J',
+                         'K','L','M','N','O','P', 'Q', 'R', 'S',
+                         'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+        self.__numeros = ('1','2','3','4','5','6','7','8', '9')
+        self.__visualizacao = ''
 
     """
     getters
@@ -100,19 +106,55 @@ class ControladorPrincipal(ControladorGenerico):
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
 
+    def grid(self): # desenha o grid
+        lista_inicio = [100,100]
+        lista_x = [100, 1000] # ajustar de acordo com a resolução
+        lista_y = [1800, 100] # ajustar de acordo com a resolução
+        while lista_inicio[0] <= 1800: # ajustar de acordo com a resolução
+            pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_x, 1)
+            lista_inicio[0] += 100
+            lista_x[0] += 100
+        lista_inicio[0] = 100
+        while lista_inicio[1] <= 1000: # ajustar de acordo com a resolução
+            pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_y, 1)
+            lista_inicio[1] += 100
+            lista_y[1] += 100
+
+    def posicoes_grid(self): # adicionando orientações do grid
+        marcador_letras = 0
+        posicao_letras = [136,36]
+        marcador_numeros = 0
+        posicao_numeros = [36,136]
+        while posicao_letras[0] < 1800:
+            letra = self.__fonte.render(self.__letras[marcador_letras], True, (0,0,0))
+            self.__visualizacao.blit(letra, posicao_letras)
+            marcador_letras += 1
+            posicao_letras[0] += 100
+        while posicao_numeros[1] < 1000:
+            numero = self.__fonte.render(self.__numeros[marcador_numeros], True, (0,0,0))
+            self.__visualizacao.blit(numero, posicao_numeros)
+            marcador_numeros += 1
+            posicao_numeros[1] += 100
+
     def atualizar_visualizacao(self):
+        self.__visualizacao = pygame.display.set_mode((1800, 1000))
+        pygame.display.set_caption('Trabalho DSO')
         self.__visualizacao.fill((0, 0, 0))
         self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
                                  self.__controlador_background.mostra_posicao_mapa())
-        for monstro in range(len(self.__controlador_monstro.monstros)):
+        for monstro in self.__controlador_monstro.monstros:
             self.__visualizacao.blit(self.__controlador_monstro.mostra_imagem(monstro),
-                                     self.__controlador_monstro.mostrar_posicao(monstro))
-        for jogador in range(len(self.__controlador_jogador.jogadores)):
+                                     self.__controlador_monstro.mostra_posicao(monstro))
+        for jogador in self.__controlador_jogador.jogadores:
             self.__visualizacao.blit(self.__controlador_jogador.mostra_imagem(jogador),
-                                     self.__controlador_jogador.mostrar_posicao(jogador))
+                                     self.__controlador_jogador.mostra_posicao(jogador))
+        self.grid()
+        pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[0])
+        pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[1])
+        self.posicoes_grid()
         pygame.display.flip()
 
-    def movimentar_mapa(self, x: int, y: int):
-        self.__controlador_jogador.mapa_moveu(x, y)
-        self.__controlador_monstro.mapa_moveu(x, y)
+    def movimentar_mapa(self, valores: list):
+        self.__controlador_jogador.mapa_moveu(valores[0], valores[1])
+        self.__controlador_monstro.mapa_moveu(valores[0], valores[1])
         self.atualizar_visualizacao()

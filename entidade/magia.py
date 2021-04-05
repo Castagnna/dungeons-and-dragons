@@ -38,7 +38,7 @@ class Magia:
         return self.__teste
 
     """
-    getters
+    setters
     """
 
     @nome.setter

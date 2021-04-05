@@ -32,6 +32,7 @@ class Monstro(Personagem):
         self.__tipo = tipo
         self.__ataques = []
         self.__experiencia = experiencia
+        self.__atacado_por = set()
 
     """
     getters
@@ -75,17 +76,37 @@ class Monstro(Personagem):
             except:
                 print('Valor inválido, favor digitar o número referente ao ataque que deseja excluir')
 
-    def atacar(self, personagem: Personagem):
-        self.mostrar_ataques()
-        while True:
-            try:
-                selecao = int(input('Digite o número correspondente ao ataque: '))
-                ataque = self.__ataques[selecao]
-                break
-            except:
-                print('Valor inválido, favor digitar o número referente ao ataque')
-        if (random.randint(1,20) + ataque.acerto) > personagem.ca:
-            contador = 0
-            for i in range(ataque.quantidade_dado):
-                contador += random.randint(1,ataque.numero_faces)
-            personagem.recebe_ataque(contador + ataque.dano_bonus)
+    @property
+    def atacado_por(self):
+        return self.__atacado_por
+
+    @property
+    def tipo(self):
+        return self.__tipo
+
+    @property
+    def experiencia(self):
+        return self.__experiencia
+
+    @atacado_por.setter
+    def atacado_por(self, atacado):
+        if isinstance(atacado, set):
+            self.__atacado_por = atacado
+
+    @property
+    def ataques(self):
+        return self.__ataques
+
+    @tipo.setter
+    def tipo(self, tipo: str):
+        if isinstance(tipo, str):
+            self.__tipo = tipo
+
+    @experiencia.setter
+    def experiencia(self, experiencia: int):
+        if isinstance(experiencia, int):
+            self.__experiencia = experiencia
+
+    def adiciona_atacante(self, atacante):
+        self.__atacado_por.add(atacante)
+

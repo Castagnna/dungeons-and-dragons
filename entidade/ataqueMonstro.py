@@ -8,9 +8,9 @@ class AtaqueMonstro:
         quantidade_dado: int,
         numero_faces: int,
         dano_bonus: int,
-        acerto: int,
-        cd: int,
-        teste: str
+        acerto: int = 0,
+        cd: int = 0,
+        teste: str = None
         ):
         self.__id = id
         self.__nome = nome
