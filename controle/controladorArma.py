@@ -62,11 +62,17 @@ class ControladorArma(ControladorGenerico):
                 self.__armas.remove(arma)
                 self.tela.arma_removida_com_sucesso(arma.nome)
 
-    def mostra_atributos_da_arma(self, arma=None):
+    def mostra_atributos_da_arma(self, arma: Arma = None):
         if not arma:
             arma = self.pega_arma_por_id()
         try:
-            self.tela.mostra_atributos_da_arma(arma)
+            atributos = {
+                "id": arma.id,
+                "nome": arma.nome,
+                "dados": arma.quantidade_dado,
+                "faces": arma.numero_faces,
+            }
+            self.tela.mostra_atributos_da_arma(atributos)
         except AttributeError:
             pass
 

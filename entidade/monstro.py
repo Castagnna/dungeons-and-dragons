@@ -33,6 +33,30 @@ class Monstro(Personagem):
         self.__ataques = []
         self.__experiencia = experiencia
 
+    """
+    getters
+    """
+
+    @property
+    def ataques(self) -> list:
+        return self.__ataques
+
+    @property
+    def tipo(self) -> str:
+        return self.__tipo
+
+    @property
+    def experiencia(self) -> int:
+        return self.__experiencia
+
+    """
+    setters
+    """
+
+    """
+    methods
+    """
+
     def inserir_ataque(self, ataque: AtaqueMonstro):
         if isinstance(ataque, AtaqueMonstro):
             self.__ataques.append(ataque)

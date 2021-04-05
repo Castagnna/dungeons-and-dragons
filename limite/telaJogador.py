@@ -27,7 +27,7 @@ class TelaJogador(TelaGenerica):
             (10, "Vincular magia"),
             (11, "Desincular magia"),
             (12, "Mostrar magias do jogador"),
-            (13, "Lancar magia no monstro"),
+            # (13, "Lancar magia no monstro"),
             (77, "Cria jogador teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
@@ -88,6 +88,20 @@ class TelaJogador(TelaGenerica):
         mensagem = f"Vincular {nome_magia} ao jogador {nome_jogador}"
         return self.tela_confirma(mensagem)
 
+    @staticmethod
+    def pega_imagem():
+        tentativas = 0
+        while tentativas < 2:
+            try:
+                nome = input("Nome do arquivo de imagem: ")
+                imagem = load("imagens/" + nome + ".png")
+                return imagem
+            except FileNotFoundError:
+                print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
+                tentativas += 1
+        print("Numero de tantativa esgotado, iniciado com imagem padrao")
+        return load("imagens/jogador.png")
+
     """
     outputs
     """
@@ -142,18 +156,3 @@ class TelaJogador(TelaGenerica):
 
     def cria_magia(self):
         self.monstra_mensagem("Crie uma magia para vincular")
-
-    @staticmethod
-    def pega_imagem():
-        tentativas = 0
-        while tentativas < 2:
-            try:
-                nome = input("Nome do arquivo de imagem: ")
-                imagem = load("imagens/" + nome + ".png")
-                return imagem
-            except FileNotFoundError:
-                print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
-                tentativas += 1
-        print("Numero de tantativa esgotado, iniciado com imagem padrao")
-        return load("imagens/jogador.png")
-

@@ -147,6 +147,8 @@ class ControladorJogador(ControladorGenerico):
                 "magias": [magia.nome for magia in jogador.magias if jogador.magias],
                 "vida_maxima": jogador.vida_maxima,
                 "vida_atual": jogador.vida_atual,
+                "dano_causado": jogador.dano_causado,
+                "dano_sofrido": jogador.dano_sofrido,
                 "tamanho": jogador.tamanho,
                 "nome_jogador": jogador.nome_jogador,
                 "level": jogador.level,
