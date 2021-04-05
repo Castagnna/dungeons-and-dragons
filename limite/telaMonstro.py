@@ -25,6 +25,9 @@ class TelaMonstro(TelaGenerica):
             (5, "Excluir ataque do monstro"),
             (6, "Atacar jogador"),
             (7, "Movimentar monstro"),
+            (8, "Mostra atributos do monstro"),
+            (9, "Atacar jogador"),
+            (77, "Cria monstro teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -41,6 +44,15 @@ class TelaMonstro(TelaGenerica):
         return self.protege_finalizar(opcao)
 
     def pega_dados_do_monstro(self) -> dict:
+        valores_validos = [
+            "Minusculo",
+            "Pequeno",
+            "Medio",
+            "Grande",
+            "Enorme",
+            "Colossal"
+        ]
+
         return {
             "nome": self.pega_dado("Nome: ", "str"),
             "forca": self.pega_dado("Forca: ", "int"),
@@ -53,7 +65,7 @@ class TelaMonstro(TelaGenerica):
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
-            "tamanho": self.pega_dado("Tamanho: ", "str"),
+            "tamanho": self.pega_dado("Tamanho: ", "str", valores_validos),
             "tipo": self.pega_dado("Tipo: ", "str"),
             "experiencia": self.pega_dado("Experiencia: ", "int"),
         }
@@ -74,7 +86,7 @@ class TelaMonstro(TelaGenerica):
         self.monstra_mensagem("Monstro {} excluido com sucesso".format(nome))
 
     def pega_dano(self):
-        return self.pega_dado("Insira o valor de dano: ", "str", None, True)
+        return self.pega_dado("Insira o valor de dano: ", "int", None, True)
 
     @staticmethod
     def resumo_combate(atacante: str, defensor: str, dano: int):
@@ -137,3 +149,13 @@ class TelaMonstro(TelaGenerica):
                 print('Digite apenas 2 valores, sendo 1 letra X e 1 número para Y')
             except:
                 print('Erro inesperado, favor entrar em contato com o suporte')
+
+    def resumo_combate(self, atacante: str, defensor: str, dano: int):
+        mensagem = f"{atacante} causou {dano} ao {defensor}"
+        self.monstra_mensagem(mensagem)
+
+    @staticmethod
+    def mostra_atributos(atributos: dict):
+        for atributo, valor in atributos.items():
+            print(f"{atributo}: {valor}")
+

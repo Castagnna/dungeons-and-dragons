@@ -3,12 +3,12 @@ from entidade.background import Background
 from limite.telaBackground import TelaBackground
 import pygame
 
+
 class ControladorBackground(ControladorGenerico):
     def __init__(self, principal):
         super(ControladorBackground, self).__init__(TelaBackground(self))
         self.__controlador_principal = principal
         self.__background = Background(pygame.image.load('mapas/Branco.png'), (0,0,5000,5000))
-
 
     def movimentar_mapa(self):
         valores = self.tela.movimenta_mapa()
@@ -25,7 +25,7 @@ class ControladorBackground(ControladorGenerico):
         self.__background = Background(imagem, posicao)
 
     def mostra_tela(self):
-
+      
         funcoes = {
             1: self.inseri_imagem,
             2: self.movimentar_mapa

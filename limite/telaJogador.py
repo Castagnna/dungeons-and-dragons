@@ -54,6 +54,14 @@ class TelaJogador(TelaGenerica):
         return self.protege_finalizar(opcao)
 
     def pega_dados_do_jogador(self) -> dict:
+        valores_validos = [
+            "Minusculo", 
+            "Pequeno",
+            "Medio",
+            "Grande",
+            "Enorme",
+            "Colossal"
+        ]
         return {
             "nome": self.pega_dado("Nome: ", "str"),
             "forca": self.pega_dado("Forca: ", "int"),
@@ -66,7 +74,7 @@ class TelaJogador(TelaGenerica):
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
-            "tamanho": self.pega_dado("Tamanho: ", "str",['Minusculo', 'Pequeno', 'Medio', 'Grande', 'Enorme', 'Colossal']),
+            "tamanho": self.pega_dado("Tamanho: ", "str", valores_validos),
             "nome_jogador": self.pega_dado("Nome do jogador: ", "str"),
             "level": self.pega_dado("Level: ", "int"),
             "experiencia": self.pega_dado("Experiencia: ", "int"),
@@ -90,6 +98,20 @@ class TelaJogador(TelaGenerica):
     def confirma_vincular(self, nome_magia, nome_jogador):
         mensagem = f"Vincular {nome_magia} ao jogador {nome_jogador}"
         return self.tela_confirma(mensagem)
+
+    @staticmethod
+    def pega_imagem():
+        tentativas = 0
+        while tentativas < 2:
+            try:
+                nome = input("Nome do arquivo de imagem: ")
+                imagem = load("imagens/" + nome + ".png")
+                return imagem
+            except FileNotFoundError:
+                print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
+                tentativas += 1
+        print("Numero de tantativa esgotado, iniciado com imagem padrao")
+        return load("imagens/jogador.png")
 
     """
     outputs

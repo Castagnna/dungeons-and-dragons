@@ -15,6 +15,7 @@ class TelaPrincipal(TelaGenerica):
             (3, "Menu Arma"),
             (4, "Menu Ataque Monstro"),
             (5, "Menu Background"),
+            (6, "Menu Relatorio"),
             (99, "Finaliza Programa")
         )
 
