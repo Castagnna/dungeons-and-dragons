@@ -6,7 +6,7 @@ from entidade.ataqueMonstro import AtaqueMonstro
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
-        self.__tela = TelaAtaqueMonstro(self)
+        self.__controlador_principal = controlador_principal
         self.__ataques_monstro = []
         self.__controlador_principal = controlador_principal
         self.__counta_ataque_monstro = 0

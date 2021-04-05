@@ -7,11 +7,11 @@ from entidade.magia import Magia
 import pygame
 
 
-
 class ControladorJogador(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorJogador, self).__init__(TelaJogador(self))
         self.__controlador_principal = controlador_principal
+        self.__controlador_relatorio = controlador_principal.controlador_relatorio
         self.__controlador_arma = controlador_principal.controlador_arma
         self.__controlador_monstro = None
         self.__controlador_magia = ControladorMagia(self)
@@ -62,9 +62,10 @@ class ControladorJogador(ControladorGenerico):
             if self != controlador_monstro.controlador_jogador:
                 controlador_monstro.controlador_jogador = self
 
+    def cria_novo_jogador(self, dados: dict = None):
+        if not dados:
+            dados = self.tela.pega_dados_do_jogador()
 
-    def cria_novo_jogador(self):
-        dados = self.__tela.pega_dados_do_jogador()
         if dados['tamanho'] == 'Grande':
             dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
         elif dados['tamanho'] == 'Enorme':
@@ -94,6 +95,7 @@ class ControladorJogador(ControladorGenerico):
             "inteligencia": 10,
             "sabedoria": 10,
             "carisma": 10,
+            "imagem": pygame.image.load("imagens/jogador.png"),
             "ca": 10,
             "vida_maxima": 10,
             "vida_atual": 10,
@@ -146,6 +148,8 @@ class ControladorJogador(ControladorGenerico):
                 "magias": [magia.nome for magia in jogador.magias if jogador.magias],
                 "vida_maxima": jogador.vida_maxima,
                 "vida_atual": jogador.vida_atual,
+                "dano_causado": jogador.dano_causado,
+                "dano_sofrido": jogador.dano_sofrido,
                 "tamanho": jogador.tamanho,
                 "nome_jogador": jogador.nome_jogador,
                 "level": jogador.level,
@@ -223,15 +227,19 @@ class ControladorJogador(ControladorGenerico):
             "defensor": defensor.nome,
             "dano": dano
         }
-
+        self.__controlador_relatorio.registra_combate(**dados)
         self.tela.resumo_combate(**dados)
 
     def vincula_magia(self):
-        self.tela.cria_magia()
-        magia = self.__controlador_magia.cria_magia()
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return None
+
+        self.tela.cria_magia()
+        magia = self.__controlador_magia.cria_magia()
 
         if self.tela.confirma_vincular(magia.nome, jogador.nome):
             jogador.vincula_magia(magia)
@@ -248,6 +256,9 @@ class ControladorJogador(ControladorGenerico):
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return None
 
         magia = self.pega_magia_por_id(jogador)
 

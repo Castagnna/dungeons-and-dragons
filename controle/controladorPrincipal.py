@@ -4,6 +4,7 @@ from controle.controladorMonstro import ControladorMonstro
 from controle.controladorArma import ControladorArma
 from controle.controladorAtaqueMonstro import ControladorAtaqueMonstro
 from controle.controladorBackground import ControladorBackground
+from controle.controladorRelatorio import ControladorRelatorio
 from limite.telaPrincipal import TelaPrincipal
 import pygame
 
@@ -11,6 +12,7 @@ import pygame
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
+        self.__controlador_relatorio = ControladorRelatorio(self)
         self.__controlador_arma = ControladorArma(self)
         self.__controlador_jogador = ControladorJogador(self)
         self.__controlador_ataque_monstro = ControladorAtaqueMonstro(self)
@@ -40,6 +42,10 @@ class ControladorPrincipal(ControladorGenerico):
     @property
     def controlador_monstro(self):
         return self.__controlador_monstro
+
+    @property
+    def controlador_relatorio(self):
+        return self.__controlador_relatorio
 
     """
     setters
@@ -79,6 +85,9 @@ class ControladorPrincipal(ControladorGenerico):
     def opcoes_background(self):
         self.__controlador_background.mostra_tela()
 
+    def opcoes_relatorio(self):
+        self.__controlador_relatorio.mostra_tela()
+
     def mostra_tela(self):
 
         funcoes = {
@@ -87,6 +96,7 @@ class ControladorPrincipal(ControladorGenerico):
             3: self.opcoes_arma,
             4: self.opcoes_ataque_monstro,
             5: self.opcoes_background,
+            6: self.opcoes_relatorio,
         }
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
