@@ -11,6 +11,7 @@ class ControladorJogador(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorJogador, self).__init__(TelaJogador(self))
         self.__controlador_principal = controlador_principal
+        self.__controlador_relatorio = controlador_principal.controlador_relatorio
         self.__controlador_arma = controlador_principal.controlador_arma
         self.__controlador_monstro = None
         self.__controlador_magia = ControladorMagia(self)
@@ -226,7 +227,7 @@ class ControladorJogador(ControladorGenerico):
             "defensor": defensor.nome,
             "dano": dano
         }
-
+        self.__controlador_relatorio.registra_combate(**dados)
         self.tela.resumo_combate(**dados)
 
     def vincula_magia(self):
