@@ -15,6 +15,7 @@ class TelaArma(TelaGenerica):
             (3, "Remove arma"),
             (4, "Mostra atributos da arma"),
             (5, "Alterar arma"),
+            (77, "Cria arma teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )

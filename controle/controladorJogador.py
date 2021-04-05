@@ -228,11 +228,15 @@ class ControladorJogador(ControladorGenerico):
         self.tela.resumo_combate(**dados)
 
     def vincula_magia(self):
-        self.tela.cria_magia()
-        magia = self.__controlador_magia.cria_magia()
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return None
+
+        self.tela.cria_magia()
+        magia = self.__controlador_magia.cria_magia()
 
         if self.tela.confirma_vincular(magia.nome, jogador.nome):
             jogador.vincula_magia(magia)
@@ -249,6 +253,9 @@ class ControladorJogador(ControladorGenerico):
 
         self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return None
 
         magia = self.pega_magia_por_id(jogador)
 
