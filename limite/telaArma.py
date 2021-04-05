@@ -15,6 +15,7 @@ class TelaArma(TelaGenerica):
             (3, "Remove arma"),
             (4, "Mostra atributos da arma"),
             (5, "Alterar arma"),
+            (77, "Cria arma teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )
@@ -44,12 +45,12 @@ class TelaArma(TelaGenerica):
             print("{} | {}".format(arma.id, arma.nome))
 
     @staticmethod
-    def mostra_atributos_da_arma(arma):
-        print("\n------ Atributos de {} ------".format(arma.nome))
-        print("Id: {}".format(arma.id))
-        print("Nome: {}".format(arma.nome))
-        print("Quantidade dado: {}".format(arma.quantidade_dado))
-        print("Numero de faces: {}".format(arma.numero_faces))
+    def mostra_atributos_da_arma(atributos):
+        print("\n------ Atributos da arma ------")
+        print(f"Id: {atributos['id']}")
+        print(f"Nome: {atributos['nome']}")
+        print(f"Quantidade dado: {atributos['dados']}")
+        print(f"Numero de faces: {atributos['faces']}")
 
     def mostra_alterar_arma(self) -> int:
         titulo_da_tela = "ALTERAR ARMA"

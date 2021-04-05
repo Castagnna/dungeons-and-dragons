@@ -21,8 +21,9 @@ class ControladorArma(ControladorGenerico):
     def mostra_armas(self):
         self.tela.mostra_armas(self.__armas)
 
-    def cria_nova_arma(self):
-        dados = self.tela.pega_dados_da_arma()
+    def cria_nova_arma(self, dados: dict = None):
+        if not dados:
+            dados = self.tela.pega_dados_da_arma()
         arma = Arma(
             id=self.__counta_armas,
             **dados
@@ -30,6 +31,14 @@ class ControladorArma(ControladorGenerico):
         self.__armas.append(arma)
         self.__counta_armas += 1
         self.tela.executado_com_sucesso()
+
+    def cria_arma_teste(self):
+        dados = {
+            "nome": f"arma {self.__counta_armas}",
+            "quantidade_dado": 1,
+            "numero_faces": 6,
+        }
+        self.cria_nova_arma(dados)
 
     def pega_arma_por_id(self):
         if self.__armas:
@@ -53,11 +62,17 @@ class ControladorArma(ControladorGenerico):
                 self.__armas.remove(arma)
                 self.tela.arma_removida_com_sucesso(arma.nome)
 
-    def mostra_atributos_da_arma(self, arma=None):
+    def mostra_atributos_da_arma(self, arma: Arma = None):
         if not arma:
             arma = self.pega_arma_por_id()
         try:
-            self.tela.mostra_atributos_da_arma(arma)
+            atributos = {
+                "id": arma.id,
+                "nome": arma.nome,
+                "dados": arma.quantidade_dado,
+                "faces": arma.numero_faces,
+            }
+            self.tela.mostra_atributos_da_arma(atributos)
         except AttributeError:
             pass
 
@@ -92,6 +107,7 @@ class ControladorArma(ControladorGenerico):
             3: self.remove_arma,
             4: self.mostra_atributos_da_arma,
             5: self.alterar_arma,
+            77: self.cria_arma_teste,
         }
 
         super(ControladorArma, self).mostra_tela(funcoes)
