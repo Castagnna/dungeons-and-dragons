@@ -74,3 +74,25 @@ class TelaMagia(TelaGenerica):
         )
 
         return opcao
+
+    def mostra_alterar_magia(self) -> int:
+        titulo_da_tela = "ALTERAR MAGIA"
+
+        opcoes = (
+            (1, "Novo nome"),
+            (2, "Alterar quantidade de dados"),
+            (3, "Alterar faces"),
+            (4, "Circulo"),
+            (5, "Teste"),
+        )
+
+        self.cria_menu_opcoes(titulo_da_tela, opcoes)
+
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=[codigo for codigo, _ in opcoes],
+            confirmar=False
+        )
+
+        return opcao

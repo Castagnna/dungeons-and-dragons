@@ -38,7 +38,7 @@ class TelaAtaqueMonstro(TelaGenerica):
             "dano_bonus": self.pega_dado("Dano bonus: ", "int"),
             "acerto": self.pega_dado("Acerto: ", "int"),
             "cd": self.pega_dado("Cd: ", "int"),
-            "teste": self.pega_dado("Teste: ", "str"),
+            "teste": self.pega_dado("Teste: ", "str", ["Forca", "Destreza", "Constituicao", "Sabedoria", "Inteligencia", "Carisma", "Nenhum"]),
         }
 
     @staticmethod

@@ -37,3 +37,31 @@ class ControladorMagia(ControladorGenerico):
         }
 
         super(ControladorMagia, self).mostra_tela(funcoes)
+
+    def altera_magia(self, magia):
+        opcao = self.tela.mostra_alterar_magia()
+
+        funcoes = {
+            1: ("nome", "str"),
+            2: ("dados", "int"),
+            3: ("faces", "int"),
+            4: ('circulo', 'int'),
+            5: ('teste', 'str')
+        }
+
+        tipo = funcoes[opcao][1]
+
+        novo_valor = self.tela.pega_dado(
+            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
+            tipo=tipo
+        )
+        if opcao == 1:
+            magia.nome = novo_valor
+        elif opcao == 2:
+            magia.quantidade_dado = novo_valor
+        elif opcao == 3:
+            magia.numero_faces = novo_valor
+        elif opcao == 4:
+            magia.circulo = novo_valor
+        else:
+            magia.teste = novo_valor

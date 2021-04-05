@@ -52,7 +52,39 @@ class ControladorAtaqueMonstro(ControladorGenerico):
             self.tela.mostra_atributos_do_ataque(ataque)
 
     def altera_atributos_ataque_monstro(self):
-        pass
+        ataque = self.pega_ataque_por_id()
+        opcao = self.tela.mostra_alterar_ataque()
+
+        funcoes = {
+            1: ("nome", "str"),
+            2: ("dados", "int"),
+            3: ("faces", "int"),
+            4: ('dano_bonus', 'int'),
+            5: ('acerto', 'int'),
+            6: ('cd', 'int'),
+            7: ('teste', 'str')
+        }
+
+        tipo = funcoes[opcao][1]
+
+        novo_valor = self.tela.pega_dado(
+            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
+            tipo=tipo
+        )
+        if opcao == 1:
+            ataque.nome = novo_valor
+        elif opcao == 2:
+            ataque.quantidade_dado = novo_valor
+        elif opcao == 3:
+            ataque.numero_faces = novo_valor
+        elif opcao == 4:
+            ataque.dano_bonus = novo_valor
+        elif opcao == 5:
+            ataque.acerto = novo_valor
+        elif opcao == 6:
+            ataque.cd = novo_valor
+        else:
+            ataque.teste = novo_valor
 
     def pega_ataque_por_id(self) -> AtaqueMonstro:
         if self.__ataques_monstro:

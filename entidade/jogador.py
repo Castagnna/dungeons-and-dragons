@@ -10,16 +10,16 @@ class Jogador(Personagem):
                  sabedoria: int, carisma: int, imagem: pygame.image.load,
                  ca: int, vida_maxima: int,
                  tamanho: str, posicao: list, vida_atual: int,
-                 nome_jogador: str, level: int, experiencia: int):
+                 nome_jogador: str, level: int, experiencia: int,proficiencia: int, cd: int):
     
         super().__init__(id, nome, forca, destreza, constituicao, inteligencia, sabedoria,
                          carisma, imagem, ca, vida_maxima, tamanho, posicao, vida_atual)
         self.__nome_jogador = nome_jogador
         self.__level = level
         self.__experiencia = experiencia
-        self.__espaco_magia = dict()
-        self.__proficiencia = 0
-        self.__cd = 0
+        self.__espaco_magia = {0: float('inf'), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
+        self.__proficiencia = proficiencia
+        self.__cd = cd
         self.__armas = []
         self.__magias = []
         self.__raca = None
@@ -56,6 +56,10 @@ class Jogador(Personagem):
     def experiencia(self):
         return self.__experiencia
 
+    @property
+    def cd(self):
+        return self.__cd
+
     """
     setters
     """
@@ -74,6 +78,21 @@ class Jogador(Personagem):
     def proficiencia(self, proficiencia: int):
         if isinstance(proficiencia, int):
             self.__proficiencia = proficiencia
+
+    @cd.setter
+    def cd(self, cd):
+        if isinstance(cd, int):
+            self.__cd = cd
+
+    @experiencia.setter
+    def experiencia(self, experiencia):
+        if isinstance(experiencia, int):
+            self.__experiencia = experiencia
+
+    @level.setter
+    def level(self, level):
+        if isinstance(level, int):
+            self.__level = level
 
     """
     methods
@@ -102,10 +121,6 @@ class Jogador(Personagem):
     def set_espaco_magia(self, circulo: int, quantidade: int):
         if isinstance(circulo, int) and isinstance(quantidade, int):
             self.__espaco_magia[circulo] = quantidade
-
-    def calcula_cd(self):
-        # TODO: implementar
-        pass
 
     def recebe_experiencia(self, experiencia: int):
         if isinstance(experiencia, int):

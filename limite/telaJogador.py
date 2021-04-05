@@ -1,10 +1,18 @@
 from limite.telaGenerica import TelaGenerica
-
+import pygame
 
 class TelaJogador(TelaGenerica):
 
     def __init__(self, controlador):
         super(TelaJogador, self).__init__(controlador)
+        self.__dicio_letras = {'A': 100, 'B': 200, 'C': 300, 'D': 400, 'E': 500,
+                               'F': 600, 'G': 700, 'H': 800, 'I': 900, 'J': 1000,
+                               'K': 1100, 'L': 1200, 'M': 1300, 'N': 1400, 'O': 1500,
+                               'P': 1600, 'Q': 1700, 'R': 1800, 'S': 1900,
+                               'T': 2000, 'U': 2100, 'V': 2200, 'W': 2300,
+                               'X': 2400, 'Y': 2500, 'Z': 2500}
+        self.__dicio_numeros = {'1': 100, '2': 200, '3': 300, '4': 400, '5': 500, '6': 600, '7': 700, '8': 800,
+                                '9': 900}
 
     """
     inputs
@@ -26,7 +34,9 @@ class TelaJogador(TelaGenerica):
             (10, "Vincular magia"),
             (11, "Desincular magia"),
             (12, "Mostrar magias do jogador"),
-            (13, "Lancar magia no monstro"),
+            (13, "Alterar atributo magia"),
+            (14, "Lancar magia no monstro"),
+            (15, "Movimentar jogador"),
             (77, "Cria jogador teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
@@ -52,7 +62,7 @@ class TelaJogador(TelaGenerica):
             "inteligencia": self.pega_dado("Inteligencia: ", "int"),
             "sabedoria": self.pega_dado("Sabedoria: ", "int"),
             "carisma": self.pega_dado("Carisma: ", "int"),
-            "imagem": self.pega_imagem('personagens/'),
+            "imagem": self.pega_imagem('tokens/'),
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
@@ -60,6 +70,8 @@ class TelaJogador(TelaGenerica):
             "nome_jogador": self.pega_dado("Nome do jogador: ", "str"),
             "level": self.pega_dado("Level: ", "int"),
             "experiencia": self.pega_dado("Experiencia: ", "int"),
+            "proficiencia": self.pega_dado("Proficiencia: ", "int"),
+            "cd": self.pega_dado("CD: ", "int")
         }
 
     def pega_dano(self):
@@ -133,3 +145,66 @@ class TelaJogador(TelaGenerica):
 
     def cria_magia(self):
         self.monstra_mensagem("Crie uma magia para vincular")
+
+    def pega_imagem(self, caminho):
+        while True:
+            try:
+                entrada = input('Digite o nome da imagem que pretende usar: ')
+                imagem = pygame.image.load(caminho + entrada + '.png')
+                return imagem
+            except FileNotFoundError:
+                print('Imagem não encontrada, favor digitar novamente')
+            except:
+                print('Erro inesperado, favor entrar em contato com o suporte')
+
+    def espaco_magia_insu(self, circulo):
+        print('Você não tem espaço de magia do {} circulo'.format(str(circulo)))
+
+    def pede_modificador_magia(self):
+        return self.pega_dado("Modificador para magia: ", "str", ["Sabedoria", "Inteligencia", "Carisma"])
+
+    def mostra_alterar_jogador(self) -> int:
+        titulo_da_tela = "ALTERAR JOGADOR"
+
+        opcoes = (
+            (1, "Novo nome"),
+            (2, "Alterar forca"),
+            (3, "Alterar destreza"),
+            (4, 'Alterar constituicao'),
+            (5, 'Alterar inteligencia'),
+            (6, 'Alterar sabedoria'),
+            (7, 'Alterar carisma'),
+            (8, 'Alterar imagem'),
+            (9, 'Alterar ca'),
+            (10, 'Alterar vida maxima'),
+            (11, 'Alterar tamanho'),
+            (12, 'Alterar vida atual'),
+            (13, 'Alterar nome do jogador'),
+            (14, 'Alterar level'),
+            (15, 'Alterar experiencia'),
+            (16, 'Alterar proficiencia'),
+            (17, 'Alterar CD')
+        )
+
+        self.cria_menu_opcoes(titulo_da_tela, opcoes)
+
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=[codigo for codigo, _ in opcoes],
+            confirmar=False
+        )
+
+        return opcao
+
+    def movimenta_jogador(self):
+        while True:
+            try:
+                entrada = input('Digite os valores para X (letra) e Y (número): ')
+                if len(entrada) != 2 and entrada[0].upper() not in self.__dicio_letras.keys() and entrada[1] not in self.__dicio_numeros.keys():
+                    raise AttributeError
+                return [self.__dicio_letras[entrada[0].upper()], self.__dicio_numeros[entrada[1]]]
+            except AttributeError:
+                print('Digite apenas 2 valores, sendo 1 letra X e 1 número para Y')
+            except:
+                print('Erro inesperado, favor entrar em contato com o suporte')

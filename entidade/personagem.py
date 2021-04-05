@@ -15,7 +15,7 @@ class Personagem(ABC):
         inteligencia: int,
         sabedoria: int,
         carisma: int,
-        imagem: pygame.image.load,
+        imagem: pygame.Surface,
         ca: int,
         vida_maxima: int,
         tamanho: str,
@@ -117,8 +117,12 @@ class Personagem(ABC):
         return self.__carisma
 
     @property
+    def imagem(self):
+        return self.__imagem
+
+    @property
     def posicao(self):
-        return self.__posicao
+        return self.__posicao[:2]
 
     @posicao.setter
     def posicao(self, x: int, y: int):
@@ -178,6 +182,11 @@ class Personagem(ABC):
         if isinstance(id, int):
             self.__id = id
 
+    @nome.setter
+    def nome(self, nome):
+        if isinstance(nome, str):
+            self.__nome = nome
+
     @forca.setter
     def forca(self, forca: int):
         if isinstance(forca, int):
@@ -219,6 +228,24 @@ class Personagem(ABC):
         if isinstance(ca, int):
             self.__ca = ca
 
+    @tamanho.setter
+    def tamanho(self, tamanho):
+        if isinstance(tamanho, str):
+            self.__tamanho = tamanho
+            if self.__tamanho == 'Grande':
+                self.__imagem = pygame.transform.scale(self.__imagem, (200, 200))
+            elif self.__tamanho == 'Enorme':
+                self.__imagem = pygame.transform.scale(self.__imagem, (300, 300))
+            elif self.__tamanho == 'Colossal':
+                self.__imagem = pygame.transform.scale(self.__imagem, (400, 400))
+            else:
+                self.__imagem = pygame.transform.scale(self.__imagem, (100, 100))
+
+    @vida_maxima.setter
+    def vida_maxima(self, vida_maxima):
+        if isinstance(vida_maxima, int):
+            self.__vida_maxima = vida_maxima
+
     @atacar_vantagem.setter
     def atacar_vantagem(self, valor: bool):
         if isinstance(valor, bool):
@@ -244,6 +271,11 @@ class Personagem(ABC):
         if isinstance(vida, int):
             self.__vida_atual = vida
 
+    @imagem.setter
+    def imagem(self, imagem: pygame.image.load):
+        if isinstance(imagem, pygame.Surface):
+            self.__imagem = imagem
+
     """
     methods
     """
@@ -252,13 +284,9 @@ class Personagem(ABC):
     def calcula_modificador(atributo):
         return (atributo - 10) // 2
 
-    def movimentar(self, posicao: list): #ajustar conforme método de localização
+    def movimentar(self, posicao: list):
         self.__posicao = posicao
         self.__movimentacao_acumulado += ((posicao[0]**2 + posicao[1]**2)**(1/2))
-
-    @abstractmethod
-    def atacar(self, personagem):
-        pass
 
     @staticmethod
     def realizar_teste(modificador: int):
