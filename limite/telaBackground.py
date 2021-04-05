@@ -6,20 +6,26 @@ class TelaBackground(TelaGenerica):
     def __init__(self, controlador):
         super(TelaBackground, self).__init__(controlador)
 
-    def mostrar_opcoes(self):
-        print('Escolha uma opção')
-        print('1 - Criar/Alterar Background')
-        print('2 - Movimentar Mapa')
-        while True:
-            try:
-                opcao = int(input('Digite o número correspondente: '))
-                if opcao not in [1, 2]:
-                    raise ValueError
-                return opcao
-            except ValueError:
-                print('Favor digitar o número correspondete a opção')
-            except:
-                print('Erro inesperado, favor entrar em contato com o suporte')
+    def mostra_opcoes(self):
+        titulo_da_tela = "MENU BACKGROUND"
+
+        opcoes = (
+            (1, "Criar/Alterar Background"),
+            (2, "Movimentar Mapa"),
+            (88, "Voltar"),
+            (99, "Finaliza programa")
+        )
+
+        self.cria_menu_opcoes(titulo_da_tela, opcoes)
+
+        opcao = self.pega_dado(
+            mensagem="\n>>> Escolha uma opção: ",
+            tipo="int",
+            valores_validos=[codigo for codigo, _ in opcoes],
+            confirmar=False
+        )
+
+        return self.protege_finalizar(opcao)
 
     def movimenta_mapa(self):
         while True:
@@ -34,3 +40,6 @@ class TelaBackground(TelaGenerica):
                 print('Digite apenas 2 valores, sendo 1 para X e outro para Y, separados por espaço')
             except:
                 print('Erro inesperado, favor entrar em contato com o suporte')
+
+    def pede_imagem(self, caminho):
+        return super(TelaBackground, self).pega_imagem(caminho)

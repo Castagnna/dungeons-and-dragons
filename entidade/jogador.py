@@ -103,14 +103,6 @@ class Jogador(Personagem):
         if isinstance(circulo, int) and isinstance(quantidade, int):
             self.__espaco_magia[circulo] = quantidade
 
-    def lancar_magia(self, magia: Magia):
-        # TODO: implementar
-        pass
-
-    def atacar(self, personagem: Personagem):
-        # TODO: implementar
-        pass
-
     def calcula_cd(self):
         # TODO: implementar
         pass

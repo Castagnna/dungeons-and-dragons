@@ -82,3 +82,10 @@ class TelaAtaqueMonstro(TelaGenerica):
         )
 
         return opcao
+
+    def pega_id_ataque(self, valores_validos) -> int:
+        print("Ataque Monstro, ", end="")
+        return self.pega_id(valores_validos)
+
+    def lista_ataques_monstro_vazia(self):
+        self.monstra_mensagem("A lista de ataques de monstros esta vazia")

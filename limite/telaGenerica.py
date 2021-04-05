@@ -87,7 +87,7 @@ class TelaGenerica(ABC):
                 entrada = input('Digite o nome do cenário: ')
                 imagem = pygame.image.load(caminho + entrada + '.png')
                 return imagem
-            except AttributeError:
+            except FileNotFoundError:
                 print('Imagem não encontrada, favor digitar novamente')
             except:
                 print('Erro inesperado, favor entrar em contato com o suporte')

@@ -4,7 +4,7 @@ from limite.telaBackground import TelaBackground
 
 class ControladorBackground(ControladorGenerico):
     def __init__(self, principal):
-        super().__init__(TelaBackground(self))
+        super(ControladorBackground, self).__init__(TelaBackground(self))
         self.__controlador_principal = principal
         self.__background = ''
 
@@ -15,14 +15,21 @@ class ControladorBackground(ControladorGenerico):
         self.__controlador_principal.movimentar_mapa()
 
     def inseri_imagem(self):
-        imagem = self.__tela.pede_imagem('mapas/')
+        imagem = self.tela.pede_imagem('mapas/')
         posicao = imagem.get_rect()
         self.__background = Background(imagem, posicao)
 
     def mostra_tela(self):
-        lista_opcoes = {1: inseri_imagem,2: movimentar_mapa}
-        opcao = self.__tela.mostra_opcoes()
-        try:
-            lista_opcoes[opcao]()
-        except:
-            print('Você não pode movimentar algo que ainda não existe, favor inserir um mapa')
+
+        funcoes = {
+            1: self.inseri_imagem,
+            2: self.movimentar_mapa
+        }
+        super(ControladorBackground, self).mostra_tela(funcoes)
+        self.__controlador_principal.atualizar_visualizacao()
+
+    def mostra_mapa(self):
+        return self.__background.imagem()
+
+    def mostra_posicao_mapa(self):
+        return self.__background.posicao()

@@ -6,8 +6,13 @@ class Background():
         self.__imagem = imagem
         self.__posicao = posicao
 
+    @property
+    def imagem(self):
+        return self.__imagem
+
+    @property
     def posicao(self):
-        self.__posicao = self.__imagem.get_rect()
+        return self.__posicao[:2]
 
     def movimentar(self, lista: list):
         self.__posicao[0] -= lista[0]
