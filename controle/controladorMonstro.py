@@ -46,17 +46,6 @@ class ControladorMonstro(ControladorGenerico):
     def cria_novo_monstro(self, dados: dict = None):
         if not dados:
             dados = self.tela.pega_dados_do_monstro()
-        if dados['tamanho'] == 'Grande':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
-        elif dados['tamanho'] == 'Enorme':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (300, 300))
-        elif dados['tamanho'] == 'Colossal':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (400, 400))
-        else:
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (100, 100))
-        dados['posicao'] = dados['imagem'].get_rect()
-        dados['posicao'][0] = 100 * (self.__counta_monstros % 10)
-        dados['posicao'][1] = 100 * (self.__counta_monstros // 10)
 
         novo_monstro = Monstro(
             id=self.__counta_monstros,
@@ -111,7 +100,7 @@ class ControladorMonstro(ControladorGenerico):
                 self.__monstros.remove(monstro)
                 self.tela.executado_com_sucesso()
 
-    def ataca_jogador(self): #
+    def ataca_jogador(self):
         atacante = self.pega_monstro_por_id()
         if not atacante:
             return
@@ -131,7 +120,7 @@ class ControladorMonstro(ControladorGenerico):
                 defensor.dano_sofrido.append(dano)
                 defensor.vida_atual -= dano
                 if defensor.vida_atual <= 0:
-                    self.controlador_jogador.remover_jogador(defensor)
+                    defensor.esta_vivo = False
         else:
             if ataque.teste == 'Forca':
                 modificador = defensor.mod_forca
@@ -145,7 +134,7 @@ class ControladorMonstro(ControladorGenerico):
                 modificador = defensor.mod_inteligencia
             else:
                 modificador = defensor.mod_carisma
-            if (random.randint(1,20) + modificador) < ataque.cd:
+            if (random.randint(1, 20) + modificador) < ataque.cd:
                 for i in range(ataque.quantidade_dado):
                     dano += random.randint(1, ataque.numero_faces)
                 dano += atacante.mod_forca
@@ -153,10 +142,11 @@ class ControladorMonstro(ControladorGenerico):
                 defensor.dano_sofrido.append(dano)
                 defensor.vida_atual -= dano
                 if defensor.vida_atual <= 0:
-                    self.controlador_jogador.remover_jogador(defensor)
+                    defensor.esta_vivo = False
+
         dados = {
-            "atacante": atacante.nome,
-            "defensor": defensor.nome,
+            "atacante": atacante,
+            "defensor": defensor,
             "dano": dano
         }
         self.__controlador_relatorio.registra_combate(**dados)

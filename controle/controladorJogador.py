@@ -67,21 +67,6 @@ class ControladorJogador(ControladorGenerico):
         if not dados:
             dados = self.tela.pega_dados_do_jogador()
 
-    def cria_novo_jogador(self, dados = None):
-        if not dados:
-            dados = self.tela.pega_dados_do_jogador()
-        if dados['tamanho'] == 'Grande':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
-        elif dados['tamanho'] == 'Enorme':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (300, 300))
-        elif dados['tamanho'] == 'Colossal':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (400, 400))
-        else:
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (100, 100))
-        dados['posicao'] = dados['imagem'].get_rect()
-        dados['posicao'][0] = 100 * (self.__counta_jogadores % 10)
-        dados['posicao'][1] = 100 * ((self.__counta_jogadores * 10) // 10)
-
         novo_jogador = Jogador(
             id=self.__counta_jogadores,
             **dados
