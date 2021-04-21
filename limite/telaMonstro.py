@@ -88,10 +88,6 @@ class TelaMonstro(TelaGenerica):
     def pega_dano(self):
         return self.pega_dado("Insira o valor de dano: ", "int", None, True)
 
-    @staticmethod
-    def resumo_combate(atacante, defensor, dano: int):
-        print(f"{atacante.nome} causou {dano} ao {defensor.nome}")
-
     def pega_id_monstro(self, valores_validos) -> int:
         print("Monstro, ", end="")
         return self.pega_id(valores_validos)
@@ -151,7 +147,7 @@ class TelaMonstro(TelaGenerica):
                 print('Erro inesperado, favor entrar em contato com o suporte')
 
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
-        mensagem = f"{atacante} causou {dano} ao {defensor}"
+        mensagem = f"{atacante.nome} causou {dano} ao {defensor.nome}"
         self.monstra_mensagem(mensagem)
 
     @staticmethod

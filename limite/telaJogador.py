@@ -154,7 +154,7 @@ class TelaJogador(TelaGenerica):
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
 
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
-        mensagem = f"{atacante} causou {dano} ao {defensor}"
+        mensagem = f"{atacante.nome} causou {dano} ao {defensor.nome}"
         self.monstra_mensagem(mensagem)
 
     @staticmethod

@@ -29,5 +29,9 @@ class TelaRelatorio(TelaGenerica):
     @staticmethod
     def cria_relatorio(eventos_combate: list):
         print("evento | atacate | defensor | dano\n")
-        for c in eventos_combate:
-            print(f"{c['evento']} | {c['atacante']} | {c['defensor']} | {c['dano']}")
+        for combate in eventos_combate:
+            evento = combate['evento']
+            atacante = combate['atacante']
+            defensor = combate['defensor']
+            dano = combate['dano']
+            print(f"{evento} | {atacante.nome} | {defensor.nome} | {dano}")

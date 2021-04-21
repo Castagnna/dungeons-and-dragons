@@ -285,7 +285,7 @@ class ControladorJogador(ControladorGenerico):
             return
         dano = 0
         defensor.adiciona_atacante(atacante)
-        if (random.randint(1,20) + atacante.proficiencia + atacante.mod_forca) > defensor.ca:
+        if (random.randint(1, 20) + atacante.proficiencia + atacante.mod_forca) > defensor.ca:
             dano += arma.dano() + atacante.mod_forca
             atacante.dano_causado.append(dano)
             defensor.dano_sofrido.append(dano)
@@ -297,8 +297,8 @@ class ControladorJogador(ControladorGenerico):
                 self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
-            "atacante": atacante.nome,
-            "defensor": defensor.nome,
+            "atacante": atacante,
+            "defensor": defensor,
             "dano": dano
         }
         self.__controlador_relatorio.registra_combate(**dados)
@@ -419,8 +419,8 @@ class ControladorJogador(ControladorGenerico):
             self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
-            "atacante": atacante.nome,
-            "defensor": defensor.nome,
+            "atacante": atacante,
+            "defensor": defensor,
             "dano": dano
         }
 
