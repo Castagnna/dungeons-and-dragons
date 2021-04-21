@@ -19,7 +19,6 @@ class Monstro(Personagem):
         ca: int,
         vida_maxima: int,
         tamanho: str,
-        posicao: list,
         tipo: str,
         experiencia: int,
         vida_atual: int
@@ -27,7 +26,7 @@ class Monstro(Personagem):
         super().__init__(
             id, nome, forca, destreza, constituicao, inteligencia,
             sabedoria, carisma, imagem, ca, vida_maxima, tamanho,
-            posicao, vida_atual
+            vida_atual
         )
         self.__tipo = tipo
         self.__ataques = []

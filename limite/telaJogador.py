@@ -1,8 +1,8 @@
 from limite.telaGenerica import TelaGenerica
 import pygame
 
-class TelaJogador(TelaGenerica):
 
+class TelaJogador(TelaGenerica):
     def __init__(self, controlador):
         super(TelaJogador, self).__init__(controlador)
         self.__dicio_letras = {'A': 100, 'B': 200, 'C': 300, 'D': 400, 'E': 500,
@@ -105,13 +105,13 @@ class TelaJogador(TelaGenerica):
         while tentativas < 2:
             try:
                 nome = input("Nome do arquivo de imagem: ")
-                imagem = load("imagens/" + nome + ".png")
+                imagem = pygame.image.load("imagens/" + nome + ".png")
                 return imagem
             except FileNotFoundError:
                 print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
                 tentativas += 1
         print("Numero de tantativa esgotado, iniciado com imagem padrao")
-        return load("imagens/jogador.png")
+        return pygame.image.load("imagens/jogador.png")
 
     """
     outputs
@@ -154,7 +154,7 @@ class TelaJogador(TelaGenerica):
         print(f"id: {id}, nome: {nome}, dados: {quantidade_dado}, faces: {numero_faces}")
 
     def resumo_combate(self, atacante: str, defensor: str, dano: int):
-        mensagem = f"{atacante} causou {dano} ao {defensor}"
+        mensagem = f"{atacante.nome} causou {dano} ao {defensor.nome}"
         self.monstra_mensagem(mensagem)
 
     @staticmethod

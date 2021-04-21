@@ -1,3 +1,7 @@
+# virtual enviroment #
+###################
+venv/
+
 # python files #
 ###################
 *.pyc

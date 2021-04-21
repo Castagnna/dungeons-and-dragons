@@ -19,7 +19,6 @@ class Personagem(ABC):
         ca: int,
         vida_maxima: int,
         tamanho: str,
-        posicao: list,
         vida_atual: int
     ):
 
@@ -37,11 +36,11 @@ class Personagem(ABC):
         self.__mod_sabedoria = self.calcula_modificador(sabedoria)
         self.__carisma = carisma
         self.__mod_carisma = self.calcula_modificador(carisma)
-        self.__imagem = imagem
+        self.__tamanho = tamanho
+        self.__imagem = self.define_imagem(imagem)
+        self.__posicao = self.define_posicao()
         self.__ca = ca
         self.__vida_maxima = vida_maxima
-        self.__tamanho = tamanho
-        self.__posicao = posicao
         self.__dano_causado = []
         self.__dano_sofrido = []
         self.__movimentacao_acumulado = 0
@@ -51,6 +50,7 @@ class Personagem(ABC):
         self.__sofre_ataque_vantagem = False
         self.__sofre_ataque_desvantagem = False
         self.__vida_atual = vida_atual
+        self.__esta_vivo = True
 
     """
     getters
@@ -173,6 +173,10 @@ class Personagem(ABC):
     def tamanho(self):
         return self.__tamanho
 
+    @property
+    def esta_vivo(self):
+        return self.__esta_vivo
+
     """
     setters
     """
@@ -232,14 +236,7 @@ class Personagem(ABC):
     def tamanho(self, tamanho):
         if isinstance(tamanho, str):
             self.__tamanho = tamanho
-            if self.__tamanho == 'Grande':
-                self.__imagem = pygame.transform.scale(self.__imagem, (200, 200))
-            elif self.__tamanho == 'Enorme':
-                self.__imagem = pygame.transform.scale(self.__imagem, (300, 300))
-            elif self.__tamanho == 'Colossal':
-                self.__imagem = pygame.transform.scale(self.__imagem, (400, 400))
-            else:
-                self.__imagem = pygame.transform.scale(self.__imagem, (100, 100))
+            self.__imagem = self.define_imagem()
 
     @vida_maxima.setter
     def vida_maxima(self, vida_maxima):
@@ -276,6 +273,11 @@ class Personagem(ABC):
         if isinstance(imagem, pygame.Surface):
             self.__imagem = imagem
 
+    @esta_vivo.setter
+    def esta_vivo(self, situacao: bool):
+        if isinstance(situacao, bool):
+            self.__esta_vivo = situacao
+
     """
     methods
     """
@@ -303,3 +305,27 @@ class Personagem(ABC):
             self.__vida_atual += vida
             if self.__vida_atual > self.__vida_maxima:
                 self.__vida_atual = self.__vida_maxima
+
+    def define_imagem(self, imagem_pygame=None):
+        if not imagem_pygame:
+            imagem_pygame = self.imagem
+
+        proporcoes = {
+            'Padrao': (100, 100),
+            'Grande': (200, 200),
+            'Enorme': (300, 300),
+            'Colossal': (400, 400),
+        }
+
+        if self.tamanho in proporcoes:
+            proporcao = proporcoes[self.tamanho]
+        else:
+            proporcao = proporcoes['Padrao']
+
+        return pygame.transform.scale(imagem_pygame, proporcao)
+
+    def define_posicao(self):
+        posicao = self.imagem.get_rect()
+        posicao[0] = 100 * (self.id % 10)
+        posicao[1] = 100 * ((self.id * 10) // 10)
+        return posicao

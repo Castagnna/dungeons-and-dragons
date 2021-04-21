@@ -67,21 +67,6 @@ class ControladorJogador(ControladorGenerico):
         if not dados:
             dados = self.tela.pega_dados_do_jogador()
 
-    def cria_novo_jogador(self, dados = None):
-        if not dados:
-            dados = self.tela.pega_dados_do_jogador()
-        if dados['tamanho'] == 'Grande':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (200, 200))
-        elif dados['tamanho'] == 'Enorme':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (300, 300))
-        elif dados['tamanho'] == 'Colossal':
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (400, 400))
-        else:
-            dados['imagem'] = pygame.transform.scale(dados['imagem'], (100, 100))
-        dados['posicao'] = dados['imagem'].get_rect()
-        dados['posicao'][0] = 100 * (self.__counta_jogadores % 10)
-        dados['posicao'][1] = 100 * ((self.__counta_jogadores * 10) // 10)
-
         novo_jogador = Jogador(
             id=self.__counta_jogadores,
             **dados
@@ -300,7 +285,7 @@ class ControladorJogador(ControladorGenerico):
             return
         dano = 0
         defensor.adiciona_atacante(atacante)
-        if (random.randint(1,20) + atacante.proficiencia + atacante.mod_forca) > defensor.ca:
+        if (random.randint(1, 20) + atacante.proficiencia + atacante.mod_forca) > defensor.ca:
             dano += arma.dano() + atacante.mod_forca
             atacante.dano_causado.append(dano)
             defensor.dano_sofrido.append(dano)
@@ -312,8 +297,8 @@ class ControladorJogador(ControladorGenerico):
                 self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
-            "atacante": atacante.nome,
-            "defensor": defensor.nome,
+            "atacante": atacante,
+            "defensor": defensor,
             "dano": dano
         }
         self.__controlador_relatorio.registra_combate(**dados)
@@ -434,8 +419,8 @@ class ControladorJogador(ControladorGenerico):
             self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
-            "atacante": atacante.nome,
-            "defensor": defensor.nome,
+            "atacante": atacante,
+            "defensor": defensor,
             "dano": dano
         }
 

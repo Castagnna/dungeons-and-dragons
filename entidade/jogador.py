@@ -9,11 +9,11 @@ class Jogador(Personagem):
                  destreza: int, constituicao: int, inteligencia: int,
                  sabedoria: int, carisma: int, imagem: pygame.image.load,
                  ca: int, vida_maxima: int,
-                 tamanho: str, posicao: list, vida_atual: int,
+                 tamanho: str, vida_atual: int,
                  nome_jogador: str, level: int, experiencia: int,proficiencia: int, cd: int):
     
         super().__init__(id, nome, forca, destreza, constituicao, inteligencia, sabedoria,
-                         carisma, imagem, ca, vida_maxima, tamanho, posicao, vida_atual)
+                         carisma, imagem, ca, vida_maxima, tamanho, vida_atual)
         self.__nome_jogador = nome_jogador
         self.__level = level
         self.__experiencia = experiencia
