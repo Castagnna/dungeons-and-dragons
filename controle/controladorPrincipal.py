@@ -10,6 +10,8 @@ import pygame
 
 
 class ControladorPrincipal(ControladorGenerico):
+    __instace = None
+
     def __init__(self):
         pygame.init()
         super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
@@ -20,6 +22,8 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_background = ControladorBackground(self)
         self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
+
+        # Eu acho que os atributos abaxo deveriam ficar dentro do controlador do Background
         self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
         self.__fonte = pygame.font.SysFont(None, 55)
         self.__letras = ('A','B','C','D','E','F','G','H','I','J',
@@ -27,6 +31,11 @@ class ControladorPrincipal(ControladorGenerico):
                          'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
         self.__numeros = ('1','2','3','4','5','6','7','8', '9')
         self.__visualizacao = ''
+
+    def __new__(cls):
+        if ControladorPrincipal.__instace is None:
+            ControladorPrincipal.__instace = object.__new__(cls)
+        return ControladorPrincipal.__instace
 
     """
     getters
@@ -106,6 +115,7 @@ class ControladorPrincipal(ControladorGenerico):
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
 
+    # Todos os métodos relacionados ao Background devem ficar no ControladorBackground
     def grid(self): # desenha o grid
         lista_inicio = [100,100]
         lista_x = [100, 1000] # ajustar de acordo com a resolução
@@ -120,6 +130,7 @@ class ControladorPrincipal(ControladorGenerico):
             lista_inicio[1] += 100
             lista_y[1] += 100
 
+    # Todos os métodos relacionados ao Background devem ficar no ControladorBackground
     def posicoes_grid(self): # adicionando orientações do grid
         marcador_letras = 0
         posicao_letras = [136,36]
@@ -136,6 +147,7 @@ class ControladorPrincipal(ControladorGenerico):
             marcador_numeros += 1
             posicao_numeros[1] += 100
 
+    # Todos os métodos relacionados ao Background devem ficar no ControladorBackground
     def atualizar_visualizacao(self):
         self.__visualizacao = pygame.display.set_mode((1800, 1000))
         pygame.display.set_caption('Trabalho DSO')
@@ -154,6 +166,7 @@ class ControladorPrincipal(ControladorGenerico):
         self.posicoes_grid()
         pygame.display.flip()
 
+    # Todos os métodos relacionados ao Background devem ficar no ControladorBackground
     def movimentar_mapa(self, valores: list):
         self.__controlador_jogador.mapa_moveu(valores[0], valores[1])
         self.__controlador_monstro.mapa_moveu(valores[0], valores[1])

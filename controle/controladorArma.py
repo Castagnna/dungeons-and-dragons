@@ -4,11 +4,22 @@ from entidade.arma import Arma
 
 
 class ControladorArma(ControladorGenerico):
+    __instace = None
+
     def __init__(self, controlador_principal):
         super(ControladorArma, self).__init__(TelaArma(self))
         self.__controlador_principal = controlador_principal
         self.__armas = []
         self.__counta_armas = 0
+
+    def __new__(cls):
+        if ControladorArma.__instace is None:
+            ControladorArma.__instace = object.__new__(cls)
+        return ControladorArma.__instace
+
+    """
+    getters
+    """
 
     @property
     def controlador_principal(self):
