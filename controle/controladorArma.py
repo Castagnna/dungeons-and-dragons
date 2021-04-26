@@ -1,5 +1,5 @@
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaArma import TelaArma
+from limite.telaArmaPrincipal import TelaArmaPrincipal
 from entidade.arma import Arma
 
 
@@ -7,8 +7,9 @@ class ControladorArma(ControladorGenerico):
     __instace = None
 
     def __init__(self, controlador_principal):
-        super(ControladorArma, self).__init__(TelaArma(self))
+        # super(ControladorArma, self).__init__(TelaArma(self))
         self.__controlador_principal = controlador_principal
+        self.__tela_arma_principal = TelaArmaPrincipal(self)
         self.__armas = []
         self.__counta_armas = 0
 
@@ -28,6 +29,13 @@ class ControladorArma(ControladorGenerico):
     @property
     def armas(self):
         return self.__armas
+
+    """
+    methods
+    """
+
+    def mostra_tela_principal(self):
+        self.__tela_arma_principal.mostra_tela()
 
     def mostra_armas(self):
         self.tela.mostra_armas(self.__armas)
