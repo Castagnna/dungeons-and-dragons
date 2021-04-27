@@ -91,7 +91,7 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_monstro.mostra_tela()
 
     def opcoes_arma(self):
-        self.__controlador_arma.mostra_tela()
+        self.__controlador_arma.mostra_tela_principal()
 
     def opcoes_ataque_monstro(self):
         self.__controlador_ataque_monstro.mostra_tela()

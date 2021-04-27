@@ -13,7 +13,7 @@ class ControladorArma(ControladorGenerico):
         self.__armas = []
         self.__counta_armas = 0
 
-    def __new__(cls):
+    def __new__(cls, controlador_principal):
         if ControladorArma.__instace is None:
             ControladorArma.__instace = object.__new__(cls)
         return ControladorArma.__instace

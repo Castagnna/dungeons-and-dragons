@@ -22,10 +22,10 @@ class TelaArmaPrincipal:
             [sg.Cancel("Cancelar")],
         ]
 
-        self.__janela = sg.Window("Menu arma", default_element_size=(40, 1)).Layout(layout)
+        self.__janela = sg.Window("Menu arma", default_element_size=(40, 10)).Layout(layout)
 
-    def monstra_tela(self):
-        return self.__window.Read()
+    def mostra_tela(self):
+        return self.__janela.Read()
 
     def fecha_tela(self):
         self.__janela.Close()
