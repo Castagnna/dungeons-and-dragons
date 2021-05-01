@@ -18,6 +18,7 @@ class ControladorArma:
         self.__controlador_principal = controlador_principal
         self.__armas = {}
         self.__counta_armas = 1
+        self.__mostra_tela_principal = True
         self.__tela_arma_principal = TelaArmaPrincipal(self)
         self.__tela_arma_nova = TelaArmaNova(self)
         self.__tela_arma_lista = TelaArmaLista(self)
@@ -48,12 +49,13 @@ class ControladorArma:
         funcoes = {
             "NOVA_ARMA": self.cria_nova_arma,
             "LISTA_ARMAS": self.lista_armas,
+            "SAIR": self.__tela_arma_principal.fecha_tela
         }
 
         evento, _ = self.__tela_arma_principal.mostra_tela()
-
-        funcoes[evento]()
         
+        funcoes[evento]()
+
     def cria_nova_arma(self, dados = None):
 
         if not dados:
@@ -64,8 +66,8 @@ class ControladorArma:
             arma = Arma(
                 id=self.__counta_armas,
                 nome=valores["NOME"],
-                quantidade_dado=valores["DADOS"],
-                numero_faces=valores["FACES"],
+                quantidade_dado=int(valores["DADOS"]),
+                numero_faces=int(valores["FACES"]),
             )
 
             self.__armas[arma.id] = arma

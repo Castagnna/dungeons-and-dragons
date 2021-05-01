@@ -52,8 +52,8 @@ class TelaArmaPrincipal(GeneralScreen):
     def edit(self, element, id_element):
         pass
 
-    def open_main_screen(self):
-        self.controller.open_main_screen()
+    # def open_main_screen(self):
+    #     self.controlador.open_main_screen()
 
     # def mostra_opcoes(self) -> int:
     #     titulo_da_tela = "MENU ARMA"

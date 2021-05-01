@@ -35,17 +35,20 @@ class TelaArmaLista(GeneralScreen):
                 arma.numero_faces,
             )
             lista_de_armas.append(string)
+            lista_de_armas.append("2 ; teste ; 3 ; 5")
+            
+        lista_de_armas.append("3 ; teste ; 3 ; 5")
 
-        self.__lista_de_armas = lista_de_armas
+        return lista_de_armas
 
     def init_components(self):
         sg.ChangeLookAndFeel('Reddit')
 
-        self.monta_lista()
+        valores = self.monta_lista()
 
         layout = [
             [sg.Text('Id ; Nome ; Dados ; Faces', background_color='#d3dfda', justification='center', size=(30, 2))],
-            [sg.Listbox(values=self.__lista_de_armas, size=(30, 6))],
+            [sg.Listbox(values=valores, size=(30, 6))],
             [sg.Cancel("OK", key="OK")],
         ]
 
