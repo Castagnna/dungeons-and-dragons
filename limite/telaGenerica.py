@@ -19,18 +19,18 @@ class GeneralScreen(ABC):
     def open_main_screen(self):
         self.controller.open_main_screen()
 
-    @abstractmethod
-    def add(self, **elements):
-        pass
+    # @abstractmethod
+    # def add(self, **elements):
+    #     pass
 
-    @abstractmethod
-    def delete(self, id_element):
-        pass
+    # @abstractmethod
+    # def delete(self, id_element):
+    #     pass
 
-    @abstractmethod
-    def edit(self, element, id_element):
-        pass
-    
+    # @abstractmethod
+    # def edit(self, element, id_element):
+    #     pass
+
 
 class TelaGenerica(ABC):
     @abstractmethod

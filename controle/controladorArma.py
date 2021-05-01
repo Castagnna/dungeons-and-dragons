@@ -44,28 +44,30 @@ class ControladorArma:
     def mostra_tela_principal(self):
 
         funcoes = {
-            "NOVA_ARMA": self.cria_nova_arma(),
+            "NOVA_ARMA": self.cria_nova_arma,
         }
 
-        key, _ = self.__tela_arma_principal.mostra_tela()
+        evento, _ = self.__tela_arma_principal.mostra_tela()
 
-        funcoes[key]
+        funcoes[evento]()
 
     # def mostra_armas(self):
     #     self.tela.mostra_armas(self.__armas)
 
-    def cria_nova_arma(self, dados: dict = None):
-        key, values = self.__tela_arma_nova.mostra_tela()
-        
+    def cria_nova_arma(self, dados = None):
+
         if not dados:
-            dados = self.tela.pega_dados_da_arma()
-        arma = Arma(
-            id=self.__counta_armas,
-            **dados
-        )
-        self.__armas.append(arma)
-        self.__counta_armas += 1
-        self.tela.executado_com_sucesso()
+            evento, values = self.__tela_arma_nova.mostra_tela()
+            print(evento)
+            print(values)
+
+        # arma = Arma(
+        #     id=self.__counta_armas,
+        #     **dados
+        # )
+        # self.__armas.append(arma)
+        # self.__counta_armas += 1
+        # self.tela.executado_com_sucesso()
 
     # def cria_arma_teste(self):
     #     dados = {
