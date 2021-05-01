@@ -30,7 +30,6 @@ class TelaArmaPrincipal(GeneralScreen):
             [sg.Button("Alterar arma", key="ALTERA_ARMA")],
             [sg.Button("Cria arma teste", key="ARMA_TESTE")],
             [sg.Cancel("Sair", key="SAIR")],
-            [sg.Cancel("Cancelar", key="CANCELAR")],
         ]
 
         self.__janela = sg.Window("Menu arma", default_element_size=(40, 10)).Layout(layout)
@@ -52,6 +51,9 @@ class TelaArmaPrincipal(GeneralScreen):
 
     def edit(self, element, id_element):
         pass
+
+    def open_main_screen(self):
+        self.controller.open_main_screen()
 
     # def mostra_opcoes(self) -> int:
     #     titulo_da_tela = "MENU ARMA"

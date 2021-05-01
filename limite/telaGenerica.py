@@ -1,23 +1,44 @@
-from abc import ABC, abstractmethod
+# Controles
 from controle.controladorGenerico import ControladorGenerico as ABCController
+
+# Utils
+from PySimpleGUI import PySimpleGUI as sg
+from abc import ABC, abstractmethod
 
 
 class GeneralScreen(ABC):
 
     @abstractmethod
-    def __init__(self, controller: ABCController):
-        self.__controller = controller
+    def __init__(self, controlador: ABCController):
+        self.__controlador = controlador
 
     @property
-    def controller(self):
-        return self.__controller
+    def controlador(self):
+        return self.__controlador
 
-    @controller.setter
-    def controller(self, controller: ABCController):
-        self.__controller = controller
+    @controlador.setter
+    def controlador(self, controlador: ABCController):
+        self.__controlador = controlador
 
-    def open_main_screen(self):
-        self.controller.open_main_screen()
+    """
+    methods
+    """
+    
+    @staticmethod
+    def popup_sucesso(titulo: str=None, mensagem: str=None):
+        if not titulo:
+            titulo = "Situacao da operacao"
+        if not mensagem:
+            mensagem = "Operacao realizada com sucesso"
+        sg.Popup(titulo, mensagem)
+
+    @staticmethod
+    def popup_falha(titulo: str=None, mensagem: str=None):
+        if not titulo:
+            titulo = "Situacao da operacao"
+        if not mensagem:
+            mensagem = "Nao foi possivel concluir a operacao"
+        sg.Popup(titulo, mensagem)
 
     # @abstractmethod
     # def add(self, **elements):

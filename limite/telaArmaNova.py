@@ -28,13 +28,10 @@ class TelaArmaNova(GeneralScreen):
             [sg.Submit("Confirmar", key="CONFIRMAR"), sg.Cancel("Cancelar", key="CANCELAR")],
         ],
 
-        self.__janela = sg.Window("Menu arma", default_element_size=(40, 10)).Layout(layout)
+        self.__janela = sg.Window("Nova arma", default_element_size=(40, 10)).Layout(layout)
 
     def mostra_tela(self):
         return self.__janela.Read()
 
     def fecha_tela(self):
         self.__janela.Close()
-
-    def mostra_mensagem(self, titulo: str, mensagem: str):
-        sg.Popup(titulo, mensagem)

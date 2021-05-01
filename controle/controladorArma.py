@@ -4,6 +4,7 @@ from controle.controladorGenerico import ControladorGenerico
 # telas
 from limite.telaArmaPrincipal import TelaArmaPrincipal
 from limite.telaArmaNova import TelaArmaNova
+from limite.telaArmaLista import TelaArmaLista
 
 # entidades
 from entidade.arma import Arma
@@ -12,13 +13,14 @@ from entidade.arma import Arma
 class ControladorArma:
     __instace = None
 
-    def __init__(self, controlador_principal):
+    def __init__(self, controlador_principal=None):
         # super(ControladorArma, self).__init__(TelaArma(self))
         self.__controlador_principal = controlador_principal
+        self.__armas = {}
+        self.__counta_armas = 1
         self.__tela_arma_principal = TelaArmaPrincipal(self)
         self.__tela_arma_nova = TelaArmaNova(self)
-        self.__armas = []
-        self.__counta_armas = 0
+        self.__tela_arma_lista = TelaArmaLista(self)
 
     def __new__(cls, controlador_principal):
         if ControladorArma.__instace is None:
@@ -45,29 +47,36 @@ class ControladorArma:
 
         funcoes = {
             "NOVA_ARMA": self.cria_nova_arma,
+            "LISTA_ARMAS": self.lista_armas,
         }
 
         evento, _ = self.__tela_arma_principal.mostra_tela()
 
         funcoes[evento]()
-
-    # def mostra_armas(self):
-    #     self.tela.mostra_armas(self.__armas)
-
+        
     def cria_nova_arma(self, dados = None):
 
         if not dados:
-            evento, values = self.__tela_arma_nova.mostra_tela()
-            print(evento)
-            print(values)
+            evento, valores = self.__tela_arma_nova.mostra_tela()
+        
+        if evento == "CONFIRMAR":
 
-        # arma = Arma(
-        #     id=self.__counta_armas,
-        #     **dados
-        # )
-        # self.__armas.append(arma)
-        # self.__counta_armas += 1
-        # self.tela.executado_com_sucesso()
+            arma = Arma(
+                id=self.__counta_armas,
+                nome=valores["NOME"],
+                quantidade_dado=valores["DADOS"],
+                numero_faces=valores["FACES"],
+            )
+
+            self.__armas[arma.id] = arma
+            self.__counta_armas += 1
+            self.__tela_arma_nova.popup_sucesso()
+
+        self.__tela_arma_nova.fecha_tela()
+
+    def lista_armas(self):
+        self.__tela_arma_lista.mostra_tela()
+        self.__tela_arma_lista.fecha_tela()
 
     # def cria_arma_teste(self):
     #     dados = {
