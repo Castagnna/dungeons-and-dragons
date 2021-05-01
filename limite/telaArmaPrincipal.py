@@ -1,10 +1,20 @@
-import PySimpleGUI as sg
+# Models
+from entidade.arma import Arma
+
+# Views
+from limite.telaGenerica import GeneralScreen
+
+# Controllers
+# from controle.controladorArma import ControladorArma
+
+# Utils
+from PySimpleGUI import PySimpleGUI as sg
 
 
-class TelaArmaPrincipal:
+class TelaArmaPrincipal(GeneralScreen):
 
     def __init__(self, controlador):
-        self.__controladorArma = controlador
+        super().__init__(controlador)
         self.__janela = None
         self.init_components()
 
@@ -12,14 +22,15 @@ class TelaArmaPrincipal:
         sg.ChangeLookAndFeel('Reddit')
 
         layout = [
-            [sg.Text('Menu armas', background_color='#d3dfda', justification='center', size=(10, 1))],
-            [sg.Button("Nova arma")],
-            [sg.Button("Armas cadastradas")],
-            [sg.Button("Remove arma")],
-            [sg.Button("Mostra atributos da arma")],
-            [sg.Button("Alterar arma")],
-            [sg.Button("Cria arma teste")],
-            [sg.Cancel("Cancelar")],
+            [sg.Text('Menu armas', background_color='#d3dfda', justification='center', size=(10, 2))],
+            [sg.Button("Nova arma", key="NOVA_ARMA")],
+            [sg.Button("Armas cadastradas", key="LISTA_ARMAS")],
+            [sg.Button("Remove arma", key="REMOVE_ARMA")],
+            [sg.Button("Mostra atributos da arma", key="ATRIBUTOS_DA_ARMA")],
+            [sg.Button("Alterar arma", key="ALTERA_ARMA")],
+            [sg.Button("Cria arma teste", key="ARMA_TESTE")],
+            [sg.Cancel("Sair", key="SAIR")],
+            [sg.Cancel("Cancelar", key="CANCELAR")],
         ]
 
         self.__janela = sg.Window("Menu arma", default_element_size=(40, 10)).Layout(layout)
@@ -32,6 +43,15 @@ class TelaArmaPrincipal:
 
     def mostra_mensagem(self, titulo: str, mensagem: str):
         sg.Popup(titulo, mensagem)
+
+    def add(self, **elements):
+        pass
+
+    def delete(self, id_element):
+        pass
+
+    def edit(self, element, id_element):
+        pass
 
     # def mostra_opcoes(self) -> int:
     #     titulo_da_tela = "MENU ARMA"
