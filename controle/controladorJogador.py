@@ -131,6 +131,7 @@ class ControladorJogador(ControladorGenerico):
             atributos = {
                 "id": jogador.id,
                 "nome": jogador.nome,
+                "imagem": jogador.imagem,
                 "forca": jogador.forca,
                 "destreza": jogador.destreza,
                 "constituicao": jogador.constituicao,

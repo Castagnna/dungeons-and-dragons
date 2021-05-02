@@ -144,13 +144,17 @@ class ControladorPrincipal(ControladorGenerico):
         self.__visualizacao.fill((0, 0, 0))
         self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
                                  self.__controlador_background.mostra_posicao_mapa())
+
         for monstro in self.__controlador_monstro.monstros:
-            self.__visualizacao.blit(self.__controlador_monstro.mostra_imagem(monstro),
-                                     self.__controlador_monstro.mostra_posicao(monstro))
+            imagem_pygame = monstro.define_pygame_imagem()
+            posicao = monstro.posicao
+            self.__visualizacao.blit(imagem_pygame, posicao)
+
         for jogador in self.__controlador_jogador.jogadores:
             imagem_pygame = jogador.define_pygame_imagem()
-            posicao = self.__controlador_jogador.mostra_posicao(jogador)
+            posicao = jogador.posicao
             self.__visualizacao.blit(imagem_pygame, posicao)
+
         self.grid()
         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[0])
         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[1])
