@@ -1,12 +1,14 @@
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaArma import TelaArma
 from entidade.arma import Arma
+from dao.armaDAO import ArmaDAO
 
 
 class ControladorArma(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorArma, self).__init__(TelaArma(self))
         self.__controlador_principal = controlador_principal
+        self.__dao = ArmaDAO()
         self.__armas = []
         self.__counta_armas = 0
 
