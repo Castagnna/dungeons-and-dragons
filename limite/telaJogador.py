@@ -70,7 +70,7 @@ class TelaJogador(TelaGenerica):
             "inteligencia": self.pega_dado("Inteligencia: ", "int"),
             "sabedoria": self.pega_dado("Sabedoria: ", "int"),
             "carisma": self.pega_dado("Carisma: ", "int"),
-            "imagem": self.pega_imagem('tokens/'),
+            "imagem": self.pega_imagem(),
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
@@ -105,13 +105,15 @@ class TelaJogador(TelaGenerica):
         while tentativas < 2:
             try:
                 nome = input("Nome do arquivo de imagem: ")
-                imagem = pygame.image.load("imagens/" + nome + ".png")
-                return imagem
+                pygame.image.load("tokens/" + nome + ".png")
+                # return imagem
+                return nome
             except FileNotFoundError:
                 print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
                 tentativas += 1
         print("Numero de tantativa esgotado, iniciado com imagem padrao")
-        return pygame.image.load("imagens/jogador.png")
+        # return pygame.image.load("imagens/jogador.png")
+        return "Anao_Barbaro"
 
     """
     outputs
@@ -167,17 +169,6 @@ class TelaJogador(TelaGenerica):
 
     def cria_magia(self):
         self.monstra_mensagem("Crie uma magia para vincular")
-
-    def pega_imagem(self, caminho):
-        while True:
-            try:
-                entrada = input('Digite o nome da imagem que pretende usar: ')
-                imagem = pygame.image.load(caminho + entrada + '.png')
-                return imagem
-            except FileNotFoundError:
-                print('Imagem não encontrada, favor digitar novamente')
-            except:
-                print('Erro inesperado, favor entrar em contato com o suporte')
 
     def espaco_magia_insu(self, circulo):
         print('Você não tem espaço de magia do {} circulo'.format(str(circulo)))

@@ -41,7 +41,7 @@ class Jogador(Personagem):
         return self.__proficiencia
 
     @property
-    def armas(self):
+    def armas(self) -> list:
         return self.__armas
 
     @property

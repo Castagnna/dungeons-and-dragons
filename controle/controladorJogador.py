@@ -1,11 +1,15 @@
+import random
+import pygame
+
 from controle.controladorGenerico import ControladorGenerico
 from controle.controladorMonstro import ControladorMonstro
 from controle.controladorMagia import ControladorMagia
 from limite.telaJogador import TelaJogador
 from entidade.jogador import Jogador
 from entidade.magia import Magia
-import random
-import pygame
+from dao.jogadorDAO import JogadorDAO
+from dao.jogadorContadorDAO import JogadorContadorDAO
+
 
 
 class ControladorJogador(ControladorGenerico):
@@ -16,8 +20,8 @@ class ControladorJogador(ControladorGenerico):
         self.__controlador_arma = controlador_principal.controlador_arma
         self.__controlador_monstro = None
         self.__controlador_magia = ControladorMagia(self)
-        self.__jogadores = []
-        self.__counta_jogadores = 1
+        self.__dao = JogadorDAO()
+        self.__dao_contador = JogadorContadorDAO()
 
     """
     getters
@@ -29,7 +33,7 @@ class ControladorJogador(ControladorGenerico):
 
     @property
     def jogadores(self) -> list:
-        return self.__jogadores
+        return self.__dao.get_all()
 
     @property
     def controlador_arma(self):
@@ -67,18 +71,18 @@ class ControladorJogador(ControladorGenerico):
         if not dados:
             dados = self.tela.pega_dados_do_jogador()
 
-        novo_jogador = Jogador(
-            id=self.__counta_jogadores,
+        jogador = Jogador(
+            id=self.__dao_contador.get() + 1,
             **dados
         )
-        self.__counta_jogadores += 1
-        self.__jogadores.append(novo_jogador)
+        self.__dao_contador.add(1)
+        self.__dao.add(jogador)
         self.tela.executado_com_sucesso()
         self.controlador_principal.atualizar_visualizacao()
 
     def cria_jogador_teste(self):
         dados = {
-            "nome": f"Fulano {self.__counta_jogadores}",
+            "nome": f"Fulano {self.__dao_contador.get() + 1}",
             "forca": 10,
             "destreza": 10,
             "constituicao": 10,
@@ -86,7 +90,7 @@ class ControladorJogador(ControladorGenerico):
             "sabedoria": 10,
             "carisma": 10,
             "ca": 10,
-            "imagem": pygame.image.load('tokens/Anao_Barbaro.png'),
+            "imagem": "Anao_Barbaro",
             "vida_maxima": 10,
             "vida_atual": 10,
             "tamanho": "Pequeno",
@@ -99,15 +103,13 @@ class ControladorJogador(ControladorGenerico):
         self.cria_novo_jogador(dados)
 
     def mostra_jogadores(self):
-        self.tela.mostra_jogadores(self.__jogadores)
+        self.tela.mostra_jogadores(self.__dao.get_all())
 
     def pega_jogador_por_id(self) -> Jogador:
-        if self.__jogadores:
-            valores_validos = [jogador.id for jogador in self.__jogadores]
+        if self.__dao.get_all():
+            valores_validos = [jogador.id for jogador in self.__dao.get_all()]
             id = self.tela.pega_id_jogador(valores_validos)
-            for jogador in self.__jogadores:
-                if jogador.id == id:
-                    return jogador
+            return self.__dao.get(id)
         else:
             self.tela.lista_jogadores_vazia()
             return None
@@ -120,7 +122,7 @@ class ControladorJogador(ControladorGenerico):
             pass
         else:
             if remover:
-                self.__jogadores.remove(jogador)
+                self.__dao.remove(jogador)
                 self.tela.executado_com_sucesso()
 
     def mostra_atributos_do_jogador(self):
@@ -450,9 +452,9 @@ class ControladorJogador(ControladorGenerico):
         super(ControladorJogador, self).mostra_tela(funcoes)
 
     def mapa_moveu(self, x: int, y: int):
-        for i in range(len(self.__jogadores)):
-            posicao = self.__jogadores[i].posicao
-            self.__jogadores[i].posicao(posicao[0] - x, posicao[1] - y)
+        for i in range(len(self.__dao.get_all())):
+            posicao = self.__dao.get_all()[i].posicao
+            self.__dao.get_all()[i].posicao(posicao[0] - x, posicao[1] - y)
 
     def mostra_imagem(self, jogador):
         return jogador.imagem
@@ -460,8 +462,8 @@ class ControladorJogador(ControladorGenerico):
     def mostra_posicao(self, jogador):
         return jogador.posicao
 
-    def remover_jogador(self, jogador):
-        self.__jogadores.remove(jogador)
+    def remover_jogador(self, jogador: Jogador):
+        self.__dao.remove(jogador)
 
     def altera_atributo_da_magia(self):
         jogador = self.pega_jogador_por_id()
