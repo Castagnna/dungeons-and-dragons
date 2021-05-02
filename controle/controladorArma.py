@@ -2,6 +2,7 @@ from controle.controladorGenerico import ControladorGenerico
 from limite.telaArma import TelaArma
 from entidade.arma import Arma
 from dao.armaDAO import ArmaDAO
+from dao.armaContadorDAO import ArmaContadorDAO
 
 
 class ControladorArma(ControladorGenerico):
@@ -9,8 +10,7 @@ class ControladorArma(ControladorGenerico):
         super(ControladorArma, self).__init__(TelaArma(self))
         self.__controlador_principal = controlador_principal
         self.__dao = ArmaDAO()
-        self.__armas = []
-        self.__counta_armas = 0
+        self.__dao_contador = ArmaContadorDAO()
 
     @property
     def controlador_principal(self):
@@ -18,37 +18,35 @@ class ControladorArma(ControladorGenerico):
 
     @property
     def armas(self):
-        return self.__armas
+        return self.__dao.get_all()
 
     def mostra_armas(self):
-        self.tela.mostra_armas(self.__armas)
+        self.tela.mostra_armas(self.__dao.get_all())
 
     def cria_nova_arma(self, dados: dict = None):
         if not dados:
             dados = self.tela.pega_dados_da_arma()
         arma = Arma(
-            id=self.__counta_armas,
+            id=self.__dao_contador.get() + 1,
             **dados
         )
-        self.__armas.append(arma)
-        self.__counta_armas += 1
+        self.__dao.add(arma)
+        self.__dao_contador.add(1)
         self.tela.executado_com_sucesso()
 
     def cria_arma_teste(self):
         dados = {
-            "nome": f"arma {self.__counta_armas}",
+            "nome": f"arma {self.__dao_contador.get() + 1}",
             "quantidade_dado": 1,
             "numero_faces": 6,
         }
         self.cria_nova_arma(dados)
 
     def pega_arma_por_id(self):
-        if self.__armas:
-            valores_validos = [arma.id for arma in self.__armas]
+        if self.__dao.get_all():
+            valores_validos = [arma.id for arma in self.__dao.get_all()]
             id = self.tela.pega_id(valores_validos)
-            for arma in self.__armas:
-                if arma.id == id:
-                    return arma
+            return self.__dao.get(id)
         else:
             self.tela.lista_armas_vazia()
             return None
@@ -56,14 +54,11 @@ class ControladorArma(ControladorGenerico):
     def remove_arma(self):
         arma = self.pega_arma_por_id()
         try:
-            remover = self.tela.confirma_remocao(arma.nome)
+            self.__dao.remove(arma)
+            self.tela.arma_removida_com_sucesso(arma.nome)
         except AttributeError:
             pass
-        else:
-            if remover:
-                self.__armas.remove(arma)
-                self.tela.arma_removida_com_sucesso(arma.nome)
-
+            
     def mostra_atributos_da_arma(self, arma: Arma = None):
         if not arma:
             arma = self.pega_arma_por_id()

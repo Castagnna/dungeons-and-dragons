@@ -2,12 +2,12 @@ import pickle
 from abc import ABC, abstractmethod
 
 
-class DAO(ABC):
+class ContadorDAO(ABC):
 
     @abstractmethod
     def __init__(self, data_source=""):
         self.__data_source = data_source
-        self.__cache = {}
+        self.__cache = 0
         try:
             self.__load()
         except FileNotFoundError:
@@ -19,22 +19,15 @@ class DAO(ABC):
     def __load(self):
         self.__cache = pickle.load(open(self.__data_source, "rb"))
 
-    def add(self, key, object):
-        self.__cache[key] = object
-        self.__dump()
-
-    def remove(self, key):
-        try:
-            self.__cache.pop(key)
+    def add(self, valor: int=1):
+        if isinstance(valor, int):
+            self.__cache += valor
             self.__dump()
-        except KeyError:
-            pass
+
+    def reset(self, valor: int = 0):
+        if isinstance(valor, int):
+            self.__cache = valor
+            self.__dump()
     
-    def get(self, key):
-        try:
-            return self.__cache[key]
-        except KeyError:
-            pass
-    
-    def get_all(self):
-        return self.__cache.values()
+    def get(self) -> int:
+        return self.__cache
