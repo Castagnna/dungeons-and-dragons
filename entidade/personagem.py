@@ -15,7 +15,7 @@ class Personagem(ABC):
         inteligencia: int,
         sabedoria: int,
         carisma: int,
-        imagem: pygame.Surface,
+        imagem: str,
         ca: int,
         vida_maxima: int,
         tamanho: str,
@@ -37,7 +37,7 @@ class Personagem(ABC):
         self.__carisma = carisma
         self.__mod_carisma = self.calcula_modificador(carisma)
         self.__tamanho = tamanho
-        self.__imagem = self.define_imagem(imagem)
+        self.__imagem = imagem
         self.__posicao = self.define_posicao()
         self.__ca = ca
         self.__vida_maxima = vida_maxima
@@ -233,10 +233,9 @@ class Personagem(ABC):
             self.__ca = ca
 
     @tamanho.setter
-    def tamanho(self, tamanho):
+    def tamanho(self, tamanho: str):
         if isinstance(tamanho, str):
             self.__tamanho = tamanho
-            self.__imagem = self.define_imagem()
 
     @vida_maxima.setter
     def vida_maxima(self, vida_maxima):
@@ -306,9 +305,9 @@ class Personagem(ABC):
             if self.__vida_atual > self.__vida_maxima:
                 self.__vida_atual = self.__vida_maxima
 
-    def define_imagem(self, imagem_pygame=None):
+    def define_pygame_imagem(self, imagem_pygame=None):
         if not imagem_pygame:
-            imagem_pygame = self.imagem
+            imagem_pygame = pygame.image.load("tokens/" + self.__imagem + '.png')
 
         proporcoes = {
             'Padrao': (100, 100),
@@ -325,7 +324,8 @@ class Personagem(ABC):
         return pygame.transform.scale(imagem_pygame, proporcao)
 
     def define_posicao(self):
-        posicao = self.imagem.get_rect()
+        imagem_pygame = pygame.image.load("tokens/" + self.__imagem + '.png')
+        posicao = imagem_pygame.get_rect()
         posicao[0] = 100 * (self.id % 10)
         posicao[1] = 100 * ((self.id * 10) // 10)
         return posicao

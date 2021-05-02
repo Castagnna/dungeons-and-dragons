@@ -106,6 +106,8 @@ class ControladorPrincipal(ControladorGenerico):
 
         super(ControladorPrincipal, self).mostra_tela(funcoes)
 
+    # TODO: Remover os metodos abaixo do controlador principal
+    
     def grid(self): # desenha o grid
         lista_inicio = [100,100]
         lista_x = [100, 1000] # ajustar de acordo com a resolução
@@ -142,12 +144,17 @@ class ControladorPrincipal(ControladorGenerico):
         self.__visualizacao.fill((0, 0, 0))
         self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
                                  self.__controlador_background.mostra_posicao_mapa())
+
         for monstro in self.__controlador_monstro.monstros:
-            self.__visualizacao.blit(self.__controlador_monstro.mostra_imagem(monstro),
-                                     self.__controlador_monstro.mostra_posicao(monstro))
+            imagem_pygame = monstro.define_pygame_imagem()
+            posicao = monstro.posicao
+            self.__visualizacao.blit(imagem_pygame, posicao)
+
         for jogador in self.__controlador_jogador.jogadores:
-            self.__visualizacao.blit(self.__controlador_jogador.mostra_imagem(jogador),
-                                     self.__controlador_jogador.mostra_posicao(jogador))
+            imagem_pygame = jogador.define_pygame_imagem()
+            posicao = jogador.posicao
+            self.__visualizacao.blit(imagem_pygame, posicao)
+
         self.grid()
         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[0])
         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[1])
