@@ -1,8 +1,11 @@
+import random
+import pygame
+
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaMonstro import TelaMonstro
 from entidade.monstro import Monstro
-import random
-import pygame
+from dao.monstroDAO import MonstroDAO
+from dao.monstroContadorDAO import MonstroContadorDAO
 
 
 class ControladorMonstro(ControladorGenerico):
@@ -12,8 +15,8 @@ class ControladorMonstro(ControladorGenerico):
         self.__controlador_relatorio = controlador_principal.controlador_relatorio
         self.__controlador_ataque_monstro = controlador_principal.controlador_ataque_monstro
         self.__controlador_jogador = controlador_principal.controlador_jogador
-        self.__monstros = []
-        self.__counta_monstros = 1
+        self.__dao = MonstroDAO()
+        self.__dao_contador = MonstroContadorDAO()
 
     """
     getters
@@ -33,7 +36,7 @@ class ControladorMonstro(ControladorGenerico):
 
     @property
     def monstros(self):
-        return self.__monstros
+        return self.__dao.get_all()
 
     """
     setters
@@ -47,25 +50,25 @@ class ControladorMonstro(ControladorGenerico):
         if not dados:
             dados = self.tela.pega_dados_do_monstro()
 
-        novo_monstro = Monstro(
-            id=self.__counta_monstros,
+        monstro = Monstro(
+            id=self.__dao_contador.get() + 1,
             **dados
         )
 
-        self.__counta_monstros += 1
-        self.__monstros.append(novo_monstro)
+        self.__dao_contador.add(1)
+        self.__dao.add(monstro)
         self.tela.executado_com_sucesso()
 
     def cria_monstro_teste(self):
         dados = {
-            "nome": f"dragao {self.__counta_monstros}",
+            "nome": f"dragao {self.__dao_contador.get() + 1}",
             "forca": 1,
             "destreza": 1,
             "constituicao": 1,
             "inteligencia": 1,
             "sabedoria": 1,
             "carisma": 1,
-            "imagem": pygame.image.load("tokens/Ankheg.png"),
+            "imagem": "Ankheg",
             "ca": 1,
             "vida_maxima": 1,
             "vida_atual": 1,
@@ -76,18 +79,16 @@ class ControladorMonstro(ControladorGenerico):
         self.cria_novo_monstro(dados)
 
     def pega_monstro_por_id(self) -> Monstro:
-        if self.__monstros:
-            valores_validos = [monstro.id for monstro in self.__monstros]
+        if self.__dao.get_all():
+            valores_validos = [monstro.id for monstro in self.__dao.get_all()]
             id = self.tela.pega_id_monstro(valores_validos)
-            for monstro in self.__monstros:
-                if monstro.id == id:
-                    return monstro
+            return self.__dao.get(id)
         else:
             self.tela.lista_monstros_vazia()
             return None
 
     def mostra_monstros(self):
-        self.tela.mostra_monstros(self.__monstros)
+        self.tela.mostra_monstros(self.__dao.get_all())
 
     def exclui_monstro(self):
         monstro = self.pega_monstro_por_id()
@@ -97,7 +98,7 @@ class ControladorMonstro(ControladorGenerico):
             pass
         else:
             if remover:
-                self.__monstros.remove(monstro)
+                self.__dao.remove(monstro)
                 self.tela.executado_com_sucesso()
 
     def ataca_jogador(self):
@@ -158,6 +159,7 @@ class ControladorMonstro(ControladorGenerico):
             atributos = {
                 "id": monstro.id,
                 "nome": monstro.nome,
+                "imagem": monstro.imagem,
                 "tipo": monstro.tipo,
                 "forca": monstro.forca,
                 "destreza": monstro.destreza,
@@ -176,6 +178,7 @@ class ControladorMonstro(ControladorGenerico):
             self.tela.mostra_atributos(atributos)
 
     def lanca_magia(self):
+        # TODO: implementar o metodo que monstro lanca magia
         print("A Lanca Magia em B")
         pass
 
@@ -198,9 +201,9 @@ class ControladorMonstro(ControladorGenerico):
         super(ControladorMonstro, self).mostra_tela(funcoes)
 
     def mapa_moveu(self, x: int, y: int):
-        for i in range(len(self.__monstros)):
-            posicao = self.__monstros[i].posicao
-            self.__monstros[i].posicao(posicao[0] - x, posicao[1] - y)
+        for i in range(len(self.__dao.get_all())):
+            posicao = self.__dao.get_all()[i].posicao
+            self.__dao.get_all()[i].posicao(posicao[0] - x, posicao[1] - y)
 
     def mostra_imagem(self, monstro):
         return monstro.imagem
@@ -213,7 +216,7 @@ class ControladorMonstro(ControladorGenerico):
         self._controlador_jogador = value
 
     def remover_monstro(self, monstro):
-        self.__monstros.remove(monstro)
+        self.__dao.remove(monstro)
 
     def altera_atributo_do_monstro(self):
         monstro = self.pega_monstro_por_id()

@@ -61,7 +61,7 @@ class TelaMonstro(TelaGenerica):
             "inteligencia": self.pega_dado("Inteligencia: ", "int"),
             "sabedoria": self.pega_dado("Sabedoria: ", "int"),
             "carisma": self.pega_dado("Carisma: ", "int"),
-            "imagem": self.pega_imagem('tokens/'),
+            "imagem": self.pega_imagem(),
             "ca": self.pega_dado("Ca: ", "int"),
             "vida_maxima": self.pega_dado("Vida maxima: ", "int"),
             "vida_atual": self.pega_dado("Vida atual: ", "int"),
@@ -92,16 +92,21 @@ class TelaMonstro(TelaGenerica):
         print("Monstro, ", end="")
         return self.pega_id(valores_validos)
 
-    def pega_imagem(self, caminho):
-        while True:
+    @staticmethod
+    def pega_imagem():
+        tentativas = 0
+        while tentativas < 2:
             try:
-                entrada = input('Digite o nome da imagem que pretende usar: ')
-                imagem = pygame.image.load(caminho + entrada + '.png')
-                return imagem
+                nome = input("Nome do arquivo de imagem: ")
+                pygame.image.load("tokens/" + nome + ".png")
+                # return imagem
+                return nome
             except FileNotFoundError:
-                print('Imagem não encontrada, favor digitar novamente')
-            except:
-                print('Erro inesperado, favor entrar em contato com o suporte')
+                print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
+                tentativas += 1
+        print("Numero de tentativas esgotado, iniciado com imagem padrao")
+        # return pygame.image.load("imagens/jogador.png")
+        return "Ankheg"
 
     def mostra_alterar_monstro(self) -> int:
         titulo_da_tela = "ALTERAR MONSTRO"
