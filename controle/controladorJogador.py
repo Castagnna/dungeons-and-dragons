@@ -294,10 +294,10 @@ class ControladorJogador(ControladorGenerico):
             defensor.dano_sofrido.append(dano)
             defensor.vida_atual -= dano
             if defensor.vida_atual <= 0:
+                defensor.esta_vivo = False
                 experiencia = (defensor.experiencia // len(defensor.atacado_por))
                 for jogador in defensor.atacado_por:
                     jogador.recebe_experiencia(experiencia)
-                self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
             "atacante": atacante,
