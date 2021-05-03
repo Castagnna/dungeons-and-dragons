@@ -3,11 +3,12 @@ from limite.telaArma import TelaArma
 from entidade.arma import Arma
 from dao.armaDAO import ArmaDAO
 from dao.armaContadorDAO import ArmaContadorDAO
-
+from limite.telaArmaNova import TelaArmaNova
 
 class ControladorArma(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorArma, self).__init__(TelaArma(self))
+        self.__tela_arma_nova = TelaArmaNova(self)
         self.__controlador_principal = controlador_principal
         self.__dao = ArmaDAO()
         self.__dao_contador = ArmaContadorDAO()
@@ -23,24 +24,42 @@ class ControladorArma(ControladorGenerico):
     def mostra_armas(self):
         self.tela.mostra_armas(self.__dao.get_all())
 
-    def cria_nova_arma(self, dados: dict = None):
-        if not dados:
-            dados = self.tela.pega_dados_da_arma()
+    # def cria_nova_arma(self, dados: dict = None):
+    #     if not dados:
+    #         dados = self.tela.pega_dados_da_arma()
+    #     arma = Arma(
+    #         id=self.__dao_contador.get() + 1,
+    #         **dados
+    #     )
+    #     self.__dao.add(arma)
+    #     self.__dao_contador.add(1)
+    #     self.tela.executado_com_sucesso()
+
+    def cria_nova_arma(self, evento="CONFIRMAR", valores: dict=None):
+        if not valores:
+            evento, valores = self.__tela_arma_nova.mostra_tela()
+
         arma = Arma(
             id=self.__dao_contador.get() + 1,
-            **dados
+            nome=valores["NOME"],
+            quantidade_dado=int(valores["DADOS"]),
+            numero_faces=int(valores["FACES"]),
         )
-        self.__dao.add(arma)
-        self.__dao_contador.add(1)
-        self.tela.executado_com_sucesso()
+
+        if evento == "CONFIRMAR":
+            self.__dao.add(arma)
+            self.__dao_contador.add(1)
+            self.__tela_arma_nova.popup_sucesso()
+
+        self.__tela_arma_nova.fecha_tela()
 
     def cria_arma_teste(self):
-        dados = {
-            "nome": f"arma {self.__dao_contador.get() + 1}",
-            "quantidade_dado": 1,
-            "numero_faces": 6,
+        valores = {
+            "NOME": f"arma {self.__dao_contador.get() + 1}",
+            "DADOS": 1,
+            "FACES": 6,
         }
-        self.cria_nova_arma(dados)
+        self.cria_nova_arma(valores=valores)
 
     def pega_arma_por_id(self):
         if self.__dao.get_all():
