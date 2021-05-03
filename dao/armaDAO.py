@@ -16,5 +16,5 @@ class ArmaDAO(DAO):
         if isinstance(arma, Arma):
             super().remove(arma.id)
     
-    def get(self, id_arma: int) -> Arma:
-        return super().get(id_arma)
+    def get(self, id: int) -> Arma:
+        return super().get(id)

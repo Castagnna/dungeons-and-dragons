@@ -30,7 +30,7 @@ class TelaRelatorio(TelaGenerica):
     def cria_relatorio(eventos_combate: list):
         print("evento | atacate | defensor | dano\n")
         for combate in eventos_combate:
-            evento = combate['evento']
+            evento = combate['id']
             atacante = combate['atacante']
             defensor = combate['defensor']
             dano = combate['dano']
