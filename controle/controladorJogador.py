@@ -32,7 +32,7 @@ class ControladorJogador(ControladorGenerico):
         return self.__controlador_principal
 
     @property
-    def jogadores(self) -> list:
+    def jogadores(self):
         return self.__dao.get_all()
 
     @property

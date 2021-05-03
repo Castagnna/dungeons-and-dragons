@@ -111,7 +111,7 @@ class TelaJogador(TelaGenerica):
             except FileNotFoundError:
                 print(f"Imagem não encontrada, favor digitar novamente ({tentativas})")
                 tentativas += 1
-        print("Numero de tantativa esgotado, iniciado com imagem padrao")
+        print("Numero de tentativas esgotado, iniciado com imagem padrao")
         # return pygame.image.load("imagens/jogador.png")
         return "Anao_Barbaro"
 
