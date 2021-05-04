@@ -1,10 +1,15 @@
+
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaArma import TelaArma
+
 from entidade.arma import Arma
+
 from dao.armaDAO import ArmaDAO
 from dao.armaContadorDAO import ArmaContadorDAO
+
+from limite.telaArma import TelaArma
 from limite.telaArmaNova import TelaArmaNova
 from limite.telaArmaLista import TelaArmaLista
+from limite.telaArmaRemove import TelaArmaRemove
 
 
 class ControladorArma(ControladorGenerico):
@@ -12,6 +17,7 @@ class ControladorArma(ControladorGenerico):
         super(ControladorArma, self).__init__(TelaArma(self))
         self.__tela_arma_nova = TelaArmaNova(self)
         self.__tela_arma_lista = TelaArmaLista(self)
+        self.__tela_arma_remove = TelaArmaRemove(self)
         self.__controlador_principal = controlador_principal
         self.__dao = ArmaDAO()
         self.__dao_contador = ArmaContadorDAO()
@@ -79,26 +85,22 @@ class ControladorArma(ControladorGenerico):
             return None
 
     def remove_arma(self):
-        arma = self.pega_arma_por_id()
-        try:
-            self.__dao.remove(arma)
-            self.tela.arma_removida_com_sucesso(arma.nome)
-        except AttributeError:
-            pass
+        evento, valores = self.__tela_arma_remove.mostra_tela()
+
+        if evento == "CONFIRMAR":
             
-    def mostra_atributos_da_arma(self, arma: Arma = None):
-        if not arma:
-            arma = self.pega_arma_por_id()
-        try:
-            atributos = {
-                "id": arma.id,
-                "nome": arma.nome,
-                "dados": arma.quantidade_dado,
-                "faces": arma.numero_faces,
-            }
-            self.tela.mostra_atributos_da_arma(atributos)
-        except AttributeError:
-            pass
+            try:
+                id = int(valores["ID"])
+                arma = self.__dao.get(id)
+                self.__dao.remove(arma)
+                self.__tela_arma_remove.popup_sucesso()
+                self.__tela_arma_remove.fecha_tela()
+            except ValueError:
+                self.__tela_arma_remove.popup_falha(mensagem="O valor precisa ser inteiro")
+                self.__tela_arma_remove.fecha_tela()
+            except KeyError:
+                self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
+                self.__tela_arma_remove.fecha_tela()
 
     def alterar_arma(self):
         arma = self.pega_arma_por_id()
@@ -129,8 +131,7 @@ class ControladorArma(ControladorGenerico):
             1: self.cria_nova_arma,
             2: self.mostra_armas,
             3: self.remove_arma,
-            4: self.mostra_atributos_da_arma,
-            5: self.alterar_arma,
+            4: self.alterar_arma,
             77: self.cria_arma_teste,
         }
 

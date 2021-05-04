@@ -55,17 +55,13 @@ class TelaGenerica(ABC):
         self.__janela.Close()
     
     @staticmethod
-    def popup_sucesso(titulo: str=None, mensagem: str=None):
-        if not titulo:
-            titulo = "Situacao da operacao"
+    def popup_sucesso(titulo: str="Sucesso", mensagem: str=None):
         if not mensagem:
             mensagem = "Operacao realizada com sucesso"
         sg.Popup(titulo, mensagem)
 
     @staticmethod
-    def popup_falha(titulo: str=None, mensagem: str=None):
-        if not titulo:
-            titulo = "Situacao da operacao"
+    def popup_falha(titulo: str="Erro", mensagem: str=None):
         if not mensagem:
             mensagem = "Nao foi possivel concluir a operacao"
         sg.Popup(titulo, mensagem)
