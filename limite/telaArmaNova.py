@@ -14,7 +14,6 @@ class TelaArmaNova(TelaGenerica):
 
     def __init__(self, controlador):
         super().__init__(controlador)
-        # if not self.janela:
         self.init_components()
 
     def init_components(self):

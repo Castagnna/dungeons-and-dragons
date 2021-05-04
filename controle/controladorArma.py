@@ -4,11 +4,14 @@ from entidade.arma import Arma
 from dao.armaDAO import ArmaDAO
 from dao.armaContadorDAO import ArmaContadorDAO
 from limite.telaArmaNova import TelaArmaNova
+from limite.telaArmaLista import TelaArmaLista
+
 
 class ControladorArma(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorArma, self).__init__(TelaArma(self))
         self.__tela_arma_nova = TelaArmaNova(self)
+        self.__tela_arma_lista = TelaArmaLista(self)
         self.__controlador_principal = controlador_principal
         self.__dao = ArmaDAO()
         self.__dao_contador = ArmaContadorDAO()
@@ -21,19 +24,9 @@ class ControladorArma(ControladorGenerico):
     def armas(self):
         return self.__dao.get_all()
 
-    def mostra_armas(self):
-        self.tela.mostra_armas(self.__dao.get_all())
-
-    # def cria_nova_arma(self, dados: dict = None):
-    #     if not dados:
-    #         dados = self.tela.pega_dados_da_arma()
-    #     arma = Arma(
-    #         id=self.__dao_contador.get() + 1,
-    #         **dados
-    #     )
-    #     self.__dao.add(arma)
-    #     self.__dao_contador.add(1)
-    #     self.tela.executado_com_sucesso()
+    """
+    Methods
+    """
 
     def cria_nova_arma(self, evento="CONFIRMAR", valores: dict=None):
         if not valores:
@@ -52,6 +45,14 @@ class ControladorArma(ControladorGenerico):
             self.__tela_arma_nova.popup_sucesso()
 
         self.__tela_arma_nova.fecha_tela()
+
+    # def mostra_armas(self):
+    #     self.tela.mostra_armas(self.__dao.get_all())
+
+    def mostra_armas(self):
+        evento, _ = self.__tela_arma_lista.mostra_tela()
+        if evento == "OK":
+            self.__tela_arma_lista.fecha_tela()
 
     def cria_arma_teste(self):
         valores = {
