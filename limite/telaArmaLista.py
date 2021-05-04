@@ -20,43 +20,42 @@ class TelaArmaLista(TelaGenerica):
 
     def __init__(self, controlador):
         super().__init__(controlador)
+        self.__lista_de_armas = []
         self.init_components()
 
-    def monta_lista(self):
+    @staticmethod
+    def monta_lista_str(lista_de_armas: list):
 
         def monta_string(id, nome, dados, faces):
-            return " ; ".join([str(id), str(nome), str(dados), str(faces)])
-        
-        lista_de_armas = ["0 ; teste ; 2 ; 4"]
+            # return " | ".join([str(id), str(nome), str(dados), str(faces)])
+            return f"{id:^4}|{nome:^10}|{dados:^9}|{faces:^6}"
 
-        for id in sorted(self.controlador.armas):
-            arma = self.controlador.armas[id]
+        lista_str = [" Id |   Nome   | Dados | Faces"]
+        
+        for arma in lista_de_armas:
             string = monta_string(
                 arma.id,
                 arma.nome,
                 arma.quantidade_dado,
                 arma.numero_faces,
             )
-            lista_de_armas.append(string)
-            lista_de_armas.append("2 ; teste ; 3 ; 5")
-            
-        lista_de_armas.append("3 ; teste ; 3 ; 5")
+            lista_str.append(string)
 
-        return lista_de_armas
+        return lista_str
 
     def init_components(self):
         sg.ChangeLookAndFeel('Reddit')
 
-        valores = self.monta_lista()
+        valores = self.monta_lista_str(self.__lista_de_armas)
 
         layout = [
-            [sg.Text('Id ; Nome ; Dados ; Faces', background_color='#d3dfda', justification='center', size=(30, 2))],
             [sg.Listbox(values=valores, size=(30, 6))],
             [sg.Cancel("OK", key="OK")],
         ]
 
-        self.__janela = sg.Window("Lista de armas", default_element_size=(40, 10)).Layout(layout)
+        janela = sg.Window("Lista de armas", default_element_size=(40, 10)).Layout(layout)
+        super(TelaArmaLista, self).cria_janela(janela)
 
-    # def mostra_tela(self, lista_de_armas: list=[]):
-    #     self.__lista_de_armas = lista_de_armas
-    #     return super().mostra_tela()
+    def mostra_tela(self, lista_de_armas):
+        self.__lista_de_armas = lista_de_armas
+        return super().mostra_tela()

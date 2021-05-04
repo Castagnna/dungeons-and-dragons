@@ -46,14 +46,6 @@ class ControladorArma(ControladorGenerico):
 
         self.__tela_arma_nova.fecha_tela()
 
-    # def mostra_armas(self):
-    #     self.tela.mostra_armas(self.__dao.get_all())
-
-    def mostra_armas(self):
-        evento, _ = self.__tela_arma_lista.mostra_tela()
-        if evento == "OK":
-            self.__tela_arma_lista.fecha_tela()
-
     def cria_arma_teste(self):
         valores = {
             "NOME": f"arma {self.__dao_contador.get() + 1}",
@@ -61,6 +53,24 @@ class ControladorArma(ControladorGenerico):
             "FACES": 6,
         }
         self.cria_nova_arma(valores=valores)
+
+    # def mostra_armas(self):
+    #     self.tela.mostra_armas(self.__dao.get_all())
+
+    @staticmethod
+    def ordena_valores_do_dicionario_por_chave(dicionario: dict):
+        lista_ordenada = []
+        for key in sorted(dicionario.keys()):
+            lista_ordenada.append(dicionario[key])
+        return lista_ordenada
+
+    def mostra_armas(self):
+
+        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        evento, _ = self.__tela_arma_lista.mostra_tela(lista_ordenada_de_armas)
+        if evento == "OK":
+            self.__tela_arma_lista.fecha_tela()
 
     def pega_arma_por_id(self):
         if self.__dao.get_all():
