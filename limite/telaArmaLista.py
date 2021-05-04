@@ -27,7 +27,6 @@ class TelaArmaLista(TelaGenerica):
     def monta_lista_str(lista_de_armas: list):
 
         def monta_string(id, nome, dados, faces):
-            # return " | ".join([str(id), str(nome), str(dados), str(faces)])
             return f"{id:^4}|{nome:^10}|{dados:^9}|{faces:^6}"
 
         lista_str = [" Id |   Nome   | Dados | Faces"]

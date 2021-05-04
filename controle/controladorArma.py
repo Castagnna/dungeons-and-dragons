@@ -54,9 +54,6 @@ class ControladorArma(ControladorGenerico):
         }
         self.cria_nova_arma(valores=valores)
 
-    # def mostra_armas(self):
-    #     self.tela.mostra_armas(self.__dao.get_all())
-
     @staticmethod
     def ordena_valores_do_dicionario_por_chave(dicionario: dict):
         lista_ordenada = []
