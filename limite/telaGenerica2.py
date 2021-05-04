@@ -42,6 +42,17 @@ class TelaGenerica(ABC):
 
     def cria_janela(self, janela):
         self.__janela = janela
+
+    @abstractmethod
+    def init_components(self):
+        pass
+    
+    def mostra_tela(self):
+        self.init_components()
+        return self.__janela.Read()
+
+    def fecha_tela(self):
+        self.__janela.Close()
     
     @staticmethod
     def popup_sucesso(titulo: str=None, mensagem: str=None):
@@ -58,9 +69,3 @@ class TelaGenerica(ABC):
         if not mensagem:
             mensagem = "Nao foi possivel concluir a operacao"
         sg.Popup(titulo, mensagem)
-    
-    def mostra_tela(self):
-        return self.__janela.Read()
-
-    def fecha_tela(self):
-        self.__janela.Close()
