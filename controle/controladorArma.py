@@ -10,6 +10,8 @@ from limite.telaArma import TelaArma
 from limite.telaArmaNova import TelaArmaNova
 from limite.telaArmaLista import TelaArmaLista
 from limite.telaArmaRemove import TelaArmaRemove
+from limite.telaArmaAltera import TelaArmaAltera
+from limite.telaArmaPega import TelaArmaPega
 
 
 class ControladorArma(ControladorGenerico):
@@ -18,6 +20,8 @@ class ControladorArma(ControladorGenerico):
         self.__tela_arma_nova = TelaArmaNova(self)
         self.__tela_arma_lista = TelaArmaLista(self)
         self.__tela_arma_remove = TelaArmaRemove(self)
+        self.__tela_arma_altera = TelaArmaAltera(self)
+        self.__tela_arma_pega = TelaArmaPega(self)
         self.__controlador_principal = controlador_principal
         self.__dao = ArmaDAO()
         self.__dao_contador = ArmaContadorDAO()
@@ -75,55 +79,69 @@ class ControladorArma(ControladorGenerico):
         if evento == "OK":
             self.__tela_arma_lista.fecha_tela()
 
-    def pega_arma_por_id(self):
-        if self.__dao.get_all():
-            valores_validos = [arma.id for arma in self.__dao.get_all()]
-            id = self.tela.pega_id(valores_validos)
-            return self.__dao.get(id)
-        else:
-            self.tela.lista_armas_vazia()
-            return None
-
     def remove_arma(self):
-        evento, valores = self.__tela_arma_remove.mostra_tela()
 
-        if evento == "CONFIRMAR":
-            
-            try:
-                id = int(valores["ID"])
-                arma = self.__dao.get(id)
-                self.__dao.remove(arma)
-                self.__tela_arma_remove.popup_sucesso()
-                self.__tela_arma_remove.fecha_tela()
-            except ValueError:
-                self.__tela_arma_remove.popup_falha(mensagem="O valor precisa ser inteiro")
-                self.__tela_arma_remove.fecha_tela()
-            except KeyError:
-                self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
-                self.__tela_arma_remove.fecha_tela()
+        arma = self.pega_arma_por_id()
+
+        if not arma:
+            return
+
+        try:
+            self.__dao.remove(arma)
+            self.__tela_arma_remove.popup_sucesso()
+            self.__tela_arma_remove.fecha_tela()
+        except KeyError:
+            self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
+            self.__tela_arma_remove.fecha_tela()
+
+    def pega_arma_por_id(self):
+
+        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        mostra_tela = True
+
+        while mostra_tela:
+
+            evento, valores = self.__tela_arma_pega.mostra_tela(lista_ordenada_de_armas)
+
+            if evento == "CONFIRMA":
+                try:
+                    id = int(valores["ID"])
+                    arma = self.__dao.get(id)
+                    mostra_tela = False
+                    self.__tela_arma_pega.fecha_tela()
+                    return arma
+                except ValueError:
+                    self.__tela_arma_pega.popup_falha(mensagem="O valor precisa ser inteiro")
+                    self.__tela_arma_pega.fecha_tela()
+                except KeyError:
+                    self.__tela_arma_pega.popup_falha(mensagem="Arma não encontrada")
+                    self.__tela_arma_pega.fecha_tela()
+            elif evento == "CANCELA":
+                mostra_tela = False
+                self.__tela_arma_pega.fecha_tela()
+        return None
 
     def alterar_arma(self):
-        arma = self.pega_arma_por_id()
-        opcao = self.tela.mostra_alterar_arma()
 
-        funcoes = {
-            1: ("nome", "str"),
-            2: ("dados", "int"),
-            3: ("faces", "int"),
+        arma = self.pega_arma_por_id()
+
+        dados = {
+            "ID": arma.id,
+            "NOME": arma.nome,
+            "DADOS": arma.quantidade_dado,
+            "FACES": arma.numero_faces,
         }
 
-        tipo = funcoes[opcao][1]
+        evento, valores = self.__tela_arma_altera.mostra_tela(dados)
+        
+        if evento == "CONFIRMA":
+            arma.nome = valores["NOME"]
+            arma.quantidade_dado = int(valores["DADOS"])
+            arma.numero_faces = int(valores["FACES"])
+            self.__tela_arma_altera.popup_sucesso()
 
-        novo_valor = self.tela.pega_dado(
-            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
-            tipo=tipo
-        )
-        if opcao == 1:
-            arma.nome = novo_valor
-        elif opcao == 2:
-            arma.quantidade_dado = novo_valor
-        else:
-            arma.numero_faces = novo_valor
+        self.__tela_arma_altera.fecha_tela()
 
     def mostra_tela(self):
 

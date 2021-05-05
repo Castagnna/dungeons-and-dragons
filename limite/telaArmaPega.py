@@ -10,7 +10,7 @@ from limite.telaGenerica2 import TelaGenerica
 from PySimpleGUI import PySimpleGUI as sg
 
 
-class TelaArmaLista(TelaGenerica):
+class TelaArmaPega(TelaGenerica):
 
     def __init__(self, controlador):
         super().__init__(controlador)
@@ -43,11 +43,13 @@ class TelaArmaLista(TelaGenerica):
 
         layout = [
             [sg.Listbox(values=valores, size=(30, 6))],
-            [sg.Cancel("OK", key="OK")],
+            [sg.Text("Seleciona a arma por id:"), sg.InputText("", key="ID")],
+            [sg.Submit("Confirma", key="CONFIRMA")],
+            [sg.Cancel("Cancela", key="CANCELA")],
         ]
 
-        janela = sg.Window("Lista de armas", default_element_size=(40, 10)).Layout(layout)
-        super(TelaArmaLista, self).cria_janela(janela)
+        janela = sg.Window("Escolha de arma", default_element_size=(40, 10)).Layout(layout)
+        super(TelaArmaPega, self).cria_janela(janela)
 
     def mostra_tela(self, lista_de_armas):
         self.__lista_de_armas = lista_de_armas
