@@ -35,9 +35,9 @@ class Arma:
         return self.__numero_faces
 
     @numero_faces.setter
-    def numero_faces(self, dado: int):
-        if isinstance(dado, int):
-            self.__numero_faces = dado
+    def numero_faces(self, faces: int):
+        if isinstance(faces, int):
+            self.__numero_faces = faces
 
     def dano(self):
         contador = 0
