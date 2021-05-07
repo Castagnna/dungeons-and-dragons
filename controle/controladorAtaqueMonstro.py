@@ -2,13 +2,17 @@ from dao.ataqueDAO import AtaqueDAO
 from dao.ataqueContadorDAO import AtaqueContadorDAO
 
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaAtaqueMonstro import TelaAtaqueMonstro
+
 from entidade.ataqueMonstro import AtaqueMonstro
+
+from limite.telaAtaqueMonstro import TelaAtaqueMonstro
+from limite.telaAtaqueNovo import TelaAtaqueNovo
 
 
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
+        self.__ataque_novo = TelaAtaqueNovo(self)
         self.__controlador_principal = controlador_principal
         self.__dao = AtaqueDAO()
         self.__dao_contador = AtaqueContadorDAO()
