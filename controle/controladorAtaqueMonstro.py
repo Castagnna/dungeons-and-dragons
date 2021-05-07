@@ -1,3 +1,6 @@
+from dao.ataqueDAO import AtaqueDAO
+from dao.ataqueContadorDAO import AtaqueContadorDAO
+
 from controle.controladorGenerico import ControladorGenerico
 from limite.telaAtaqueMonstro import TelaAtaqueMonstro
 from entidade.ataqueMonstro import AtaqueMonstro
@@ -7,9 +10,8 @@ class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
         self.__controlador_principal = controlador_principal
-        self.__ataques_monstro = []
-        self.__controlador_principal = controlador_principal
-        self.__counta_ataque_monstro = 0
+        self.__dao = AtaqueDAO()
+        self.__dao_contador = AtaqueContadorDAO()
 
     def mostra_tela(self):
         funcoes = {
@@ -25,15 +27,16 @@ class ControladorAtaqueMonstro(ControladorGenerico):
     def cria_novo_ataque_monstro(self):
         dados = self.tela.pega_dados_de_ataque()
         novo_ataque = AtaqueMonstro(
-            id=self.__counta_ataque_monstro,
+            id=self.__dao_contador.get() + 1,
             **dados
         )
-        self.__counta_ataque_monstro += 1
-        self.__ataques_monstro.append(novo_ataque)
+        self.__dao.add(novo_ataque)
+        self.__dao_contador.add(1)
+        
         self.tela.executado_com_sucesso()
 
     def mostra_ataques_monstro(self):
-        self.tela.mostra_ataques(self.__ataques_monstro)
+        self.tela.mostra_ataques(self.__dao.get_all())
 
     def remove_ataque_monstro(self):
         ataque = self.pega_ataque_por_id()
@@ -87,12 +90,10 @@ class ControladorAtaqueMonstro(ControladorGenerico):
             ataque.teste = novo_valor
 
     def pega_ataque_por_id(self) -> AtaqueMonstro:
-        if self.__ataques_monstro:
-            valores_validos = [ataque.id for ataque in self.__ataques_monstro]
+        if self.__dao.get_all():
+            valores_validos = [ataque.id for ataque in self.__dao.get_all()]
             id = self.tela.pega_id_ataque(valores_validos)
-            for ataque in self.__ataques_monstro:
-                if ataque.id == id:
-                    return ataque
+            return self.__dao.get(id)
         else:
             self.tela.lista_ataques_monstro_vazia()
             return None
