@@ -1,5 +1,5 @@
 
-from controle.controladorGenerico import ControladorGenerico
+# from controle.controladorGenerico import ControladorGenerico
 
 from entidade.arma import Arma
 
@@ -14,9 +14,9 @@ from limite.telaArmaAltera import TelaArmaAltera
 from limite.telaArmaPega import TelaArmaPega
 
 
-class ControladorArma(ControladorGenerico):
+class ControladorArma:
     def __init__(self, controlador_principal):
-        super(ControladorArma, self).__init__(TelaArma(self))
+        self.__tela_arma = TelaArma(self)
         self.__tela_arma_nova = TelaArmaNova(self)
         self.__tela_arma_lista = TelaArmaLista(self)
         self.__tela_arma_remove = TelaArmaRemove(self)
@@ -145,12 +145,28 @@ class ControladorArma(ControladorGenerico):
 
     def mostra_tela(self):
 
-        funcoes = {
-            1: self.cria_nova_arma,
-            2: self.mostra_armas,
-            3: self.remove_arma,
-            4: self.alterar_arma,
-            77: self.cria_arma_teste,
+        evento, _ = self.__tela_arma.mostra_tela()
+
+        if evento == "VOLTAR":
+            self.__tela_arma.fecha_tela()
+            self.__controlador_principal.mostra_tela()
+
+        telas = {
+            "NOVA_ARMA": self.cria_nova_arma,
+            "LISTA_ARMAS": self.mostra_armas,
+            "REMOVE_ARMA": self.remove_arma,
+            "ARTERA_ARMA": self.alterar_arma,
+            "ARMA_TESTE": self.cria_arma_teste,
         }
 
-        super(ControladorArma, self).mostra_tela(funcoes)
+        try:
+            self.__tela_arma.fecha_tela()
+            telas[evento]()
+            self.mostra_tela()
+        except KeyError:
+            pass
+
+
+
+
+        
