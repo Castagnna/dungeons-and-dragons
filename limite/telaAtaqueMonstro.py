@@ -15,6 +15,7 @@ class TelaAtaqueMonstro(TelaGenerica):
             (3, "Remove ataque"),
             (4, "Mostra atributos do ataque"),
             (5, "Alterar ataque"),
+            (6, "Cria ataque teste"),
             (88, "Voltar"),
             (99, "Finaliza programa")
         )

@@ -23,7 +23,8 @@ class ControladorAtaqueMonstro(ControladorGenerico):
             2: self.mostra_ataques_monstro,
             3: self.remove_ataque_monstro,
             4: self.mostra_atributos_ataque_monstro,
-            5: self.altera_atributos_ataque_monstro
+            5: self.altera_atributos_ataque_monstro,
+            6: self.cria_ataque_teste,
         }
 
         super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
@@ -50,16 +51,17 @@ class ControladorAtaqueMonstro(ControladorGenerico):
 
         self.__tela_ataque_novo.fecha_tela()
 
-    # def cria_novo_ataque_monstro(self):
-    #     dados = self.tela.pega_dados_de_ataque()
-    #     novo_ataque = AtaqueMonstro(
-    #         id=self.__dao_contador.get() + 1,
-    #         **dados
-    #     )
-    #     self.__dao.add(novo_ataque)
-    #     self.__dao_contador.add(1)
-        
-    #     self.tela.executado_com_sucesso()
+    def cria_ataque_teste(self):
+        valores = {
+            "NOME": f"ataque {self.__dao_contador.get() + 1}",
+            "DADOS": 1,
+            "FACES": 1,
+            "BONUS": 1,
+            "ACERTO": 1,
+            "CD": 1,
+            "TESTE": "Nenhum"
+        }
+        self.cria_novo_ataque(valores=valores)
 
     def mostra_ataques_monstro(self):
         self.tela.mostra_ataques(self.__dao.get_all())
