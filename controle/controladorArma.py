@@ -1,6 +1,4 @@
 
-# from controle.controladorGenerico import ControladorGenerico
-
 from entidade.arma import Arma
 
 from dao.armaDAO import ArmaDAO
