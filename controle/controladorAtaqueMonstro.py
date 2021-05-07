@@ -8,6 +8,8 @@ from entidade.ataqueMonstro import AtaqueMonstro
 from limite.telaAtaqueMonstro import TelaAtaqueMonstro
 from limite.telaAtaqueNovo import TelaAtaqueNovo
 from limite.telaAtaqueLista import TelaAtaqueLista
+from limite.telaAtaqueRemove import TelaAtaqueRemove
+from limite.telaAtaquePega import TelaAtaquePega
 
 
 class ControladorAtaqueMonstro(ControladorGenerico):
@@ -15,6 +17,8 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
         self.__tela_ataque_novo = TelaAtaqueNovo(self)
         self.__tela_ataque_lista = TelaAtaqueLista(self)
+        self.__tela_ataque_pega = TelaAtaquePega(self)
+        self.__tela_ataque_remove = TelaAtaqueRemove(self)
         self.__controlador_principal = controlador_principal
         self.__dao = AtaqueDAO()
         self.__dao_contador = AtaqueContadorDAO()
@@ -23,8 +27,7 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         funcoes = {
             1: self.cria_novo_ataque,
             2: self.mostra_ataques,
-            3: self.remove_ataque_monstro,
-            4: self.mostra_atributos_ataque_monstro,
+            3: self.remove_ataque,
             5: self.altera_atributos_ataque_monstro,
             6: self.cria_ataque_teste,
         }
@@ -80,24 +83,50 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         if evento == "OK":
             self.__tela_ataque_lista.fecha_tela()
 
-    # def mostra_ataques(self):
-    #     self.tela.mostra_ataques(self.__dao.get_all())
+    def pega_ataque_por_id(self):
 
-    def remove_ataque_monstro(self):
+        lista_ordenada_de_ataques = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        mostra_tela = True
+
+        while mostra_tela:
+
+            evento, valores = self.__tela_ataque_pega.mostra_tela(lista_ordenada_de_ataques)
+
+            print(evento, valores)
+
+            if evento == "CONFIRMA":
+                try:
+                    id = int(valores["ID"])
+                    ataque = self.__dao.get(id)
+                    mostra_tela = False
+                    self.__tela_ataque_pega.fecha_tela()
+                    return ataque
+                except ValueError:
+                    self.__tela_ataque_pega.popup_falha(mensagem="O valor precisa ser inteiro")
+                    self.__tela_ataque_pega.fecha_tela()
+                except KeyError:
+                    self.__tela_ataque_pega.popup_falha(mensagem="Ataque não encontrado")
+                    self.__tela_ataque_pega.fecha_tela()
+            elif evento == "CANCELA" or evento == None:
+                mostra_tela = False
+                self.__tela_ataque_pega.fecha_tela()
+        return None
+
+    def remove_ataque(self):
+
         ataque = self.pega_ataque_por_id()
+
+        if not ataque:
+            return
+
         try:
-            remover = self.tela.confirma_remocao(ataque.nome)
-        except AttributeError:
-            pass
-        else:
-            if remover:
-                self.__ataques_monstro.remove(ataque)
-                self.tela.executado_com_sucesso()
-
-    def mostra_atributos_ataque_monstro(self):
-        ataque = self.pega_ataque_por_id()
-        if ataque:
-            self.tela.mostra_atributos_do_ataque(ataque)
+            self.__dao.remove(ataque)
+            self.__tela_ataque_remove.popup_sucesso()
+            self.__tela_ataque_remove.fecha_tela()
+        except KeyError:
+            self.__tela_ataque_remove.popup_falha(mensagem="Ataque não encontrada")
+            self.__tela_ataque_remove.fecha_tela()
 
     def altera_atributos_ataque_monstro(self):
         ataque = self.pega_ataque_por_id()
@@ -133,12 +162,3 @@ class ControladorAtaqueMonstro(ControladorGenerico):
             ataque.cd = novo_valor
         else:
             ataque.teste = novo_valor
-
-    def pega_ataque_por_id(self) -> AtaqueMonstro:
-        if self.__dao.get_all():
-            valores_validos = [ataque.id for ataque in self.__dao.get_all()]
-            id = self.tela.pega_id_ataque(valores_validos)
-            return self.__dao.get(id)
-        else:
-            self.tela.lista_ataques_monstro_vazia()
-            return None

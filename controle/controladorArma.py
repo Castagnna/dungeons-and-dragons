@@ -77,21 +77,6 @@ class ControladorArma:
         if evento == "OK":
             self.__tela_arma_lista.fecha_tela()
 
-    def remove_arma(self):
-
-        arma = self.pega_arma_por_id()
-
-        if not arma:
-            return
-
-        try:
-            self.__dao.remove(arma)
-            self.__tela_arma_remove.popup_sucesso()
-            self.__tela_arma_remove.fecha_tela()
-        except KeyError:
-            self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
-            self.__tela_arma_remove.fecha_tela()
-
     def pega_arma_por_id(self):
 
         lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
@@ -115,10 +100,25 @@ class ControladorArma:
                 except KeyError:
                     self.__tela_arma_pega.popup_falha(mensagem="Arma não encontrada")
                     self.__tela_arma_pega.fecha_tela()
-            elif evento == "CANCELA":
+            elif evento == "CANCELA" or evento == None:
                 mostra_tela = False
                 self.__tela_arma_pega.fecha_tela()
         return None
+
+    def remove_arma(self):
+
+        arma = self.pega_arma_por_id()
+
+        if not arma:
+            return
+
+        try:
+            self.__dao.remove(arma)
+            self.__tela_arma_remove.popup_sucesso()
+            self.__tela_arma_remove.fecha_tela()
+        except KeyError:
+            self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
+            self.__tela_arma_remove.fecha_tela()
 
     def alterar_arma(self):
 
