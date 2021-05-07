@@ -7,12 +7,14 @@ from entidade.ataqueMonstro import AtaqueMonstro
 
 from limite.telaAtaqueMonstro import TelaAtaqueMonstro
 from limite.telaAtaqueNovo import TelaAtaqueNovo
+from limite.telaAtaqueLista import TelaAtaqueLista
 
 
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
         self.__tela_ataque_novo = TelaAtaqueNovo(self)
+        self.__tela_ataque_lista = TelaAtaqueLista(self)
         self.__controlador_principal = controlador_principal
         self.__dao = AtaqueDAO()
         self.__dao_contador = AtaqueContadorDAO()
@@ -20,7 +22,7 @@ class ControladorAtaqueMonstro(ControladorGenerico):
     def mostra_tela(self):
         funcoes = {
             1: self.cria_novo_ataque,
-            2: self.mostra_ataques_monstro,
+            2: self.mostra_ataques,
             3: self.remove_ataque_monstro,
             4: self.mostra_atributos_ataque_monstro,
             5: self.altera_atributos_ataque_monstro,
@@ -63,8 +65,23 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         }
         self.cria_novo_ataque(valores=valores)
 
-    def mostra_ataques_monstro(self):
-        self.tela.mostra_ataques(self.__dao.get_all())
+    @staticmethod
+    def ordena_valores_do_dicionario_por_chave(dicionario: dict):
+        lista_ordenada = []
+        for key in sorted(dicionario.keys()):
+            lista_ordenada.append(dicionario[key])
+        return lista_ordenada
+
+    def mostra_ataques(self):
+
+        lista_ordenada_de_ataques = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        evento, _ = self.__tela_ataque_lista.mostra_tela(lista_ordenada_de_ataques)
+        if evento == "OK":
+            self.__tela_ataque_lista.fecha_tela()
+
+    # def mostra_ataques(self):
+    #     self.tela.mostra_ataques(self.__dao.get_all())
 
     def remove_ataque_monstro(self):
         ataque = self.pega_ataque_por_id()
