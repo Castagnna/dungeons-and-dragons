@@ -12,14 +12,14 @@ from limite.telaAtaqueNovo import TelaAtaqueNovo
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
         super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
-        self.__ataque_novo = TelaAtaqueNovo(self)
+        self.__tela_ataque_novo = TelaAtaqueNovo(self)
         self.__controlador_principal = controlador_principal
         self.__dao = AtaqueDAO()
         self.__dao_contador = AtaqueContadorDAO()
 
     def mostra_tela(self):
         funcoes = {
-            1: self.cria_novo_ataque_monstro,
+            1: self.cria_novo_ataque,
             2: self.mostra_ataques_monstro,
             3: self.remove_ataque_monstro,
             4: self.mostra_atributos_ataque_monstro,
@@ -28,16 +28,38 @@ class ControladorAtaqueMonstro(ControladorGenerico):
 
         super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
 
-    def cria_novo_ataque_monstro(self):
-        dados = self.tela.pega_dados_de_ataque()
-        novo_ataque = AtaqueMonstro(
+    def cria_novo_ataque(self, evento="CONFIRMAR", valores: dict=None):
+        if not valores:
+            evento, valores = self.__tela_ataque_novo.mostra_tela()
+
+        ataque = AtaqueMonstro(
             id=self.__dao_contador.get() + 1,
-            **dados
+            nome=valores["NOME"],
+            quantidade_dado=int(valores["DADOS"]),
+            numero_faces=int(valores["FACES"]),
+            dano_bonus=int(valores["BONUS"]),
+            acerto=int(valores["ACERTO"]),
+            cd=int(valores["CD"]),
+            teste=valores["TESTE"],
         )
-        self.__dao.add(novo_ataque)
-        self.__dao_contador.add(1)
+
+        if evento == "CONFIRMAR":
+            self.__dao.add(ataque)
+            self.__dao_contador.add(1)
+            self.__tela_ataque_novo.popup_sucesso()
+
+        self.__tela_ataque_novo.fecha_tela()
+
+    # def cria_novo_ataque_monstro(self):
+    #     dados = self.tela.pega_dados_de_ataque()
+    #     novo_ataque = AtaqueMonstro(
+    #         id=self.__dao_contador.get() + 1,
+    #         **dados
+    #     )
+    #     self.__dao.add(novo_ataque)
+    #     self.__dao_contador.add(1)
         
-        self.tela.executado_com_sucesso()
+    #     self.tela.executado_com_sucesso()
 
     def mostra_ataques_monstro(self):
         self.tela.mostra_ataques(self.__dao.get_all())
