@@ -16,7 +16,7 @@ class TelaAtaque(TelaGenerica):
 
         layout = [
             [sg.Button("Nova ataque", key="NOVO_ATAQUE")],
-            [sg.Button("Ataques cadastradas", key="LISTA_ATAQUES")],
+            [sg.Button("Ataques cadastrados", key="LISTA_ATAQUES")],
             [sg.Button("Remove ataque", key="REMOVE_ATAQUE")],
             [sg.Button("Alterar ataque", key="ARTERA_ATAQUE")],
             [sg.Button("Cria ataque teste", key="ATAQUE_TESTE")],

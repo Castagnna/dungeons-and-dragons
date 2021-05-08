@@ -1,8 +1,6 @@
 from dao.ataqueDAO import AtaqueDAO
 from dao.ataqueContadorDAO import AtaqueContadorDAO
 
-from controle.controladorGenerico import ControladorGenerico
-
 from entidade.ataqueMonstro import AtaqueMonstro
 
 from limite.telaAtaque import TelaAtaque
@@ -14,9 +12,8 @@ from limite.telaAtaquePega import TelaAtaquePega
 from limite.telaAtaqueAltera import TelaAtaqueAltera
 
 
-class ControladorAtaqueMonstro(ControladorGenerico):
+class ControladorAtaqueMonstro:
     def __init__(self, controlador_principal):
-        # super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
         self.__tela_ataque = TelaAtaque(self)
         self.__tela_ataque_novo = TelaAtaqueNovo(self)
         self.__tela_ataque_lista = TelaAtaqueLista(self)
@@ -49,17 +46,6 @@ class ControladorAtaqueMonstro(ControladorGenerico):
             self.mostra_tela()
         except KeyError:
             pass
-    
-    # def mostra_tela(self):
-    #     funcoes = {
-    #         1: self.cria_novo_ataque,
-    #         2: self.mostra_ataques,
-    #         3: self.remove_ataque,
-    #         5: self.altera_ataque,
-    #         6: self.cria_ataque_teste,
-    #     }
-
-    #     super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
 
     def cria_novo_ataque(self, evento="CONFIRMAR", valores: dict=None):
         if not valores:
