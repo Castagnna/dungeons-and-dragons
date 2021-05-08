@@ -7,7 +7,7 @@ from limite.telaGenerica2 import TelaGenerica
 from PySimpleGUI import PySimpleGUI as sg
 
 
-class TelaArmaRemove(TelaGenerica):
+class TelaAtaqueRemove(TelaGenerica):
 
     def __init__(self, controlador):
         super().__init__(controlador)
@@ -17,9 +17,9 @@ class TelaArmaRemove(TelaGenerica):
         sg.ChangeLookAndFeel('Reddit')
 
         layout = [
-            [sg.Text("Id da arma para remover:"), sg.InputText("", key="ID")],
+            [sg.Text("Id da ataque para remover:"), sg.InputText("", key="ID")],
             [sg.Submit("Confirmar", key="CONFIRMAR"), sg.Cancel("Cancelar", key="CANCELAR")],
         ],
 
-        janela = sg.Window("Remover Arma", default_element_size=(30, 10)).Layout(layout)
-        super(TelaArmaRemove, self).cria_janela(janela)
+        janela = sg.Window("Remover Ataque", default_element_size=(30, 10)).Layout(layout)
+        super(TelaAtaqueRemove, self).cria_janela(janela)

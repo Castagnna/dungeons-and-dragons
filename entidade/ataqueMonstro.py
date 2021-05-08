@@ -84,6 +84,6 @@ class AtaqueMonstro:
         return self.__teste
 
     @teste.setter
-    def teste(self, teste: int):
-        if isinstance(teste, int):
+    def teste(self, teste: str):
+        if isinstance(teste, str):
             self.__teste = teste

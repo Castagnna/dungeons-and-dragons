@@ -1,6 +1,3 @@
-# Entidades
-from entidade.arma import Arma
-
 # Limites
 from limite.telaGenerica2 import TelaGenerica
 

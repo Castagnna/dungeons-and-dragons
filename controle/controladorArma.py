@@ -40,14 +40,15 @@ class ControladorArma:
         if not valores:
             evento, valores = self.__tela_arma_nova.mostra_tela()
 
-        arma = Arma(
-            id=self.__dao_contador.get() + 1,
-            nome=valores["NOME"],
-            quantidade_dado=int(valores["DADOS"]),
-            numero_faces=int(valores["FACES"]),
-        )
-
         if evento == "CONFIRMAR":
+
+            arma = Arma(
+                id=self.__dao_contador.get() + 1,
+                nome=valores["NOME"],
+                quantidade_dado=int(valores["DADOS"]),
+                numero_faces=int(valores["FACES"]),
+            )
+
             self.__dao.add(arma)
             self.__dao_contador.add(1)
             self.__tela_arma_nova.popup_sucesso()
@@ -77,21 +78,6 @@ class ControladorArma:
         if evento == "OK":
             self.__tela_arma_lista.fecha_tela()
 
-    def remove_arma(self):
-
-        arma = self.pega_arma_por_id()
-
-        if not arma:
-            return
-
-        try:
-            self.__dao.remove(arma)
-            self.__tela_arma_remove.popup_sucesso()
-            self.__tela_arma_remove.fecha_tela()
-        except KeyError:
-            self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
-            self.__tela_arma_remove.fecha_tela()
-
     def pega_arma_por_id(self):
 
         lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
@@ -115,14 +101,33 @@ class ControladorArma:
                 except KeyError:
                     self.__tela_arma_pega.popup_falha(mensagem="Arma não encontrada")
                     self.__tela_arma_pega.fecha_tela()
-            elif evento == "CANCELA":
+            elif evento == "CANCELA" or evento == None:
                 mostra_tela = False
                 self.__tela_arma_pega.fecha_tela()
         return None
 
+    def remove_arma(self):
+
+        arma = self.pega_arma_por_id()
+
+        if not arma:
+            return
+
+        try:
+            self.__dao.remove(arma)
+            self.__tela_arma_remove.popup_sucesso()
+            self.__tela_arma_remove.fecha_tela()
+        except KeyError:
+            self.__tela_arma_remove.popup_falha(mensagem="Arma não encontrada")
+            self.__tela_arma_remove.fecha_tela()
+
     def alterar_arma(self):
 
         arma = self.pega_arma_por_id()
+
+        if not isinstance(arma, Arma):
+            self.__tela_arma_altera.fecha_tela()
+            return
 
         dados = {
             "ID": arma.id,
@@ -132,7 +137,7 @@ class ControladorArma:
         }
 
         evento, valores = self.__tela_arma_altera.mostra_tela(dados)
-        
+    
         if evento == "CONFIRMA":
             arma.nome = valores["NOME"]
             arma.quantidade_dado = int(valores["DADOS"])
@@ -163,8 +168,3 @@ class ControladorArma:
             self.mostra_tela()
         except KeyError:
             pass
-
-
-
-
-        
