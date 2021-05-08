@@ -40,14 +40,15 @@ class ControladorArma:
         if not valores:
             evento, valores = self.__tela_arma_nova.mostra_tela()
 
-        arma = Arma(
-            id=self.__dao_contador.get() + 1,
-            nome=valores["NOME"],
-            quantidade_dado=int(valores["DADOS"]),
-            numero_faces=int(valores["FACES"]),
-        )
-
         if evento == "CONFIRMAR":
+
+            arma = Arma(
+                id=self.__dao_contador.get() + 1,
+                nome=valores["NOME"],
+                quantidade_dado=int(valores["DADOS"]),
+                numero_faces=int(valores["FACES"]),
+            )
+            
             self.__dao.add(arma)
             self.__dao_contador.add(1)
             self.__tela_arma_nova.popup_sucesso()
@@ -127,7 +128,7 @@ class ControladorArma:
         if not isinstance(arma, Arma):
             self.__tela_arma_altera.fecha_tela()
             return
-            
+
         dados = {
             "ID": arma.id,
             "NOME": arma.nome,

@@ -5,6 +5,7 @@ from controle.controladorGenerico import ControladorGenerico
 
 from entidade.ataqueMonstro import AtaqueMonstro
 
+from limite.telaAtaque import TelaAtaque
 from limite.telaAtaqueMonstro import TelaAtaqueMonstro
 from limite.telaAtaqueNovo import TelaAtaqueNovo
 from limite.telaAtaqueLista import TelaAtaqueLista
@@ -15,7 +16,8 @@ from limite.telaAtaqueAltera import TelaAtaqueAltera
 
 class ControladorAtaqueMonstro(ControladorGenerico):
     def __init__(self, controlador_principal):
-        super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
+        # super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
+        self.__tela_ataque = TelaAtaque(self)
         self.__tela_ataque_novo = TelaAtaqueNovo(self)
         self.__tela_ataque_lista = TelaAtaqueLista(self)
         self.__tela_ataque_pega = TelaAtaquePega(self)
@@ -26,32 +28,55 @@ class ControladorAtaqueMonstro(ControladorGenerico):
         self.__dao_contador = AtaqueContadorDAO()
 
     def mostra_tela(self):
-        funcoes = {
-            1: self.cria_novo_ataque,
-            2: self.mostra_ataques,
-            3: self.remove_ataque,
-            5: self.altera_ataque,
-            6: self.cria_ataque_teste,
+
+        evento, _ = self.__tela_ataque.mostra_tela()
+
+        if evento == "VOLTAR":
+            self.__tela_ataque.fecha_tela()
+            self.__controlador_principal.mostra_tela()
+
+        telas = {
+            "NOVO_ATAQUE": self.cria_novo_ataque,
+            "LISTA_ATAQUES": self.mostra_ataques,
+            "REMOVE_ATAQUE": self.remove_ataque,
+            "ARTERA_ATAQUE": self.altera_ataque,
+            "ATAQUE_TESTE": self.cria_ataque_teste,
         }
 
-        super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
+        try:
+            self.__tela_ataque.fecha_tela()
+            telas[evento]()
+            self.mostra_tela()
+        except KeyError:
+            pass
+    
+    # def mostra_tela(self):
+    #     funcoes = {
+    #         1: self.cria_novo_ataque,
+    #         2: self.mostra_ataques,
+    #         3: self.remove_ataque,
+    #         5: self.altera_ataque,
+    #         6: self.cria_ataque_teste,
+    #     }
+
+    #     super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
 
     def cria_novo_ataque(self, evento="CONFIRMAR", valores: dict=None):
         if not valores:
             evento, valores = self.__tela_ataque_novo.mostra_tela()
 
-        ataque = AtaqueMonstro(
-            id=self.__dao_contador.get() + 1,
-            nome=valores["NOME"],
-            quantidade_dado=int(valores["DADOS"]),
-            numero_faces=int(valores["FACES"]),
-            dano_bonus=int(valores["BONUS"]),
-            acerto=int(valores["ACERTO"]),
-            cd=int(valores["CD"]),
-            teste=valores["TESTE"],
-        )
-
         if evento == "CONFIRMAR":
+            ataque = AtaqueMonstro(
+                id=self.__dao_contador.get() + 1,
+                nome=valores["NOME"],
+                quantidade_dado=int(valores["DADOS"]),
+                numero_faces=int(valores["FACES"]),
+                dano_bonus=int(valores["BONUS"]),
+                acerto=int(valores["ACERTO"]),
+                cd=int(valores["CD"]),
+                teste=valores["TESTE"],
+            )
+            
             self.__dao.add(ataque)
             self.__dao_contador.add(1)
             self.__tela_ataque_novo.popup_sucesso()
