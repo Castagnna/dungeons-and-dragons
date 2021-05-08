@@ -1,8 +1,6 @@
 # Limites
 from limite.telaGenerica2 import TelaGenerica
 
-# Controles
-
 # Utils
 from PySimpleGUI import PySimpleGUI as sg
 

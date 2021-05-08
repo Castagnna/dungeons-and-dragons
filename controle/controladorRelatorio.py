@@ -1,12 +1,16 @@
 from controle.controladorGenerico import ControladorGenerico
-from limite.telaRelatorio import TelaRelatorio
+
+from limite.relatorio.telaRelatorio import TelaRelatorio
+from limite.relatorio.telaRelatorioCombate import TelaRelatorioCombate
+
 from dao.combateContadorDAO import CombateContadorDAO
 from dao.combateDAO import CombateDAO
 
 
-class ControladorRelatorio(ControladorGenerico):
+class ControladorRelatorio:
     def __init__(self, controlador_principal):
-        super(ControladorRelatorio, self).__init__(TelaRelatorio(self))
+        self.__tela_relatorio = TelaRelatorio(self)
+        self.__tela_combate = TelaRelatorioCombate(self)
         self.__controlador_principal = controlador_principal
         self.__dao = CombateDAO()
         self.__dao_contador = CombateContadorDAO()
@@ -44,15 +48,36 @@ class ControladorRelatorio(ControladorGenerico):
         }
         self.__dao.add(combate)
         self.__dao_contador.add(1)
-        self.tela.executado_com_sucesso()
+
+    @staticmethod
+    def ordena_valores_do_dicionario_por_chave(dicionario: dict):
+        lista_ordenada = []
+        for key in sorted(dicionario.keys()):
+            lista_ordenada.append(dicionario[key])
+        return lista_ordenada
 
     def relatorio_combates(self):
-        self.tela.cria_relatorio(self.__dao.get_all())
+
+        combates_ordenados = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        self.__tela_combate.mostra_tela(combates_ordenados)
+        self.__tela_combate.fecha_tela()
 
     def mostra_tela(self):
 
-        funcoes = {
-            1: self.relatorio_combates,
+        evento, _ = self.__tela_relatorio.mostra_tela()
+
+        if evento == "VOLTAR":
+            self.__tela_relatorio.fecha_tela()
+            self.__controlador_principal.mostra_tela()
+
+        telas = {
+            "COMBATE": self.relatorio_combates,
         }
 
-        super(ControladorRelatorio, self).mostra_tela(funcoes)
+        try:
+            self.__tela_relatorio.fecha_tela()
+            telas[evento]()
+            self.mostra_tela()
+        except KeyError:
+            pass
