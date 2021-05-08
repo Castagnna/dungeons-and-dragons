@@ -3,13 +3,13 @@ from dao.ataqueContadorDAO import AtaqueContadorDAO
 
 from entidade.ataqueMonstro import AtaqueMonstro
 
-from limite.telaAtaque import TelaAtaque
-from limite.telaAtaqueMonstro import TelaAtaqueMonstro
-from limite.telaAtaqueNovo import TelaAtaqueNovo
-from limite.telaAtaqueLista import TelaAtaqueLista
-from limite.telaAtaqueRemove import TelaAtaqueRemove
-from limite.telaAtaquePega import TelaAtaquePega
-from limite.telaAtaqueAltera import TelaAtaqueAltera
+from limite.ataque.telaAtaque import TelaAtaque
+from limite.ataque.telaAtaqueMonstro import TelaAtaqueMonstro
+from limite.ataque.telaAtaqueNovo import TelaAtaqueNovo
+from limite.ataque.telaAtaqueLista import TelaAtaqueLista
+from limite.ataque.telaAtaqueRemove import TelaAtaqueRemove
+from limite.ataque.telaAtaquePega import TelaAtaquePega
+from limite.ataque.telaAtaqueAltera import TelaAtaqueAltera
 
 
 class ControladorAtaqueMonstro:

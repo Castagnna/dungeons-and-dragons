@@ -4,12 +4,12 @@ from entidade.arma import Arma
 from dao.armaDAO import ArmaDAO
 from dao.armaContadorDAO import ArmaContadorDAO
 
-from limite.telaArma import TelaArma
-from limite.telaArmaNova import TelaArmaNova
-from limite.telaArmaLista import TelaArmaLista
-from limite.telaArmaRemove import TelaArmaRemove
-from limite.telaArmaAltera import TelaArmaAltera
-from limite.telaArmaPega import TelaArmaPega
+from limite.arma.telaArma import TelaArma
+from limite.arma.telaArmaNova import TelaArmaNova
+from limite.arma.telaArmaLista import TelaArmaLista
+from limite.arma.telaArmaRemove import TelaArmaRemove
+from limite.arma.telaArmaAltera import TelaArmaAltera
+from limite.arma.telaArmaPega import TelaArmaPega
 
 
 class ControladorArma:
