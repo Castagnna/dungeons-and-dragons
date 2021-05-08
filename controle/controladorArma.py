@@ -124,6 +124,10 @@ class ControladorArma:
 
         arma = self.pega_arma_por_id()
 
+        if not isinstance(arma, Arma):
+            self.__tela_arma_altera.fecha_tela()
+            return
+            
         dados = {
             "ID": arma.id,
             "NOME": arma.nome,
@@ -132,7 +136,7 @@ class ControladorArma:
         }
 
         evento, valores = self.__tela_arma_altera.mostra_tela(dados)
-        
+    
         if evento == "CONFIRMA":
             arma.nome = valores["NOME"]
             arma.quantidade_dado = int(valores["DADOS"])
