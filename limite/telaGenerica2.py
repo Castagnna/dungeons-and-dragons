@@ -65,3 +65,7 @@ class TelaGenerica(ABC):
         if not mensagem:
             mensagem = "Nao foi possivel concluir a operacao"
         sg.Popup(titulo, mensagem)
+
+    @staticmethod
+    def yes_or_no(titulo: str="Prossegir?"):
+        return sg.PopupYesNo(title=titulo)

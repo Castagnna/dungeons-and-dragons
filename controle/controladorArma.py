@@ -64,7 +64,7 @@ class ControladorArma:
         self.cria_nova_arma(valores=valores)
 
     @staticmethod
-    def ordena_valores_do_dicionario_por_chave(dicionario: dict):
+    def ordena_valores_do_dicionario_pela_chave(dicionario: dict):
         lista_ordenada = []
         for key in sorted(dicionario.keys()):
             lista_ordenada.append(dicionario[key])
@@ -72,7 +72,7 @@ class ControladorArma:
 
     def mostra_armas(self):
 
-        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_pela_chave(self.__dao.get_dao())
 
         evento, _ = self.__tela_arma_lista.mostra_tela(lista_ordenada_de_armas)
         if evento == "OK":
@@ -80,7 +80,7 @@ class ControladorArma:
 
     def pega_arma_por_id(self):
 
-        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+        lista_ordenada_de_armas = self.ordena_valores_do_dicionario_pela_chave(self.__dao.get_dao())
 
         mostra_tela = True
 
