@@ -15,9 +15,15 @@ class TelaRelatorio(TelaGenerica):
         sg.ChangeLookAndFeel('Reddit')
 
         layout = [
-            [sg.Button("Relatório de combates", key="COMBATE")],
-            [sg.Cancel("Voltar", key="VOLTAR")],
+            [sg.Button("Relatório de combates", key="COMBATE", size=(20, 2))],
+            [sg.Cancel("Voltar", key="VOLTAR", size=(20, 2))],
         ],
 
-        janela = sg.Window("Relatorios", default_element_size=(40, 50)).Layout(layout)
+        janela = sg.Window(
+            title="Relatorios",
+            size=(300, 375),
+            resizable=True,
+            element_justification="center",
+            ).Layout(layout)
+
         super(TelaRelatorio, self).cria_janela(janela)

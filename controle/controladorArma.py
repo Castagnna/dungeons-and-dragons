@@ -150,7 +150,7 @@ class ControladorArma:
 
         evento, _ = self.__tela_arma.mostra_tela()
 
-        if evento == "VOLTAR":
+        if evento == "VOLTAR" or evento == None:
             self.__tela_arma.fecha_tela()
             self.__controlador_principal.mostra_tela()
 

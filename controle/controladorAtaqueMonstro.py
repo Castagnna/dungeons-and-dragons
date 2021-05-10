@@ -27,7 +27,7 @@ class ControladorAtaqueMonstro:
 
         evento, _ = self.__tela_ataque.mostra_tela()
 
-        if evento == "VOLTAR":
+        if evento == "VOLTAR" or evento == None:
             self.__tela_ataque.fecha_tela()
             self.__controlador_principal.mostra_tela()
 
