@@ -1,0 +1,2 @@
+class TamanhoInvalidoException(Exception):
+    pass

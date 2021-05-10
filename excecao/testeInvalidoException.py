@@ -1,0 +1,2 @@
+class TesteInvalidoException(Exception):
+    pass

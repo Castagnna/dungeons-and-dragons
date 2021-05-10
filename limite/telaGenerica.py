@@ -1,18 +1,12 @@
 from abc import ABC, abstractmethod
+import PySimpleGUI as sg
 
 
 class TelaGenerica(ABC):
     @abstractmethod
     def __init__(self, controlador) -> object:
+        self.__janela = None
         self.__controlador = controlador
-        self.__dicio_letras = {"A": 100, "B": 200, "C": 300, "D": 400, "E": 500,
-                               "F": 600, "G": 700, "H": 800, "I": 900, "J": 1000,
-                               "K": 1100, "L": 1200, "M": 1300, "N": 1400, "O": 1500,
-                               "P": 1600, "Q": 1700, "R": 1800, "S": 1900,
-                               "T": 2000, "U": 2100, "V": 2200, "W": 2300,
-                               "X": 2400, "Y": 2500, "Z": 2500}
-        self.__dicio_numeros = {"1": 100, "2": 200, "3": 300, "4": 400, "5": 500, "6": 600, "7": 700, "8": 800,
-                                "9": 900}
 
     @property
     def controlador(self):
@@ -22,81 +16,40 @@ class TelaGenerica(ABC):
     def controlador(self, controlador):
         self.__controlador = controlador
 
+    @property
+    def janela(self):
+        return self.__janela
+
+    @janela.setter
+    def janela(self, janela):
+        self.__janela = janela
+
+    def cria_janela(self, janela):
+        self.__janela = janela
+
     @abstractmethod
-    def mostra_opcoes(self) -> int:
+    def init_components(self):
         pass
 
-    @staticmethod
-    def cria_menu_opcoes(titulo_da_tela: str, opcoes: tuple = None):
-        print("------ {} ------".format(titulo_da_tela.upper()))
-        for codigo, opcao in opcoes:
-            print("{:02d} - {}".format(codigo, opcao))
+    def mostra_tela(self):
+        self.init_components()
+        return self.__janela.Read()
+
+    def fecha_tela(self):
+        self.__janela.Close()
 
     @staticmethod
-    def tela_confirma(mensagem: str) -> bool:
-        confirma = input(mensagem + " [Y/N]: ").strip()
-        return len(confirma) == 1 and confirma in "Yy"
-
-    def protege_finalizar(self, opcao: int) -> int:
-        if opcao == 99:
-            mensagem = "Tem certeza que quer finalizar o programa?"
-            if self.tela_confirma(mensagem):
-                print("\n---- Programa finalizado -----")
-                return opcao
-            else:
-                return -1
-        return opcao
-
-    def pega_dado(self,
-                  mensagem: str,
-                  tipo: str,
-                  valores_validos: list = None,
-                  confirmar: bool = True):
-
-        tipos = {
-            "str": str,
-            "int": int,
-            "float": float,
-            "bool": bool,
-        }
-
-        while True:
-            dado = input(mensagem)
-            try:
-                dado = tipos[tipo](dado)
-                if valores_validos and dado not in valores_validos:
-                    raise ValueError
-            except ValueError:
-                print("O valor deve ser tipo {}".format(tipo), end="")
-                if valores_validos:
-                    print(" dentre os valores {}".format(valores_validos), end="")
-                print(", tente novamente.")
-                pass
-            else:
-                if not confirmar:
-                    return dado
-                else:
-                    msg_confirmacao = "Confirma o valor >> {} << ?".format(dado)
-                    if self.tela_confirma(msg_confirmacao):
-                        return dado
-
-    def pega_imagem(self, caminho):
-        while True:
-            try:
-                entrada = input('Digite o nome do cenário: ')
-                imagem = pygame.image.load(caminho + entrada + '.png')
-                return imagem
-            except FileNotFoundError:
-                print('Imagem não encontrada, favor digitar novamente')
-            except:
-                print('Erro inesperado, favor entrar em contato com o suporte')
+    def popup_sucesso(titulo: str='Sucesso', mensagem: str=None):
+        if not mensagem:
+            mensagem = 'Operacao realizada com sucesso'
+        sg.Popup(titulo, mensagem)
 
     @staticmethod
-    def monstra_mensagem(mensagem: str):
-        print("\n" + mensagem + "\n")
+    def popup_falha(titulo: str='Erro', mensagem: str=None):
+        if not mensagem:
+            mensagem = 'Nao foi possivel concluir operacao'
+        sg.Popup(titulo, mensagem)
 
-    def executado_com_sucesso(self):
-        self.monstra_mensagem("Operacao executada com sucesso")
-
-    def pega_id(self, valores_validos: list) -> int:
-        return self.pega_dado("escolha por Id: ", "int", valores_validos, False)
+    @staticmethod
+    def yes_or_no(titulo: str = "Prossegir?"):
+        return sg.PopupYesNo(title=titulo)

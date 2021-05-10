@@ -15,5 +15,5 @@ class Background():
         return self.__posicao[:2]
 
     def movimentar(self, lista: list):
-        self.__posicao[0] -= lista[0]
-        self.__posicao[1] -= lista[1]
+        self.__posicao[0] += lista[0]
+        self.__posicao[1] += lista[1]
