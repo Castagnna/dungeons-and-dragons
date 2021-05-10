@@ -34,7 +34,10 @@ class DAO(ABC):
         try:
             return self.__cache[key]
         except KeyError:
-            pass
+            raise KeyError
     
     def get_all(self):
         return self.__cache.values()
+
+    def get_dao(self):
+        return self.__cache

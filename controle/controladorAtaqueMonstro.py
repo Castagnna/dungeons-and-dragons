@@ -1,98 +1,172 @@
-from controle.controladorGenerico import ControladorGenerico
-from limite.telaAtaqueMonstro import TelaAtaqueMonstro
+from dao.ataqueDAO import AtaqueDAO
+from dao.ataqueContadorDAO import AtaqueContadorDAO
+
 from entidade.ataqueMonstro import AtaqueMonstro
 
+from limite.ataque.telaAtaque import TelaAtaque
+from limite.ataque.telaAtaqueNovo import TelaAtaqueNovo
+from limite.ataque.telaAtaqueLista import TelaAtaqueLista
+from limite.ataque.telaAtaqueRemove import TelaAtaqueRemove
+from limite.ataque.telaAtaquePega import TelaAtaquePega
+from limite.ataque.telaAtaqueAltera import TelaAtaqueAltera
 
-class ControladorAtaqueMonstro(ControladorGenerico):
+
+class ControladorAtaqueMonstro:
     def __init__(self, controlador_principal):
-        super(ControladorAtaqueMonstro, self).__init__(TelaAtaqueMonstro(self))
+        self.__tela_ataque = TelaAtaque(self)
+        self.__tela_ataque_novo = TelaAtaqueNovo(self)
+        self.__tela_ataque_lista = TelaAtaqueLista(self)
+        self.__tela_ataque_pega = TelaAtaquePega(self)
+        self.__tela_ataque_remove = TelaAtaqueRemove(self)
+        self.__tela_ataque_altera = TelaAtaqueAltera(self)
         self.__controlador_principal = controlador_principal
-        self.__ataques_monstro = []
-        self.__controlador_principal = controlador_principal
-        self.__counta_ataque_monstro = 0
+        self.__dao = AtaqueDAO()
+        self.__dao_contador = AtaqueContadorDAO()
 
     def mostra_tela(self):
-        funcoes = {
-            1: self.cria_novo_ataque_monstro,
-            2: self.mostra_ataques_monstro,
-            3: self.remove_ataque_monstro,
-            4: self.mostra_atributos_ataque_monstro,
-            5: self.altera_atributos_ataque_monstro
+
+        evento, _ = self.__tela_ataque.mostra_tela()
+
+        if evento == "VOLTAR" or evento == None:
+            self.__tela_ataque.fecha_tela()
+            self.__controlador_principal.mostra_tela()
+
+        telas = {
+            "NOVO_ATAQUE": self.cria_novo_ataque,
+            "LISTA_ATAQUES": self.mostra_ataques,
+            "REMOVE_ATAQUE": self.remove_ataque,
+            "ARTERA_ATAQUE": self.altera_ataque,
+            "ATAQUE_TESTE": self.cria_ataque_teste,
         }
 
-        super(ControladorAtaqueMonstro, self).mostra_tela(funcoes)
-
-    def cria_novo_ataque_monstro(self):
-        dados = self.tela.pega_dados_de_ataque()
-        novo_ataque = AtaqueMonstro(
-            id=self.__counta_ataque_monstro,
-            **dados
-        )
-        self.__counta_ataque_monstro += 1
-        self.__ataques_monstro.append(novo_ataque)
-        self.tela.executado_com_sucesso()
-
-    def mostra_ataques_monstro(self):
-        self.tela.mostra_ataques(self.__ataques_monstro)
-
-    def remove_ataque_monstro(self):
-        ataque = self.pega_ataque_por_id()
         try:
-            remover = self.tela.confirma_remocao(ataque.nome)
-        except AttributeError:
+            self.__tela_ataque.fecha_tela()
+            telas[evento]()
+            self.mostra_tela()
+        except KeyError:
             pass
-        else:
-            if remover:
-                self.__ataques_monstro.remove(ataque)
-                self.tela.executado_com_sucesso()
 
-    def mostra_atributos_ataque_monstro(self):
+    def cria_novo_ataque(self, evento="CONFIRMAR", valores: dict=None):
+        if not valores:
+            evento, valores = self.__tela_ataque_novo.mostra_tela()
+
+        if evento == "CONFIRMAR":
+            ataque = AtaqueMonstro(
+                id=self.__dao_contador.get() + 1,
+                nome=valores["NOME"],
+                quantidade_dado=int(valores["DADOS"]),
+                numero_faces=int(valores["FACES"]),
+                dano_bonus=int(valores["BONUS"]),
+                acerto=int(valores["ACERTO"]),
+                cd=int(valores["CD"]),
+                teste=valores["TESTE"],
+            )
+            
+            self.__dao.add(ataque)
+            self.__dao_contador.add(1)
+            self.__tela_ataque_novo.popup_sucesso()
+
+        self.__tela_ataque_novo.fecha_tela()
+
+    def cria_ataque_teste(self):
+        valores = {
+            "NOME": f"ataque {self.__dao_contador.get() + 1}",
+            "DADOS": 1,
+            "FACES": 1,
+            "BONUS": 1,
+            "ACERTO": 1,
+            "CD": 1,
+            "TESTE": "Nenhum"
+        }
+        self.cria_novo_ataque(valores=valores)
+
+    @staticmethod
+    def ordena_valores_do_dicionario_por_chave(dicionario: dict):
+        lista_ordenada = []
+        for key in sorted(dicionario.keys()):
+            lista_ordenada.append(dicionario[key])
+        return lista_ordenada
+
+    def mostra_ataques(self):
+
+        lista_ordenada_de_ataques = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        evento, _ = self.__tela_ataque_lista.mostra_tela(lista_ordenada_de_ataques)
+        if evento == "OK":
+            self.__tela_ataque_lista.fecha_tela()
+
+    def pega_ataque_por_id(self):
+
+        lista_ordenada_de_ataques = self.ordena_valores_do_dicionario_por_chave(self.__dao.get_dao())
+
+        mostra_tela = True
+
+        while mostra_tela:
+
+            evento, valores = self.__tela_ataque_pega.mostra_tela(lista_ordenada_de_ataques)
+
+            if evento == "CONFIRMA":
+                try:
+                    id = int(valores["ID"])
+                    ataque = self.__dao.get(id)
+                    mostra_tela = False
+                    self.__tela_ataque_pega.fecha_tela()
+                    return ataque
+                except ValueError:
+                    self.__tela_ataque_pega.popup_falha(mensagem="O valor precisa ser inteiro")
+                    self.__tela_ataque_pega.fecha_tela()
+                except KeyError:
+                    self.__tela_ataque_pega.popup_falha(mensagem="Ataque não encontrado")
+                    self.__tela_ataque_pega.fecha_tela()
+            elif evento == "CANCELA" or evento == None:
+                mostra_tela = False
+                self.__tela_ataque_pega.fecha_tela()
+        return None
+
+    def remove_ataque(self):
+
         ataque = self.pega_ataque_por_id()
-        if ataque:
-            self.tela.mostra_atributos_do_ataque(ataque)
 
-    def altera_atributos_ataque_monstro(self):
+        if not ataque:
+            return
+
+        try:
+            self.__dao.remove(ataque)
+            self.__tela_ataque_remove.popup_sucesso()
+            self.__tela_ataque_remove.fecha_tela()
+        except KeyError:
+            self.__tela_ataque_remove.popup_falha(mensagem="Ataque não encontrada")
+            self.__tela_ataque_remove.fecha_tela()
+
+    def altera_ataque(self):
+
         ataque = self.pega_ataque_por_id()
-        opcao = self.tela.mostra_alterar_ataque()
 
-        funcoes = {
-            1: ("nome", "str"),
-            2: ("dados", "int"),
-            3: ("faces", "int"),
-            4: ('dano_bonus', 'int'),
-            5: ('acerto', 'int'),
-            6: ('cd', 'int'),
-            7: ('teste', 'str')
+        if not isinstance(ataque, AtaqueMonstro):
+            self.__tela_ataque_altera.fecha_tela()
+            return
+
+        dados = {
+            "ID": ataque.id,
+            "NOME": ataque.nome,
+            "DADOS": ataque.quantidade_dado,
+            "FACES": ataque.numero_faces,
+            "BONUS": ataque.dano_bonus,
+            "ACERTO": ataque.acerto,
+            "CD": ataque.cd,
+            "TESTE": ataque.teste,
         }
 
-        tipo = funcoes[opcao][1]
+        evento, valores = self.__tela_ataque_altera.mostra_tela(dados)
+    
+        if evento == "CONFIRMA":
+            ataque.nome = valores["NOME"]
+            ataque.quantidade_dado = int(valores["DADOS"])
+            ataque.numero_faces = int(valores["FACES"])
+            ataque.dano_bonus = int(valores["BONUS"])
+            ataque.acerto = int(valores["ACERTO"])
+            ataque.cd = int(valores["CD"])
+            ataque.teste = valores["TESTE"]
+            self.__tela_ataque_altera.popup_sucesso()
 
-        novo_valor = self.tela.pega_dado(
-            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
-            tipo=tipo
-        )
-        if opcao == 1:
-            ataque.nome = novo_valor
-        elif opcao == 2:
-            ataque.quantidade_dado = novo_valor
-        elif opcao == 3:
-            ataque.numero_faces = novo_valor
-        elif opcao == 4:
-            ataque.dano_bonus = novo_valor
-        elif opcao == 5:
-            ataque.acerto = novo_valor
-        elif opcao == 6:
-            ataque.cd = novo_valor
-        else:
-            ataque.teste = novo_valor
-
-    def pega_ataque_por_id(self) -> AtaqueMonstro:
-        if self.__ataques_monstro:
-            valores_validos = [ataque.id for ataque in self.__ataques_monstro]
-            id = self.tela.pega_id_ataque(valores_validos)
-            for ataque in self.__ataques_monstro:
-                if ataque.id == id:
-                    return ataque
-        else:
-            self.tela.lista_ataques_monstro_vazia()
-            return None
+        self.__tela_ataque_altera.fecha_tela()
