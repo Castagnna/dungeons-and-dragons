@@ -29,5 +29,11 @@ class TelaJogador(TelaGenerica):
             [sg.Button('Voltar', key='VOLTAR')]
         ]
 
-        janela = sg.Window('Menu Jogador', default_element_size=(40,50)).Layout(layout)
+        janela = sg.Window(
+            title='Menu Jogador',
+            size=(300, 400),
+            resizable=True,
+            element_justification="center",
+            default_element_size=(40,50)
+            ).Layout(layout)
         super(TelaJogador, self).cria_janela(janela)

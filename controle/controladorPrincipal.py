@@ -7,13 +7,13 @@ from controle.controladorBackground import ControladorBackground
 from controle.controladorRelatorio import ControladorRelatorio
 
 from limite.principal.telaPrincipal import TelaPrincipal
-import pygame
+# import pygame
 
 
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
 
-        pygame.init()
+        # pygame.init()
 
         self.__tela_principal = TelaPrincipal(self)
         self.__controlador_relatorio = ControladorRelatorio(self)
@@ -127,60 +127,60 @@ class ControladorPrincipal(ControladorGenerico):
             pass
 
     
-     def grid(self): # desenha o grid
-         lista_inicio = [100,100]
-         lista_x = [100, 1000] # ajustar de acordo com a resolução
-         lista_y = [1800, 100] # ajustar de acordo com a resolução
-         while lista_inicio[0] <= 1800: # ajustar de acordo com a resolução
-             pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_x, 1)
-             lista_inicio[0] += 100
-             lista_x[0] += 100
-         lista_inicio[0] = 100
-         while lista_inicio[1] <= 1000: # ajustar de acordo com a resolução
-             pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_y, 1)
-             lista_inicio[1] += 100
-             lista_y[1] += 100
+    # def grid(self): # desenha o grid
+    #     lista_inicio = [100,100]
+    #     lista_x = [100, 1000] # ajustar de acordo com a resolução
+    #     lista_y = [1800, 100] # ajustar de acordo com a resolução
+    #     while lista_inicio[0] <= 1800: # ajustar de acordo com a resolução
+    #         pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_x, 1)
+    #         lista_inicio[0] += 100
+    #         lista_x[0] += 100
+    #     lista_inicio[0] = 100
+    #     while lista_inicio[1] <= 1000: # ajustar de acordo com a resolução
+    #         pygame.draw.line(self.__visualizacao, (0,0,0), lista_inicio, lista_y, 1)
+    #         lista_inicio[1] += 100
+    #         lista_y[1] += 100
 
-     def posicoes_grid(self): # adicionando orientações do grid
-         marcador_letras = 0
-         posicao_letras = [136,36]
-         marcador_numeros = 0
-         posicao_numeros = [36,136]
-         while posicao_letras[0] < 1800:
-             letra = self.__fonte.render(self.__letras[marcador_letras], True, (0,0,0))
-             self.__visualizacao.blit(letra, posicao_letras)
-             marcador_letras += 1
-             posicao_letras[0] += 100
-         while posicao_numeros[1] < 1000:
-             numero = self.__fonte.render(self.__numeros[marcador_numeros], True, (0,0,0))
-             self.__visualizacao.blit(numero, posicao_numeros)
-             marcador_numeros += 1
-             posicao_numeros[1] += 100
+    # def posicoes_grid(self): # adicionando orientações do grid
+    #     marcador_letras = 0
+    #     posicao_letras = [136,36]
+    #     marcador_numeros = 0
+    #     posicao_numeros = [36,136]
+    #     while posicao_letras[0] < 1800:
+    #         letra = self.__fonte.render(self.__letras[marcador_letras], True, (0,0,0))
+    #         self.__visualizacao.blit(letra, posicao_letras)
+    #         marcador_letras += 1
+    #         posicao_letras[0] += 100
+    #     while posicao_numeros[1] < 1000:
+    #         numero = self.__fonte.render(self.__numeros[marcador_numeros], True, (0,0,0))
+    #         self.__visualizacao.blit(numero, posicao_numeros)
+    #         marcador_numeros += 1
+    #         posicao_numeros[1] += 100
 
-     def atualizar_visualizacao(self):
-         self.__visualizacao = pygame.display.set_mode((1800, 1000))
-         pygame.display.set_caption('Trabalho DSO')
-         self.__visualizacao.fill((0, 0, 0))
-         self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
-                                  self.__controlador_background.mostra_posicao_mapa())
+    # def atualizar_visualizacao(self):
+    #     self.__visualizacao = pygame.display.set_mode((1800, 1000))
+    #     pygame.display.set_caption('Trabalho DSO')
+    #     self.__visualizacao.fill((0, 0, 0))
+    #     self.__visualizacao.blit(self.__controlador_background.mostra_mapa(),
+    #                         self.__controlador_background.mostra_posicao_mapa())
 
-         for monstro in self.__controlador_monstro.monstros:
-             imagem_pygame = monstro.define_pygame_imagem()
-             posicao = monstro.posicao
-             self.__visualizacao.blit(imagem_pygame, posicao)
+    #     for monstro in self.__controlador_monstro.monstros:
+    #         imagem_pygame = monstro.define_pygame_imagem()
+    #         posicao = monstro.posicao
+    #         self.__visualizacao.blit(imagem_pygame, posicao)
 
-         for jogador in self.__controlador_jogador.jogadores:
-             imagem_pygame = jogador.define_pygame_imagem()
-             posicao = jogador.posicao
-             self.__visualizacao.blit(imagem_pygame, posicao)
+    #     for jogador in self.__controlador_jogador.jogadores:
+    #         imagem_pygame = jogador.define_pygame_imagem()
+    #         posicao = jogador.posicao
+    #         self.__visualizacao.blit(imagem_pygame, posicao)
 
-         self.grid()
-         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[0])
-         pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[1])
-         self.posicoes_grid()
-         pygame.display.flip()
+    #     self.grid()
+    #     pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[0])
+    #     pygame.draw.rect(self.__visualizacao, (255, 255, 255), self.__retangulos[1])
+    #     self.posicoes_grid()
+    #     pygame.display.flip()
 
-     def movimentar_mapa(self, valores: list):
-         self.__controlador_jogador.mapa_moveu(valores[0], valores[1])
-         self.__controlador_monstro.mapa_moveu(valores[0], valores[1])
-         self.atualizar_visualizacao()
+    # def movimentar_mapa(self, valores: list):
+    #     self.__controlador_jogador.mapa_moveu(valores[0], valores[1])
+    #     self.__controlador_monstro.mapa_moveu(valores[0], valores[1])
+    #     self.atualizar_visualizacao()

@@ -1,5 +1,5 @@
 # Limites
-from limite.telaGenerica2 import TelaGenerica
+from limite.telaGenerica import TelaGenerica
 
 # Controles
 

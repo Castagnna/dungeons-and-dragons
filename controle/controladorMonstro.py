@@ -297,7 +297,7 @@ class ControladorMonstro:
     def mostra_tela(self):
         evento, _ = self.__tela.mostra_tela()
 
-        if evento == 'VOLTAR':
+        if evento == 'VOLTAR' or evento == None:
             self.__tela.fecha_tela()
             self.__controlador_principal.mostra_tela()
 
