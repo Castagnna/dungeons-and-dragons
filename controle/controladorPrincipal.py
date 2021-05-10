@@ -5,14 +5,14 @@ from controle.controladorArma import ControladorArma
 from controle.controladorAtaqueMonstro import ControladorAtaqueMonstro
 from controle.controladorBackground import ControladorBackground
 from controle.controladorRelatorio import ControladorRelatorio
-from limite.telaPrincipal import TelaPrincipal
+from limite.principal.telaPrincipal import TelaPrincipal
 import pygame
 
 
 class ControladorPrincipal(ControladorGenerico):
     def __init__(self):
         pygame.init()
-        super(ControladorPrincipal, self).__init__(TelaPrincipal(self))
+        self.__tela_principal = TelaPrincipal(self)
         self.__controlador_relatorio = ControladorRelatorio(self)
         self.__controlador_arma = ControladorArma(self)
         self.__controlador_jogador = ControladorJogador(self)
@@ -75,6 +75,15 @@ class ControladorPrincipal(ControladorGenerico):
     def iniciar_sistema(self):
         self.mostra_tela()
 
+    def finaliza_programa(self):
+        evento = self.__tela_principal.yes_or_no("Deseja finalizar o programa?")
+
+        if evento == "Yes":
+            exit(0)
+
+        self.__tela_principal.fecha_tela()
+        self.mostra_tela()
+
     def opcoes_jogador(self):
         self.__controlador_jogador.mostra_tela()
 
@@ -95,18 +104,25 @@ class ControladorPrincipal(ControladorGenerico):
 
     def mostra_tela(self):
 
-        funcoes = {
-            1: self.opcoes_jogador,
-            2: self.opcoes_monstro,
-            3: self.opcoes_arma,
-            4: self.opcoes_ataque_monstro,
-            5: self.opcoes_background,
-            6: self.opcoes_relatorio,
+        evento, _ = self.__tela_principal.mostra_tela()
+
+        telas = {
+            "JOGADOR": self.opcoes_jogador,
+            "MONSTRO": self.opcoes_monstro,
+            "ARMA": self.opcoes_arma,
+            "ATAQUE_MONSTRO": self.opcoes_ataque_monstro,
+            "BACKGROUND": self.opcoes_background,
+            "RELATORIO": self.opcoes_relatorio,
+            "FINALIZAR": self.finaliza_programa,
+            None: self.finaliza_programa,
         }
 
-        super(ControladorPrincipal, self).mostra_tela(funcoes)
+        try:
+            self.__tela_principal.fecha_tela()
+            telas[evento]()
+        except KeyError:
+            pass
 
-    # TODO: Remover os metodos abaixo do controlador principal
     
     def grid(self): # desenha o grid
         lista_inicio = [100,100]

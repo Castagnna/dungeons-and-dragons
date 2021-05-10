@@ -1,0 +1,2 @@
+class ImagemInvalidaException(Exception):
+    pass

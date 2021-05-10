@@ -1,20 +1,47 @@
 import random
 import pygame
 
-from controle.controladorGenerico import ControladorGenerico
+from excecao.tamanhoinvalidoException import TamanhoInvalidoException
+from excecao.valoresInvalidosException import ValoresInvalidosException
+
 from controle.controladorMonstro import ControladorMonstro
 from controle.controladorMagia import ControladorMagia
+
 from limite.telaJogador import TelaJogador
+from limite.telaJogadorNovo import TelaJogadorNovo
+from limite.telaJogadorPega import TelaJogadorPega
+from limite.telaJogadorMostraArmas import TelaJogadorMostraArmas
+from limite.telaJogadorMostraAtributos import TelaJogadorMostraAtributos
+from limite.telaPersonagemRemove import TelaPersonagemRemove
+from limite.telaPersonagemTamanho import TelaPersonagemTamanho
+from limite.telaPersonagemMovimentar import TelaPersonagemMovimentar
+from limite.telaPersonagemLista import TelaPersonagemLista
+from limite.telaJogadorArmas import TelaJogadorArmas
+from limite.telaJogadorAlterar import TelaJogadorAlterar
+from limite.telaImagem import TelaImagem
+
 from entidade.jogador import Jogador
 from entidade.magia import Magia
+
 from dao.jogadorDAO import JogadorDAO
 from dao.jogadorContadorDAO import JogadorContadorDAO
 
 
 
-class ControladorJogador(ControladorGenerico):
+class ControladorJogador:
     def __init__(self, controlador_principal):
-        super(ControladorJogador, self).__init__(TelaJogador(self))
+        self.__tela = TelaJogador(self)
+        self.__tela_pega = TelaJogadorPega(self)
+        self.__tela_remove = TelaPersonagemRemove(self)
+        self.__tela_imagem = TelaImagem(self)
+        self.__tela_lista = TelaPersonagemLista(self)
+        self.__tela_armas = TelaJogadorArmas(self)
+        self.__tela_movimentar = TelaPersonagemMovimentar(self)
+        self.__tela_tamanho = TelaPersonagemTamanho(self)
+        self.__tela_novo = TelaJogadorNovo(self)
+        self.__tela_altera = TelaJogadorAlterar(self)
+        self.__tela_mostra_armas = TelaJogadorMostraArmas(self)
+        self.__tela_mostra_atributos = TelaJogadorMostraAtributos(self)
         self.__controlador_principal = controlador_principal
         self.__controlador_relatorio = controlador_principal.controlador_relatorio
         self.__controlador_arma = controlador_principal.controlador_arma
@@ -22,6 +49,14 @@ class ControladorJogador(ControladorGenerico):
         self.__controlador_magia = ControladorMagia(self)
         self.__dao = JogadorDAO()
         self.__dao_contador = JogadorContadorDAO()
+        self.__dicio_letras = {'A': 100, 'B': 200, 'C': 300, 'D': 400, 'E': 500,
+                               'F': 600, 'G': 700, 'H': 800, 'I': 900, 'J': 1000,
+                               'K': 1100, 'L': 1200, 'M': 1300, 'N': 1400, 'O': 1500,
+                               'P': 1600, 'Q': 1700, 'R': 1800, 'S': 1900,
+                               'T': 2000, 'U': 2100, 'V': 2200, 'W': 2300,
+                               'X': 2400, 'Y': 2500, 'Z': 2500}
+        self.__dicio_numeros = {'1': 100, '2': 200, '3': 300, '4': 400, '5': 500, '6': 600, '7': 700, '8': 800,
+                                '9': 900}
 
     """
     getters
@@ -67,177 +102,256 @@ class ControladorJogador(ControladorGenerico):
             if self != controlador_monstro.controlador_jogador:
                 controlador_monstro.controlador_jogador = self
 
-    def cria_novo_jogador(self, dados: dict = None):
-        if not dados:
-            dados = self.tela.pega_dados_do_jogador()
+    def cria_novo_jogador(self, evento='CONFIRMAR', valores: dict=None):
+        tamanhos_validos = ['MIUDO', 'PEQUENO', 'MEDIO', 'GRANDE', 'ENORME', 'COLOSSAL']
+        if not valores:
+            evento, valores = self.__tela_novo.mostra_tela()
+        if evento == 'CONFIRMAR':
+            while True:
+                try:
+                    if valores['NOME'] == '' or valores['PLAYER'] == '':
+                        raise ValoresInvalidosException
+                    elif valores['TAMANHO'].upper() not in tamanhos_validos:
+                        raise TamanhoInvalidoException
 
-        jogador = Jogador(
-            id=self.__dao_contador.get() + 1,
-            **dados
-        )
-        self.__dao_contador.add(1)
-        self.__dao.add(jogador)
-        self.tela.executado_com_sucesso()
+                    else:
+                        jogador = Jogador(
+                            id=self.__dao_contador.get() + 1,
+                            nome=valores['NOME'],
+                            forca=int(valores['FORCA']),
+                            destreza=int(valores['DESTREZA']),
+                            constituicao=int(valores['CONSTITUICAO']),
+                            inteligencia=int(valores['INTELIGENCIA']),
+                            sabedoria=int(valores['SABEDORIA']),
+                            carisma=int(valores['CARISMA']),
+                            imagem=valores['IMAGEM'],
+                            ca=valores['CA'],
+                            vida_maxima=int(valores['VIDA_MAXIMA']),
+                            vida_atual=int(valores['VIDA_ATUAL']),
+                            tamanho=valores['TAMANHO'],
+                            nome_jogador=valores['PLAYER'],
+                            level=valores['LEVEL'],
+                            experiencia=int(valores['EXPERIENCIA']),
+                            proficiencia=int(valores['PROFICIENCIA']),
+                            cd=int(valores['CD'])
+                            )
+                        self.__dao.add(jogador)
+                        self.__dao_contador.add(1)
+                        self.__tela_novo.popup_sucesso()
+                        break
+                except ValoresInvalidosException:
+                    self.__tela_novo.popup_falha(mensagem='Favor preencher todos os valores')
+                    self.__tela_novo.fecha_tela()
+                    evento, valores = self.__tela_novo.mostra_tela()
+                    if evento != 'CONFIRMAR':
+                        break
+
+                except TamanhoInvalidoException:
+                    evento, valor = self.__tela_tamanho.mostra_tela()
+                    valores['TAMANHO'] = valor['TAMANHO']
+                    self.__tela_tamanho.fecha_tela()
+                    if evento != 'CONFIRMAR':
+                        break
+
+                except FileNotFoundError:
+                    evento, valor = self.__tela_imagem.mostra_tela()
+                    valores['IMAGEM'] = valor['IMAGEM']
+                    self.__tela_imagem.fecha_tela()
+                    if evento != 'CONFIRMAR':
+                        break
+        else:
+            self.__tela_novo.popup_sucesso(mensagem='Operacao cancelada')
+        self.__tela_novo.fecha_tela()
         self.controlador_principal.atualizar_visualizacao()
 
     def cria_jogador_teste(self):
         dados = {
-            "nome": f"Fulano {self.__dao_contador.get() + 1}",
-            "forca": 10,
-            "destreza": 10,
-            "constituicao": 10,
-            "inteligencia": 10,
-            "sabedoria": 10,
-            "carisma": 10,
-            "ca": 10,
-            "imagem": "Anao_Barbaro",
-            "vida_maxima": 10,
-            "vida_atual": 10,
-            "tamanho": "Pequeno",
-            "nome_jogador": "daniel",
-            "level": 1,
-            "experiencia": 1,
-            "proficiencia": 3,
-            "cd": 12
+            "NOME": f"Fulano {self.__dao_contador.get() + 1}",
+            "FORCA": 10,
+            "DESTREZA": 10,
+            "CONSTITUICAO": 10,
+            "INTELIGENCIA": 10,
+            "SABEDORIA": 10,
+            "CARISMA": 10,
+            "CA": 10,
+            "IMAGEM": "Anao_Barbaro",
+            "VIDA_MAXIMA": 10,
+            "VIDA_ATUAL": 10,
+            "TAMANHO": "Pequeno",
+            "PLAYER": "daniel",
+            "LEVEL": 1,
+            "EXPERIENCIA": 1,
+            "PROFICIENCIA": 3,
+            "CD": 12
         }
-        self.cria_novo_jogador(dados)
+        self.cria_novo_jogador('CONFIRMAR', dados)
 
     def mostra_jogadores(self):
-        self.tela.mostra_jogadores(self.__dao.get_all())
+        lista_ordenada_de_jogadores = self.ordena_valores_do_dicionario_pela_chave(self.__dao.get_dao())
 
-    def pega_jogador_por_id(self) -> Jogador:
-        if self.__dao.get_all():
-            valores_validos = [jogador.id for jogador in self.__dao.get_all()]
-            id = self.tela.pega_id_jogador(valores_validos)
-            return self.__dao.get(id)
-        else:
-            self.tela.lista_jogadores_vazia()
-            return None
-
-    def remove_jogador(self):
-        jogador = self.pega_jogador_por_id()
-        try:
-            remover = self.tela.confirma_remocao(jogador.nome)
-        except AttributeError:
-            pass
-        else:
-            if remover:
-                self.__dao.remove(jogador)
-                self.tela.executado_com_sucesso()
+        evento, _ = self.__tela_lista.mostra_tela(lista_ordenada_de_jogadores)
+        if evento == 'OK':
+            self.__tela_lista.fecha_tela()
 
     def mostra_atributos_do_jogador(self):
         jogador = self.pega_jogador_por_id()
         if jogador:
             atributos = {
-                "id": jogador.id,
-                "nome": jogador.nome,
-                "imagem": jogador.imagem,
-                "forca": jogador.forca,
-                "destreza": jogador.destreza,
-                "constituicao": jogador.constituicao,
-                "inteligencia": jogador.inteligencia,
-                "sabedoria": jogador.sabedoria,
-                "carisma": jogador.carisma,
-                "ca": jogador.ca,
-                "armas": [arma.nome for arma in jogador.armas if jogador.armas],
-                "magias": [magia.nome for magia in jogador.magias if jogador.magias],
-                "vida_maxima": jogador.vida_maxima,
-                "vida_atual": jogador.vida_atual,
-                "dano_causado": jogador.dano_causado,
-                "dano_sofrido": jogador.dano_sofrido,
-                "tamanho": jogador.tamanho,
-                "nome_jogador": jogador.nome_jogador,
-                "level": jogador.level,
-                "experiencia": jogador.experiencia,
-                "proficiencia": jogador.proficiencia,
-                "cd": jogador.cd
+                'ID': jogador.id,
+                'nome': jogador.nome,
+                'imagem': jogador.imagem,
+                'forca': jogador.forca,
+                'destreza': jogador.destreza,
+                'constituicao': jogador.constituicao,
+                'inteligencia': jogador.inteligencia,
+                'sabedoria': jogador.sabedoria,
+                'carisma': jogador.carisma,
+                'CA': jogador.ca,
+                'vida_maxima': jogador.vida_maxima,
+                'vida_atual': jogador.vida_atual,
+                'tamanho': jogador.tamanho,
+                'player': jogador.nome_jogador,
+                'level': jogador.level,
+                'experiencia': jogador.experiencia,
+                'proficiencia': jogador.proficiencia,
+                'CD': jogador.cd
             }
-            self.tela.mostra_atributos(atributos)
+            botao, _ = self.__tela_mostra_atributos.mostra_atributos_do_personagem(atributos)
+            if botao:
+                self.__tela_mostra_atributos.fecha_tela()
+
+    def ordena_valores_do_dicionario_pela_chave(self, dicionario: dict):
+        lista_ordenada = []
+        for key in sorted(dicionario.keys()):
+            lista_ordenada.append(dicionario[key])
+        return lista_ordenada
+
+    def pega_jogador_por_id(self):
+        lista_ordenada_de_jogadores = self.ordena_valores_do_dicionario_pela_chave(self.__dao.get_dao())
+        mostra_tela = True
+        while mostra_tela:
+            evento, valores = self.__tela_pega.mostra_tela(lista_ordenada_de_jogadores)
+            if evento == 'CONFIRMAR':
+                try:
+                    id = int(valores['ID'])
+                    nome = self.__dao.get(id)
+                    mostra_tela = False
+                    self.__tela_pega.fecha_tela()
+                    return nome
+                except ValueError:
+                    self.__tela_pega.popup_falha(mensagem='O valor precisa ser inteiro')
+                    self.__tela_pega.fecha_tela()
+            elif evento == 'CANCELA' or evento == None:
+                mostra_tela = False
+                self.__tela_pega.fecha_tela()
+
+    def remove_jogador(self):
+
+        jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return
+
+        try:
+            self.__dao.remove(jogador)
+            self.__tela_remove.popup_sucesso()
+            self.__tela_remove.fecha_tela()
+        except KeyError:
+            self.__tela_remove.popup_falha(mensagem='Jogador nao encontrado')
+            self.__tela_remove.fecha_tela()
 
     def altera_atributo_do_jogador(self):
         jogador = self.pega_jogador_por_id()
-        opcao = self.tela.mostra_alterar_jogador()
+
+        if not isinstance(jogador, Jogador):
+            self.__tela_altera.fecha_tela()
+
+        dados = {
+            'ID': jogador.id,
+            'NOME': jogador.nome,
+            'FORCA': jogador.forca,
+            'DESTREZA': jogador.destreza,
+            'CONSTITUICAO': jogador.constituicao,
+            'INTELIGENCIA': jogador.inteligencia,
+            'SABEDORIA': jogador.sabedoria,
+            'CARISMA': jogador.carisma,
+            'IMAGEM': jogador.imagem,
+            'CA': jogador.ca,
+            'VIDA_MAXIMA': jogador.vida_maxima,
+            'VIDA_ATUAL': jogador.vida_atual,
+            'TAMANHO': jogador.tamanho,
+            'PLAYER': jogador.nome_jogador,
+            'LEVEL': jogador.level,
+            'EXPERIENCIA': jogador.experiencia,
+            'PROFICIENCIA': jogador.proficiencia,
+            'CD': jogador.cd
+        }
+
+        evento, valores = self.__tela_altera.mostra_tela(dados)
+
+        if evento == 'CONFIRMA':
+            jogador.nome = valores['NOME']
+            jogador.forca = int(valores['FORCA'])
+            jogador.destreza = int(valores['DESTREZA'])
+            jogador.constituicao = int(valores['CONSTITUICAO'])
+            jogador.inteligencia = int(valores['INTELIGENCIA'])
+            jogador.sabedoria = int(valores['SABEDORIA'])
+            jogador.carisma = int(valores['CARISMA'])
+            jogador.imagem = valores['IMAGEM']
+            jogador.ca = int(valores['CA'])
+            jogador.vida_maxima = int(valores['VIDA_MAXIMA'])
+            jogador.vida_atual = int(valores['VIDA_ATUAL'])
+            jogador.tamanho = valores['TAMANHO']
+            jogador.nome_jogador = valores['PLAYER']
+            jogador.level = int(valores['LEVEL'])
+            jogador.experiencia = int(valores['EXPERIENCIA'])
+            jogador.proficiencia = int(valores['PROFICIENCIA'])
+            jogador.cd = int(valores['CD'])
+
+        self.__tela_altera.fecha_tela()
+
+    def mostra_tela(self):
+        evento, _ = self.__tela.mostra_tela()
+
+        if evento == 'VOLTAR':
+            self.__tela.fecha_tela()
+            self.__controlador_principal.mostra_tela()
 
         funcoes = {
-            1: ("nome", "str"),
-            2: ("forca", "int"),
-            3: ("destreza", "int"),
-            4: ("constituicao", "int"),
-            5: ("inteligencia", "int"),
-            6: ("sabedoria", "int"),
-            7: ("carisma", "int"),
-            9: ("ca", "int"),
-            10: ("vida_maxima", "int"),
-            11: ("tamanho", "str"),
-            12: ("vida_atual", "int"),
-            13: ("nome_jogador", "str"),
-            14: ("level", "int"),
-            15: ("experiencia", "int"),
-            16: ("proficiencia", "int"),
-            17: ("cd", "int")
+            'NOVO_JOGADOR': self.cria_novo_jogador,
+            'MOSTRA_JOGADORES': self.mostra_jogadores,
+            'REMOVE_JOGADOR': self.remove_jogador,
+            'ATRIBUTOS_JOGADOR': self.mostra_atributos_do_jogador,
+            'ALTERA_ATRIBUTOS_JOGADOR': self.altera_atributo_do_jogador,
+            'EQUIPA_ARMA': self.equipa_arma,
+            'DESEQUIPA_ARMA': self.desequipa_arma,
+            'MOSTRA_ARMAS': self.mostra_armas_do_jogador,
+            'ATACA_MONSTRO': self.ataca_monstro,
+            'VINCULA_MAGIA': self.vincula_magia,
+            'DESVINCULA_MAGIA': self.desvincula_magia,
+            'MOSTRA_MAGIAS': self.mostra_magias_do_jogador,
+            'ALTERA_ATRIBUTOS_MAGIA': self.altera_atributo_da_magia,
+            'LANCA_MAGIA': self.lanca_magia_no_monstro,
+            'MOVIMENTAR_JOGADOR': self.movimentar_jogador,
+            'CRIA_JOGADOR_TESTE': self.cria_jogador_teste,
         }
-        if opcao == 8:
-            novo_valor = self.tela.pega_imagem()
-            if jogador.tamanho == 'Grande':
-                novo_valor = pygame.transform.scale(novo_valor, (200, 200))
-            elif jogador.tamanho == 'Enorme':
-                novo_valor = pygame.transform.scale(novo_valor, (300, 300))
-            elif jogador.tamanho == 'Colossal':
-                novo_valor = pygame.transform.scale(novo_valor, (400, 400))
-            else:
-                novo_valor = pygame.transform.scale(novo_valor, (100, 100))
-        else:
-            tipo = funcoes[opcao][1]
-
-            novo_valor = self.tela.pega_dado(
-            mensagem="Entre novo valor para {}: ".format(funcoes[opcao][0]),
-            tipo=tipo
-            )
-        if opcao == 1:
-            jogador.nome = novo_valor
-        elif opcao == 2:
-            jogador.forca = novo_valor
-        elif opcao == 3:
-            jogador.destreza = novo_valor
-        elif opcao == 4:
-            jogador.constituicao = novo_valor
-        elif opcao == 5:
-            jogador.inteligencia = novo_valor
-        elif opcao == 6:
-            jogador.sabedoria = novo_valor
-        elif opcao == 7:
-            jogador.carisma = novo_valor
-        elif opcao == 9:
-            jogador.ca = novo_valor
-        elif opcao == 10:
-            jogador.vida_maxima = novo_valor
-        elif opcao == 11:
-            jogador.tamanho = novo_valor
-        elif opcao == 12:
-            jogador.vida_atual = novo_valor
-        elif opcao == 13:
-            jogador.nome_jogador = novo_valor
-        elif opcao == 14:
-            jogador.level = novo_valor
-        elif opcao == 15:
-            jogador.experiencia = novo_valor
-        elif opcao == 16:
-            jogador.proficiencia = novo_valor
-        else:
-            jogador.cd = novo_valor
+        try:
+            self.__tela.fecha_tela()
+            funcoes[evento]()
+            self.mostra_tela()
+        except KeyError:
+            return
 
     def equipa_arma(self):
-        self.mostra_jogadores()
         jogador = self.pega_jogador_por_id()
         if not jogador:
             return
-        self.__controlador_arma.mostra_armas()
         arma = self.__controlador_arma.pega_arma_por_id()
         if not arma:
             return
         if not (arma in jogador.armas):
             jogador.adiciona_arma(arma)
-            self.tela.executado_com_sucesso()
+            self.__tela.popup_sucesso()
 
     def mostra_armas_do_jogador(self, jogador: Jogador = None):
 
@@ -245,36 +359,28 @@ class ControladorJogador(ControladorGenerico):
             jogador = self.pega_jogador_por_id()
 
         if jogador and jogador.armas:
-            mostra_titulo = True
+            atributos_arma = []
             for arma in jogador.armas:
-                atributos_arma = {
-                    "id": arma.id,
-                    "nome": arma.nome,
-                    "quantidade_dado": arma.quantidade_dado,
-                    "numero_faces": arma.numero_faces
-                }
-                self.tela.mostra_arma_do_jogador(
-                    **atributos_arma,
-                    mostra_titulo=mostra_titulo
-                )
-                mostra_titulo = False
+                atributos_arma.append([arma.id, arma.nome])
+            self.__tela_mostra_armas.mostra_armas_do_jogador(atributos_arma)
 
     def pega_arma_do_jogador_por_id(self, jogador: Jogador):
-        self.mostra_armas_do_jogador(jogador)
         if jogador.armas:
-            id_para_arma = {arma.id: arma for arma in jogador.armas}
-            id = self.tela.pega_id(id_para_arma.keys())
-            return id_para_arma[id]
+            armas_jogador = []
+            for arma in jogador.armas:
+                armas_jogador.append([arma.id, arma.nome])
+            _, valor = self.__tela_armas.mostra_ataques(armas_jogador)
+            return int(valor)
 
     def desequipa_arma(self):
-        self.mostra_jogadores()
+        #self.mostra_jogadores()
         jogador = self.pega_jogador_por_id()
         if not jogador:
             return
         arma = self.pega_arma_do_jogador_por_id(jogador)
         if arma:
             jogador.remove_arma(arma)
-            self.tela.executado_com_sucesso()
+            self.__tela.popup_sucesso()
 
     def ataca_monstro(self):
         atacante = self.pega_jogador_por_id()
@@ -304,44 +410,24 @@ class ControladorJogador(ControladorGenerico):
             "defensor": defensor,
             "dano": dano
         }
+        mensagem = '{0} causou {1} em {2}'.format(atacante.nome, dano, defensor.nome)
         self.__controlador_relatorio.registra_combate(**dados)
-        self.tela.resumo_combate(**dados)
+        self.__tela.popup_sucesso(mensagem=mensagem)
 
     def vincula_magia(self):
 
-        self.tela.jogador_da_magia()
+        #self.tela.jogador_da_magia()
         jogador = self.pega_jogador_por_id()
 
         if not jogador:
             return None
 
-        self.tela.cria_magia()
         magia = self.__controlador_magia.cria_magia()
-
-        if self.tela.confirma_vincular(magia.nome, jogador.nome):
+        if isinstance(magia, Magia):
             jogador.vincula_magia(magia)
-            self.tela.executado_com_sucesso()
-
-    def pega_magia_por_id(self, jogador: Jogador) -> Magia:
-        self.mostra_magias_do_jogador(jogador)
-        if jogador.magias:
-            id_para_magia = {magia.id: magia for magia in jogador.magias}
-            id = self.tela.pega_id(id_para_magia.keys())
-            return id_para_magia[id]
-
-    def desvincula_magia(self):
-
-        self.tela.jogador_da_magia()
-        jogador = self.pega_jogador_por_id()
-
-        if not jogador:
-            return None
-
-        magia = self.pega_magia_por_id(jogador)
-
-        if self.tela.confirma_desvincular():
-            jogador.desvincula_magia(magia)
-        self.tela.executado_com_sucesso()
+            self.__tela.popup_sucesso()
+        else:
+            self.__tela.popup_sucesso(mensagem='Operacao cancelada')
 
     def mostra_magias_do_jogador(self, jogador: Jogador = None):
 
@@ -349,19 +435,30 @@ class ControladorJogador(ControladorGenerico):
             jogador = self.pega_jogador_por_id()
 
         if jogador and jogador.magias:
-            mostra_titulo = True
+            magias_jogador = []
             for magia in jogador.magias:
-                atributos_magia = {
-                    "id": magia.id,
-                    "nome": magia.nome,
-                    "quantidade_dado": magia.quantidade_dado,
-                    "numero_faces": magia.numero_faces
-                }
-                self.tela.mostra_magia_do_jogador(
-                    **atributos_magia,
-                    mostra_titulo=mostra_titulo
-                )
-                mostra_titulo = False
+                magias_jogador.append([magia.id, magia.nome])
+            self.__tela_mostra_armas.mostra_armas_do_jogador(magias_jogador)
+
+    def pega_magia_por_id(self, jogador: Jogador) -> Magia:
+        if jogador.magias:
+            magias_jogador = []
+            for magia in jogador.magias:
+                magias_jogador.append([magia.id, magia.nome])
+            _,valor = self.__tela_armas.mostra_ataques(magias_jogador)
+            return int(valor)
+
+    def desvincula_magia(self):
+        jogador = self.pega_jogador_por_id()
+
+        if not jogador:
+            return None
+
+        magia = self.pega_magia_por_id(jogador)
+
+        if magia:
+            jogador.desvincula_magia(magia)
+            self.__tela.popup_sucesso()
 
     def lanca_magia_no_monstro(self):
         atacante = self.pega_jogador_por_id()
@@ -416,55 +513,20 @@ class ControladorJogador(ControladorGenerico):
         defensor.dano_sofrido.append(dano)
         defensor.vida_atual -= dano
         if defensor.vida_atual <= 0:
+            defensor.esta_vivo = False
             experiencia = (defensor.experiencia // len(defensor.atacado_por))
             for jogador in defensor.atacado_por:
                 jogador.recebe_experiencia(experiencia)
-            self.controlador_monstro.remover_monstro(defensor)
 
         dados = {
             "atacante": atacante,
             "defensor": defensor,
             "dano": dano
         }
+        mensagem = '{0} causou {1} em {2}'.format(atacante.nome, dano, defensor.nome)
 
         self.__controlador_relatorio.registra_combate(**dados)
-        self.tela.resumo_combate(**dados)
-
-    def mostra_tela(self):
-        funcoes = {
-            1: self.cria_novo_jogador,
-            2: self.mostra_jogadores,
-            3: self.remove_jogador,
-            4: self.mostra_atributos_do_jogador,
-            5: self.altera_atributo_do_jogador,
-            6: self.equipa_arma,
-            7: self.desequipa_arma,
-            8: self.mostra_armas_do_jogador,
-            9: self.ataca_monstro,
-            10: self.vincula_magia,
-            11: self.desvincula_magia,
-            12: self.mostra_magias_do_jogador,
-            13: self.altera_atributo_da_magia,
-            14: self.lanca_magia_no_monstro,
-            15: self.movimentar_jogador,
-            77: self.cria_jogador_teste,
-        }
-
-        super(ControladorJogador, self).mostra_tela(funcoes)
-
-    def mapa_moveu(self, x: int, y: int):
-        for i in range(len(self.__dao.get_all())):
-            posicao = self.__dao.get_all()[i].posicao
-            self.__dao.get_all()[i].posicao(posicao[0] - x, posicao[1] - y)
-
-    def mostra_imagem(self, jogador):
-        return jogador.imagem
-
-    def mostra_posicao(self, jogador):
-        return jogador.posicao
-
-    def remover_jogador(self, jogador: Jogador):
-        self.__dao.remove(jogador)
+        self.__tela.popup_sucesso(mensagem=mensagem)
 
     def altera_atributo_da_magia(self):
         jogador = self.pega_jogador_por_id()
@@ -475,6 +537,22 @@ class ControladorJogador(ControladorGenerico):
         jogador = self.pega_jogador_por_id()
         if not jogador:
             return
-        posicao = self.tela.movimenta_jogador()
-        jogador.movimentar(posicao)
-        self.controlador_principal.atualizar_visualizacao()
+        _, valores = self.__tela_movimentar.mostra_tela()
+        if valores['X'] not in self.__dicio_letras.keys() and valores['Y'] not in self.__dicio_numeros.keys():
+            self.__tela_movimentar.popup_falha(mensagem='Valor invalido, favor informar calores correspondetes a lateral da tela')
+        else:
+            posicao = [valores['X'], valores['Y']]
+            jogador.movimentar(posicao)
+            self.controlador_principal.atualizar_visualizacao()
+
+    def mostra_imagem(self, jogador):
+        return jogador.imagem
+
+    def mostra_posicao(self, jogador):
+        return jogador.posicao
+
+
+    def mapa_moveu(self, x: int, y: int):
+        for i in range(len(self.__dao.get_all())):
+            posicao = self.__dao.get_all()[i].posicao
+            self.__dao.get_all()[i].posicao(posicao[0] - x, posicao[1] - y)
