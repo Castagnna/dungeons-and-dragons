@@ -4,7 +4,6 @@ from dao.ataqueContadorDAO import AtaqueContadorDAO
 from entidade.ataqueMonstro import AtaqueMonstro
 
 from limite.ataque.telaAtaque import TelaAtaque
-from limite.ataque.telaAtaqueMonstro import TelaAtaqueMonstro
 from limite.ataque.telaAtaqueNovo import TelaAtaqueNovo
 from limite.ataque.telaAtaqueLista import TelaAtaqueLista
 from limite.ataque.telaAtaqueRemove import TelaAtaqueRemove
