@@ -67,7 +67,7 @@ class ControladorRelatorio:
 
         evento, _ = self.__tela_relatorio.mostra_tela()
 
-        if evento == "VOLTAR":
+        if evento == "VOLTAR" or evento == None:
             self.__tela_relatorio.fecha_tela()
             self.__controlador_principal.mostra_tela()
 
