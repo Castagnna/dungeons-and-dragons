@@ -23,17 +23,6 @@ class ControladorPrincipal(ControladorGenerico):
         self.__controlador_monstro = ControladorMonstro(self)
         self.__controlador_background = ControladorBackground(self)
         self.__controlador_jogador.add_controlador_monstro(self.__controlador_monstro)
-        # self.__retangulos = [pygame.rect.Rect(0, 0, 100, 1000), pygame.rect.Rect(0, 0, 1800, 100)]
-        # self.__fonte = pygame.font.SysFont(None, 55)
-        # self.__letras = ('A','B','C','D','E','F','G','H','I','J',
-        #                  'K','L','M','N','O','P', 'Q', 'R', 'S',
-        #                  'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
-        # self.__numeros = ('1','2','3','4','5','6','7','8', '9')
-        # self.__visualizacao = ''
-
-    """
-    getters
-    """
 
     @property
     def controlador_arma(self):
@@ -55,10 +44,6 @@ class ControladorPrincipal(ControladorGenerico):
     def controlador_relatorio(self):
         return self.__controlador_relatorio
 
-    """
-    setters
-    """
-
     @controlador_jogador.setter
     def controlador_jogador(self, controlador):
         self.__controlador_jogador = controlador
@@ -70,10 +55,6 @@ class ControladorPrincipal(ControladorGenerico):
     @controlador_monstro.setter
     def controlador_monstro(self, controlador):
         self.__controlador_monstro = controlador
-
-    """
-    methods
-    """
 
     def iniciar_sistema(self):
         self.mostra_tela()
